@@ -1,0 +1,32 @@
+Day 1: 20150112
+
+# Day 1
+So I'm starting a new project. For a long time I wanted to make games and my one year of having a SO is coming up, so I though I will make a game for her as a present. I have no idea how this project will go, but I will definitely make a log every time.
+
+## Idea
+So my initial idea is that I will make an arcade like game, something similar to 2d platform game Mario, but more dialogged based. Since that is easier to make. My SO will of course be the main character in the game and she will have to find the Cape of Helius. About 7 months ago or smh, does not really matter. I wrote her some small stories about how she had find the Cape of Helius and defeat the evil white witch. It's all a parody on her job at CapeHelius (a café of sorts), the evil white witch is a college she had that believed in white magic, yeah I know.
+
+## Runtime
+As all projects, the deadline will be 2015-04-14, that will give me about 3 months.
+
+## Structure
+So, basically there are several steps to produce/make the game. First step will be getting familiar again with the tools I will be using: cocos2d-x and map editor, probably some other tools as well. But the main part is cocos2d-x. Why? I worked with it before and it was exactly how I wanted.
+
+Second step will be creating a game instance where you will just see the character and bit of the map.
+Third step will be implementing movement.
+Fourth, interaction with the environment, like text pop-ups, talking with other characters, dying, stuff like. I will probably make it more precise when I get there.
+Fifth step, do not know yet. I will define it later when I get to the third step.
+
+## Rant
+So, it will be game where she can interact with other characters, interaction will probably just be predefined dialogs. Maybe maybe, if I get far straight away, it will be dynamic. And other stuff like collecting, jumping, evading, fighting monsters and the final boss.
+
+Levels?? Do not know, after the first step I will write down all the dialogs, interactions and monsters that will come. So level design basically.
+
+Level of success??, depends really on the resource: time, I mean everything is possible (specially this type of game) with unlimited amount of time.
+
+### A bit of me
+Well what is relevant. My experience with programming is as followed: I did make a full blown augmented game with XNA (it was awesome), a lot of NodeJS programming, some Cocos2d-x experience (I made a character that could walk around with other characters (online)), some Unity3D experience (made a chess game), a lot of Java (back-end writing for websites), some c++ experience (nothing big, just a lot of fooling around), and many other languages (but the amount of experience i have with them is significantly small compared to the other things I mentioned).
+
+As you can see, I'm not a really experienced programmer, I mean I only started programming about 5 years ago. But I like programming, so we will see.
+
+---end---
