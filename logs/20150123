@@ -1,0 +1,10 @@
+Day 3: 20150123
+
+So I finally really started on the project. Today was just getting cocos2d-x to get running and compiling.
+The plan now is to build the first scene, where the characters starts and can finish the game by getting to the end.
+
+This will allow me to build the game step by step. So the first step will be correctly loading the scene.
+Loading the character sprites. Making the animation. Dying and finishing.
+
+Next step will be the extend the scene with text popups, npc interraction (vs bad and good npc's), using skills.
+All that will probably take about 4 working days to get it working.
