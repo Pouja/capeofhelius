@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="5" tilewidth="21" tileheight="21" nextobjectid="11">
+ <tileset firstgid="1" name="spritesheet_removed" tilewidth="21" tileheight="21" spacing="2">
+  <image source="/home/pnikray/projects/capeofhelius/sprite_sheets/spritesheet_removed.png" trans="5e81a2" width="688" height="366"/>
+  <terraintypes>
+   <terrain name="Nieuw Terrein" tile="-1"/>
+  </terraintypes>
+  <tile id="92" terrain=",,0,"/>
+  <tile id="121" terrain=",0,,0"/>
+  <tile id="122" terrain="0,0,0,0"/>
+  <tile id="123" terrain="0,0,0,0"/>
+  <tile id="151" terrain="0,0,0,"/>
+  <tile id="152" terrain="0,0,0,0"/>
+  <tile id="153" terrain="0,0,0,0"/>
+  <tile id="154" terrain=",0,,0"/>
+  <tile id="155" terrain="0,0,0,"/>
+  <tile id="181" terrain="0,,0,0"/>
+  <tile id="182" terrain="0,0,0,0"/>
+  <tile id="183" terrain="0,0,0,0"/>
+  <tile id="184" terrain=",0,0,0"/>
+  <tile id="211" terrain=",0,,"/>
+  <tile id="212" terrain="0,0,0,0"/>
+  <tile id="213" terrain="0,0,0,0"/>
+  <tile id="214" terrain="0,,,"/>
+ </tileset>
+ <tileset firstgid="481" name="squares" tilewidth="21" tileheight="21">
+  <image source="/home/pnikray/projects/capeofhelius/sprite_sheets/squares.png" width="105" height="21"/>
+  <tile id="0">
+   <properties>
+    <property name="ground" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="death" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="objective" value=""/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="death" value="true"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="ground" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="bg" width="30" height="5">
+  <data encoding="base64" compression="zlib">
+   eJzVyrcNgDAUANFviZyGMCaz/0gmhxG4lha54aTXnRWRCTMWrNiw48CJCzesw9dTIj4ChIgQI0GKDDkK5fbVKGFQoUaDFh16DBgdv1/S6u1PPexTIc8=
+  </data>
+ </layer>
+ <layer name="foreground" width="30" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYBg8oJmQAkYqm4cFuKPx64G4EYkPYjeQaOY/IK4mEc8FYh40PI8Mc2aSgTXRMDlmAAB8+SFv
+  </data>
+ </layer>
+ <layer name="definitions" width="30" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYBg84DHjwJv3CE3PQ0YIxsUn1h0PycCP0DA5ZgyUvQBYyjwY
+  </data>
+ </layer>
+</map>
