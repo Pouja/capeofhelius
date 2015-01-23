@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="5" tilewidth="21" tileheight="21" nextobjectid="11">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="15" tilewidth="21" tileheight="21" nextobjectid="11">
  <tileset firstgid="1" name="spritesheet_removed" tilewidth="21" tileheight="21" spacing="2">
-  <image source="/home/pnikray/projects/capeofhelius/sprite_sheets/spritesheet_removed.png" trans="5e81a2" width="688" height="366"/>
-  <terraintypes>
-   <terrain name="Nieuw Terrein" tile="-1"/>
-  </terraintypes>
+  <image source="spritesheet.png" trans="5e81a2" width="688" height="366"/>
   <tile id="92" terrain=",,0,"/>
   <tile id="121" terrain=",0,,0"/>
   <tile id="122" terrain="0,0,0,0"/>
@@ -24,7 +21,7 @@
   <tile id="214" terrain="0,,,"/>
  </tileset>
  <tileset firstgid="481" name="squares" tilewidth="21" tileheight="21">
-  <image source="/home/pnikray/projects/capeofhelius/sprite_sheets/squares.png" width="105" height="21"/>
+  <image source="squares.png" width="105" height="21"/>
   <tile id="0">
    <properties>
     <property name="ground" value="true"/>
@@ -51,19 +48,19 @@
    </properties>
   </tile>
  </tileset>
- <layer name="bg" width="30" height="5">
+ <layer name="bg" width="30" height="15">
   <data encoding="base64" compression="zlib">
-   eJzVyrcNgDAUANFviZyGMCaz/0gmhxG4lha54aTXnRWRCTMWrNiw48CJCzesw9dTIj4ChIgQI0GKDDkK5fbVKGFQoUaDFh16DBgdv1/S6u1PPexTIc8=
+   eJztyrcNgDAUANFviZyGIKf9RyKnEbiWFpkKn/S6G0RkMIwPjJgwY8GKDTsOnLg0v5YSseHAhQcfAUJEiJEovW+KDDkKlKhQo0GLDr3m902pejKZ/t4NENSokw==
   </data>
  </layer>
- <layer name="foreground" width="30" height="5">
+ <layer name="foreground" width="30" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBg8oJmQAkYqm4cFuKPx64G4EYkPYjeQaOY/IK4mEc8FYh40PI8Mc2aSgTXRMDlmAAB8+SFv
+   eJxjYBgFpABDOto1HYjrgLgGDc8B4ko6umOog+ZBYJ47ugAjfvXEpLN/DJhpgxjMg4bJMWMmGVgTDZNjxgUC4UYLMBB2jlQwUPELAPL3JwM=
   </data>
  </layer>
- <layer name="definitions" width="30" height="5">
+ <layer name="definitions" width="30" height="15" visible="0">
   <data encoding="base64" compression="zlib">
-   eJxjYBg84DHjwJv3CE3PQ0YIxsUn1h0PycCP0DA5ZgyUvQBYyjwY
+   eJxjYBgFAwUeMw68eY/Q9DxkhGBcfGLd8ZAM/AgNk2PGQNk7CkbBKBi6AADA6TwY
   </data>
  </layer>
 </map>

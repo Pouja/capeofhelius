@@ -28,7 +28,7 @@ bool HelloWorld::init()
     std::string file = "tilemap.tmx";
     auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename(file.c_str()).c_str());
     this->tilemap = TMXTiledMap::createWithXML(str->getCString(),"");
-    this->tilemap->getLayer("definitions")->setVisible(false);
+    // this->tilemap->getLayer("definitions")->setVisible(false);
     this->background = this->tilemap->getLayer("bg");
     this->tilemap->setScale(2.0);
     addChild(this->tilemap, -1);
