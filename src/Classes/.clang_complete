@@ -1,9 +1,0 @@
--I/usr/local/include/GLFW
--I/usr/include/GLFW
--I/home/pnikray/projects/capeofhelius/src/cocos2d/cocos
--I/home/pnikray/projects/capeofhelius/src/Classes
--DLINUX
--std=c++11
--Wno-deprecated-declarations
--Wno-reorder
--Wl,-rpath,/home/pnikray/projects/capeofhelius/src/cocos2d/external/linux-specific/fmod/prebuilt/64-bit
