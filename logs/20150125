@@ -1,0 +1,13 @@
+day 4: 20150125
+
+So today I worked on setting the viewport correctly. There are probably better written functions than the one that I wrote.
+But as it counts for each part, I want to learn. This seemed something that is doable in reasonable amount of time.
+Of course I'm not going the reinvent every part, but only the ones that are doable.
+
+ So for the viewport there were 3 cases to consider. One that the either the x or y cord is closer than half of the view-
+ port of each side (that are 2 cases for x and y). Third is the case that x or y are somewhere no there. It is easy solve-
+ able with if statements.
+
+ Next step: adding the character. I have really to stop myself from restructering everything now. The way everything is placed
+ in the directories is horrible. So after I have implemented and tested some basic shit. I will refactor everything.
+  
