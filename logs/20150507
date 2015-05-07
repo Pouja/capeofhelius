@@ -1,0 +1,7 @@
+day 5: 20150507
+
+So I started with project again after 4 months. I was way too busy with school.
+
+Refactored some stuff. Created a gamedirector which is responsible for shifting between scenes and setting up the envrinment. I renamed HelloWorldScene to BasicScene. I will probably keep playing with BasicScene until I implemented sprite animation, death and finish and physics, and text stuff.
+
+Next step after this is to make the scene follow the character.
