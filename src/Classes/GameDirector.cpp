@@ -27,6 +27,10 @@ void GameDirector::init(){
     director->runWithScene(this->currentScene);
 }
 
+Director* GameDirector::getCocosDirector(){
+    return Director::getInstance();
+}
+
 GameDirector* GameDirector::getInstance(){
     if (!s_SharedGameDirector)
     {

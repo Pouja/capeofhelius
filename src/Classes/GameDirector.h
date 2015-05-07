@@ -6,6 +6,7 @@
 class GameDirector {
 public:
     static GameDirector* getInstance();
+    cocos2d::Director* getCocosDirector();
     void init();
 private:
     GameDirector* instance;

@@ -4,12 +4,13 @@
 
 #include "cocos2d.h"
 #include "math/Vec2.h"
+#include "Player.h"
 
 class BasicScene : public cocos2d::Layer
 {
 private:
     cocos2d::TMXTiledMap *tilemap;
-    cocos2d::TMXLayer *background;
+    Player* player;
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
@@ -18,12 +19,10 @@ public:
     virtual bool init();
 
     void setViewPointCenter(cocos2d::Vec2);
+    void createMap();
 
     // implement the "static create()" method manually
     CREATE_FUNC(BasicScene);
-
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
-    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 };
 
 #endif // __BASIC_SCENE_H__
