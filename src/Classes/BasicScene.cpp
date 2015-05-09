@@ -57,6 +57,7 @@ bool BasicScene::init()
 }
 
 void BasicScene::update(float delta){
+    this->player->update(delta);
     this->setViewPointCenter(this->player->getPosition());
 }
 
