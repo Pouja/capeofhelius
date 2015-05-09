@@ -3,6 +3,7 @@
 USING_NS_CC;
 
 Player::Player() {
+    this->velocity = cocos2d::Vec2::ZERO;
     this->playerState = PlayerState::IDLE;
 }
 

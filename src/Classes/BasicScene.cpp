@@ -2,13 +2,25 @@
 
 USING_NS_CC;
 
-Vec2 getObjectPoint(TMXTiledMap* tilemap, std::string group, std::string objectName){
+Vec2 getObjectPoint(TMXTiledMap* tilemap, std::string group, std::string objectName) {
     TMXObjectGroup* objectGroup = tilemap->getObjectGroup(group);
     ValueMap spawnPoint = objectGroup->getObject(objectName);
     int xSpawnPoint = spawnPoint.at("x").asInt() * tilemap->getScale();
     int ySpawnPoint = spawnPoint.at("y").asInt() * tilemap->getScale();
 
     return Vec2(xSpawnPoint, ySpawnPoint);
+}
+
+Vec2 getTileVec(Vec2 position, TMXTiledMap* tilemap){
+    // Scale with the map size.
+    position.scale(1/tilemap->getScale());
+
+    float x = floorf(position.x / tilemap->getTileSize().width);
+    float y = floorf(position.y / tilemap->getTileSize().height) - 1;
+
+    // (0,0) for tilemap is topleft, so we need the inverse.
+    y = tilemap->getMapSize().height - y;
+    return Vec2(x,y);
 }
 
 Scene* BasicScene::createScene()
@@ -20,7 +32,7 @@ Scene* BasicScene::createScene()
     return scene;
 }
 
-void BasicScene::createMap(){
+void BasicScene::createMap() {
     std::string file = "tilemap.tmx";
     auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename(file.c_str()).c_str());
     this->tilemap = TMXTiledMap::createWithXML(str->getCString(), "");
@@ -33,7 +45,7 @@ bool BasicScene::init()
     {
         return false;
     }
-    
+
     // Create the tilemap
     this->createMap();
     addChild(this->tilemap);
@@ -52,13 +64,23 @@ bool BasicScene::init()
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+    log("tilesize(%f,%f) mapsize(%f,%f)", tilemap->getTileSize().width, tilemap->getTileSize().height, tilemap->getMapSize().width, tilemap->getMapSize().height);
+
     this->scheduleUpdate();
     return true;
 }
 
-void BasicScene::update(float delta){
+void BasicScene::update(float delta) {
     this->player->update(delta);
     this->setViewPointCenter(this->player->getPosition());
+
+    TMXLayer* layer = tilemap->getLayer("foreground");
+    Sprite* tile = layer->getTileAt(getTileVec(this->player->getPosition(), this->tilemap));
+    if(tile){
+        log("collision");
+    } else {
+        log("no collision");
+    }
 }
 
 void BasicScene::setViewPointCenter(Vec2 position) {

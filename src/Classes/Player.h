@@ -28,6 +28,7 @@ public:
     void move(cocos2d::Vec2 direction);
     ~Player();
 private:
+    cocos2d::Vec2 velocity;
     PlayerState playerState;
     cocos2d::Sprite* playerSprite;
 };
