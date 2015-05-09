@@ -52,7 +52,12 @@ bool BasicScene::init()
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+    this->scheduleUpdate();
     return true;
+}
+
+void BasicScene::update(float delta){
+    this->setViewPointCenter(this->player->getPosition());
 }
 
 void BasicScene::setViewPointCenter(Vec2 position) {

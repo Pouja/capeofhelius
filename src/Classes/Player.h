@@ -12,6 +12,11 @@ public:
     cocos2d::Sprite* init(cocos2d::Vec2 position);
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
     bool isKeyTransparent();
+
+    cocos2d::Vec2 getPosition();
+
+    //Moves
+    void move(cocos2d::Vec2 direction);
     ~Player();
 };
 

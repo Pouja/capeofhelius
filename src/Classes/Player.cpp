@@ -12,7 +12,33 @@ Sprite* Player::init(cocos2d::Vec2 position) {
 
 void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
-    log("Key with keycode %d pressed", keyCode);
+    switch (keyCode) {
+    case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        this->move(Vec2(-1,0));
+        break;
+    case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+        this->move(Vec2(0,-1));
+        break;
+    case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        this->move(Vec2(0,1));
+        break;
+    case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+        this->move(Vec2(1,0));
+        break;
+    default:
+        break;
+    }
+}
+
+Vec2 Player::getPosition(){
+    return this->playerSprite->getPosition();
+}
+
+void Player::move(Vec2 direction){
+    Vec2 currentPosition = this->playerSprite->getPosition();
+    direction.scale(50.0);
+    currentPosition.add(direction);
+    this->playerSprite->setPosition(currentPosition);
 }
 
 bool Player::isKeyTransparent() {
