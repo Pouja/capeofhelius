@@ -68,16 +68,16 @@ void BasicScene::setViewPointCenter(Vec2 position) {
     mapSize.height = mapSize.height * tilemap->getTileSize().height * tilemap->getScale();
 
     float xView = position.x - winSize.width / 2;
-    if (position.x >= 0 && position.x <= winSize.width / 2) {
+    if (position.x <= winSize.width / 2) {
         xView = 0;
-    } else if (mapSize.width - winSize.width / 2 <= position.x && position.x <= mapSize.width) {
+    } else if (mapSize.width - winSize.width / 2 <= position.x ) {
         xView = mapSize.width - winSize.width;
     }
 
-    float yView = position.x - winSize.width / 2;;
-    if (position.y >= 0 && position.y <= winSize.height / 2) {
+    float yView = position.y - winSize.height / 2;;
+    if (position.y <= winSize.height / 2) {
         yView = 0;
-    } else if (mapSize.height - winSize.height / 2 <= position.y && position.y <= mapSize.height) {
+    } else if (mapSize.height - winSize.height / 2 <= position.y) {
         yView = mapSize.height - winSize.height;
     }
 
