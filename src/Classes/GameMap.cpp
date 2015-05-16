@@ -10,6 +10,18 @@ GameMap::GameMap(std::string mapName, float scale) {
     this->setScale(scale);
 }
 
+std::vector<Sprite*> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
+    std::vector<Sprite*> collisions;
+    TMXLayer* layer = this->getLayer("foreground");
+
+    for (Vec2 point : points) {
+        Vec2 mapCoord = this->worldToMap(point);
+        collisions.push_back(layer->getTileAt(mapCoord));
+    }
+    return collisions;
+}
+
+
 Vec2 GameMap::worldToMap(Vec2 worldCoord) {
     // Scale with the map size.
     worldCoord.scale(1 / this->getScale());
@@ -23,12 +35,26 @@ Vec2 GameMap::worldToMap(Vec2 worldCoord) {
 }
 
 Vec2 GameMap::mapToWorld(Vec2 mapCoord) {
-    return Vec2(0,0);
+    float x = mapCoord.x * this->getTileSize().width + this->getTileSize().width / 2;
+    float y = (mapCoord.y - 1) * this->getTileSize().height + this->getTileSize().height / 2;
+    Vec2 coords(x, y);
+    coords.scale(this->getScale());
+    return coords;
+}
+
+Vec2 GameMap::tileToWorld(Sprite* tile) {
+    Vec2 position = tile->getPosition();
+    position.scale(this->getScale());
+    Vec2 halfTileSize = this->getTileSize();
+    halfTileSize.scale(0.5);
+    halfTileSize.scale(this->getScale());
+    position.add(halfTileSize);
+    return position;
 }
 
 Vec2 GameMap::objectPoint(std::string group, std::string objectName) {
     TMXObjectGroup* objectGroup = this->getObjectGroup(group);
-    if(!objectGroup){
+    if (!objectGroup) {
         log("The map %s has no group %s", this->name.c_str(), group.c_str());
     }
     ValueMap object = objectGroup->getObject(objectName);
