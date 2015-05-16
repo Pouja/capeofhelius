@@ -1,27 +1,6 @@
 #include "BasicScene.h"
-
 USING_NS_CC;
 
-Vec2 getObjectPoint(TMXTiledMap* tilemap, std::string group, std::string objectName) {
-    TMXObjectGroup* objectGroup = tilemap->getObjectGroup(group);
-    ValueMap spawnPoint = objectGroup->getObject(objectName);
-    int xSpawnPoint = spawnPoint.at("x").asInt() * tilemap->getScale();
-    int ySpawnPoint = spawnPoint.at("y").asInt() * tilemap->getScale();
-
-    return Vec2(xSpawnPoint, ySpawnPoint);
-}
-
-Vec2 getTileVec(Vec2 position, TMXTiledMap* tilemap){
-    // Scale with the map size.
-    position.scale(1/tilemap->getScale());
-
-    float x = floorf(position.x / tilemap->getTileSize().width);
-    float y = floorf(position.y / tilemap->getTileSize().height) - 1;
-
-    // (0,0) for tilemap is topleft, so we need the inverse.
-    y = tilemap->getMapSize().height - y;
-    return Vec2(x,y);
-}
 
 Scene* BasicScene::createScene()
 {
@@ -32,13 +11,6 @@ Scene* BasicScene::createScene()
     return scene;
 }
 
-void BasicScene::createMap() {
-    std::string file = "tilemap.tmx";
-    auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename(file.c_str()).c_str());
-    this->tilemap = TMXTiledMap::createWithXML(str->getCString(), "");
-    this->tilemap->setScale(2.0);
-}
-
 bool BasicScene::init()
 {
     if ( !Layer::init() )
@@ -47,15 +19,19 @@ bool BasicScene::init()
     }
 
     // Create the tilemap
-    this->createMap();
-    addChild(this->tilemap);
+    this->map = new GameMap("tilemap.tmx", 2.0);
+    addChild(this->map);
+
+    this->drawNode = DrawNode::create();
+    addChild(this->drawNode);
 
     // Set the view point of the tilemap
-    this->setViewPointCenter(getObjectPoint(this->tilemap, "objects", "spawnpoint"));
+    this->setViewPointCenter(this->map->objectPoint("objects", "spawnpoint"));
 
     // Create the player
     this->player = new Player();
-    addChild(this->player->init(getObjectPoint(this->tilemap, "objects", "spawnpoint")));
+    this->player->init(this->map->objectPoint("objects", "spawnpoint"));
+    addChild(this->player);
 
     // Creating a keyboard event listener
     auto listener = EventListenerKeyboard::create();
@@ -72,7 +48,6 @@ bool BasicScene::init()
 
 void BasicScene::update(float delta) {
     this->player->update(delta);
-    this->setViewPointCenter(this->player->getPosition());
 
     TMXLayer* layer = tilemap->getLayer("foreground");
     Sprite* tile = layer->getTileAt(getTileVec(this->player->getPosition(), this->tilemap));
@@ -86,9 +61,9 @@ void BasicScene::update(float delta) {
 void BasicScene::setViewPointCenter(Vec2 position) {
     Size winSize = Director::getInstance()->getWinSize();
 
-    Size mapSize = tilemap->getMapSize();
-    mapSize.width = mapSize.width * tilemap->getTileSize().width * tilemap->getScale();
-    mapSize.height = mapSize.height * tilemap->getTileSize().height * tilemap->getScale();
+    Size mapSize = this->map->getMapSize();
+    mapSize.width = mapSize.width * this->map->getTileSize().width * this->map->getScale();
+    mapSize.height = mapSize.height * this->map->getTileSize().height * this->map->getScale();
 
     float xView = position.x - winSize.width / 2;
     if (position.x <= winSize.width / 2) {
