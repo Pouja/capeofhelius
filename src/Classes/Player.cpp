@@ -69,8 +69,32 @@ void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
     }
 }
 
-Vec2 Player::getPosition() {
-    return this->playerSprite->getPosition();
+void Player::update(float delta) {
+    Vec2 gravity(0.0, -1);
+    this->velocity.add(gravity);
+
+    Vec2 horizontalForce(1, 0.0);
+    horizontalForce.scale(this->playerState.x);
+
+    Vec2 verticalForce(0.0, 20);
+    verticalForce.scale(this->playerState.y);
+
+    if (this->isOnGround) {
+        this->velocity.add(verticalForce);
+        this->velocity.add(horizontalForce);
+    } else if (this->playerState.x == 0 || (this->playerState.x == -1 && this->velocity.x >= 0) || (this->playerState.x == 1 && this->velocity.x <= 0)) {
+        horizontalForce.scale(5);
+        this->velocity.add(horizontalForce);
+    }
+    if (this->playerState.x == 0) {
+        this->velocity = Vec2(this->velocity.x * 0.1, this->velocity.y);
+    }
+
+    Vec2 minMovement(-10, -15);
+    Vec2 maxMovement(10, 15);
+
+    this->velocity.clamp(minMovement, maxMovement);
+    this->desiredPosition = this->getPosition() + this->velocity;
 }
 
 
