@@ -40,22 +40,75 @@ bool BasicScene::init()
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-    log("tilesize(%f,%f) mapsize(%f,%f)", tilemap->getTileSize().width, tilemap->getTileSize().height, tilemap->getMapSize().width, tilemap->getMapSize().height);
-
     this->scheduleUpdate();
     return true;
 }
 
+void verticalCollision(float playerHeight, Vec2 playerPos, Vec2 tilePos, Vec2* velocity, Vec2* desiredPosition) {
+    if (playerPos.y > tilePos.y) {
+        desiredPosition->y = tilePos.y  + playerHeight + 1;
+    } else {
+        desiredPosition->y = tilePos.y - playerHeight - 1;
+    }
+    velocity->y = 0;
+}
+
+void horizontalCollision(float playerWidth, Vec2 playerPos, Vec2 tilePos, Vec2* desiredPosition) {
+    if (playerPos.x > tilePos.x) {
+        desiredPosition->x = tilePos.x + playerWidth + 1;
+    } else {
+        desiredPosition->x = tilePos.x - playerWidth - 1;
+    }
+}
+
+
 void BasicScene::update(float delta) {
     this->player->update(delta);
 
-    TMXLayer* layer = tilemap->getLayer("foreground");
-    Sprite* tile = layer->getTileAt(getTileVec(this->player->getPosition(), this->tilemap));
-    if(tile){
-        log("collision");
-    } else {
-        log("no collision");
+    Vec2 desiredPosition = this->player->desiredPosition;
+
+    float playerHeight = player->getContentSize().height;
+    float playerWidth = player->getContentSize().width;
+
+    std::vector<Sprite*> collisions = this->map->groundCollision(this->player->getBoundingPoints(desiredPosition));
+
+    Vec2 velocity = this->player->velocity;
+    this->player->isOnGround = false;
+
+    int collisionCount = 0;
+    if (collisions[0]) {
+        this->player->isOnGround = true;
     }
+    if (collisions[0] || collisions[1]) {
+        int index = (collisions[0]) ? 0 : 1;
+        Vec2 pos = this->map->tileToWorld(collisions[index]);
+        verticalCollision(playerHeight, desiredPosition, pos, &velocity, &desiredPosition);
+        collisionCount++;
+    }
+    if (collisions[2] || collisions[3]) {
+        int index = (collisions[2]) ? 2 : 3;
+        Vec2 pos = this->map->tileToWorld(collisions[index]);
+        collisionCount++;
+    }
+    for (int index = 5; index < 8 && collisionCount == 0; index++) {
+        if (collisions[index]) {
+            Vec2 pos = this->map->tileToWorld(collisions[index]);
+            if (fabsf(pos.x - desiredPosition.x) > fabsf(pos.y - desiredPosition.y)) {
+                horizontalCollision(playerWidth, desiredPosition, pos, &desiredPosition);
+            } else {
+                verticalCollision(playerHeight, desiredPosition, pos, &velocity, &desiredPosition);
+                if (index == 5 || index == 6) {
+                    this->player->isOnGround = true;
+                }
+            }
+            break;
+        }
+    }
+
+    this->player->velocity = velocity;
+    this->player->setPosition(desiredPosition);
+
+    this->setViewPointCenter(this->player->getPosition());
 }
 
 void BasicScene::setViewPointCenter(Vec2 position) {
