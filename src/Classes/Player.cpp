@@ -2,9 +2,13 @@
 
 USING_NS_CC;
 
-Player::Player() {
+Player::Player(cocos2d::Vec2 position) {
     this->velocity = cocos2d::Vec2::ZERO;
     this->playerState = cocos2d::Vec2::ZERO;
+    this->initWithFile("CloseNormal.png");
+    this->setPosition(position);
+    this->desiredPosition = position;
+    this->isOnGround = true;
 }
 
 std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
@@ -28,12 +32,6 @@ std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
     return points;
 }
 
-void Player::init(cocos2d::Vec2 position) {
-    this->initWithFile("CloseNormal.png");
-    this->setPosition(position);
-    this->desiredPosition = position;
-    this->isOnGround = true;
-}
 
 void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {

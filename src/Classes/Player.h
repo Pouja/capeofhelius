@@ -6,9 +6,7 @@
 
 class Player: public IKeyListener, public cocos2d::Sprite {
 public:
-
-    Player();
-    void init(cocos2d::Vec2 position);
+    Player(cocos2d::Vec2 position);
     
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);

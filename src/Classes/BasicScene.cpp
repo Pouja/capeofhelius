@@ -29,8 +29,7 @@ bool BasicScene::init()
     this->setViewPointCenter(this->map->objectPoint("objects", "spawnpoint"));
 
     // Create the player
-    this->player = new Player();
-    this->player->init(this->map->objectPoint("objects", "spawnpoint"));
+    this->player = new Player(this->map->objectPoint("objects", "spawnpoint"));
     addChild(this->player);
 
     // Creating a keyboard event listener
