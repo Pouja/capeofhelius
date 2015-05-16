@@ -4,33 +4,29 @@
 #include "IKeyListener.h"
 #include "cocos2d.h"
 
-class Player: public IKeyListener, public cocos2d::Node {
+class Player: public IKeyListener, public cocos2d::Sprite {
 public:
-    enum class PlayerState{
-        MOVING_LEFT,
-        MOVING_RIGHT,
-        MOVING_JUMP,
-        IDLE
-    };
 
     Player();
-    cocos2d::Sprite* init(cocos2d::Vec2 position);
+    void init(cocos2d::Vec2 position);
+    
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
-
     bool isKeyTransparent();
 
-    cocos2d::Vec2 getPosition();
-
+    std::vector<cocos2d::Vec2> getBoundingPoints(cocos2d::Vec2 pov);
+    
     void update(float delta);
+    void move(cocos2d::Vec2 direction, float delta);
+    cocos2d::Vec2 getState();
 
-    //Moves
-    void move(cocos2d::Vec2 direction);
+    cocos2d::Vec2 desiredPosition;
+    cocos2d::Vec2 velocity;
+    bool isOnGround;
+
     ~Player();
 private:
-    cocos2d::Vec2 velocity;
-    PlayerState playerState;
-    cocos2d::Sprite* playerSprite;
+    cocos2d::Vec2 playerState;
 };
 
 #endif

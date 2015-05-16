@@ -4,26 +4,48 @@ USING_NS_CC;
 
 Player::Player() {
     this->velocity = cocos2d::Vec2::ZERO;
-    this->playerState = PlayerState::IDLE;
+    this->playerState = cocos2d::Vec2::ZERO;
 }
 
-Sprite* Player::init(cocos2d::Vec2 position) {
-    this->playerSprite = Sprite::create("CloseNormal.png");
-    this->playerSprite->setPosition(position);
-    return this->playerSprite;
+std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
+    int offset = 0;
+    std::vector<Vec2> points;
+    Rect boundingBox = this->getBoundingBox();
+
+    float left = std::fmax(pov.x - (boundingBox.size.width / 2) - offset, 0);
+    float right = pov.x + (boundingBox.size.width / 2) + offset;
+    float top = pov.y + (boundingBox.size.height / 2) + offset;
+    float bottom = pov.y - (boundingBox.size.height / 2) - offset;
+
+    points.push_back(Vec2(pov.x, bottom));
+    points.push_back(Vec2(pov.x, top));
+    points.push_back(Vec2(left, pov.y));
+    points.push_back(Vec2(right, pov.y));
+    points.push_back(Vec2(left, top));
+    points.push_back(Vec2(left, bottom));
+    points.push_back(Vec2(right, bottom));
+    points.push_back(Vec2(right, top));
+    return points;
+}
+
+void Player::init(cocos2d::Vec2 position) {
+    this->initWithFile("CloseNormal.png");
+    this->setPosition(position);
+    this->desiredPosition = position;
+    this->isOnGround = true;
 }
 
 void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
     switch (keyCode) {
     case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        this->playerState = PlayerState::MOVING_LEFT;
+        this->playerState.x = -1;
         break;
     case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        this->playerState = PlayerState::MOVING_JUMP;
+        this->playerState.y = 1;
         break;
     case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        this->playerState = PlayerState::MOVING_RIGHT;
+        this->playerState.x = 1;
         break;
     default:
         break;
@@ -32,21 +54,18 @@ void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 
 void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
 {
-    this->playerState = PlayerState::IDLE;
-}
-
-void Player::update(float delta) {
-    switch (this->playerState) {
-    case PlayerState::MOVING_LEFT:
-        this->move(Vec2(-1, 0));
+    switch (keyCode) {
+    case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        this->playerState.x = fmaxf(this->playerState.x, 0);
         break;
-    case PlayerState::MOVING_RIGHT:
-        this->move(Vec2(1, 0));
+    case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        this->playerState.y = 0;
         break;
-    case PlayerState::MOVING_JUMP:
-        this->move(Vec2(0, 1));
+    case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+        this->playerState.x = fminf(this->playerState.x, 0);
         break;
-    default: break;
+    default:
+        break;
     }
 }
 
@@ -54,11 +73,9 @@ Vec2 Player::getPosition() {
     return this->playerSprite->getPosition();
 }
 
-void Player::move(Vec2 direction) {
-    Vec2 currentPosition = this->playerSprite->getPosition();
-    direction.scale(5.0);
-    currentPosition.add(direction);
-    this->playerSprite->setPosition(currentPosition);
+
+Vec2 Player::getState() {
+    return this->playerState;
 }
 
 bool Player::isKeyTransparent() {
@@ -66,7 +83,5 @@ bool Player::isKeyTransparent() {
 }
 
 Player::~Player() {
-    if (this->playerSprite) {
-        this->playerSprite->release();
-    }
+    this->release();
 }
