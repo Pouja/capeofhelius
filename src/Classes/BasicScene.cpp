@@ -61,7 +61,7 @@ void BasicScene::resolveHorCollision(float playerWidth, Vec2 tilePos, Vec2* desi
 }
 
 void BasicScene::resolveCollision(Player* player) {
-    Vec2 desiredPosition = player->desiredPosition;
+    Vec2 desiredPosition = player->getDesiredPosition();
 
     float playerHeight = player->getContentSize().height;
     float playerWidth = player->getContentSize().width;
