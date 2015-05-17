@@ -85,12 +85,27 @@ void BasicScene::resolveCollision(Player* player) {
     float tileHeight = this->map->getTileSize().height * this->map->getScale();
     float tileWidth = this->map->getTileSize().width * this->map->getScale();
 
+    float mapWidth = this->map->getMapSize().width * tileWidth;
+
+    // Make sure that the player can not move outside the map
+    if (desiredPosition.x - playerWidth / 2 < 0) {
+        desiredPosition.x = playerWidth / 2;
+    } else if (desiredPosition.x + playerWidth / 2 > mapWidth) {
+        desiredPosition.x = mapWidth - playerWidth / 2;
+    }
+
+    // Retrieve all the sprites on which the player collides
     std::vector<Sprite*> collisions = this->map->groundCollision(player->getBoundingPoints(desiredPosition));
 
     Vec2 velocity = player->velocity;
+
+    // We always asume that the player is not on the ground
     player->isOnGround = false;
 
+    // Keep track of the number of collisions
     int collisionCount = 0;
+
+    // Bottom collision, so the player is on the ground
     if (collisions[0]) {
         player->isOnGround = true;
     }
@@ -100,12 +115,14 @@ void BasicScene::resolveCollision(Player* player) {
         this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
         collisionCount++;
     }
+    // Left or Right collision
     if (collisions[2] || collisions[3]) {
         int index = (collisions[2]) ? 2 : 3;
         Vec2 pos = this->map->tileToWorld(collisions[index]);
         this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
         collisionCount++;
     }
+    // Left/right top/bottom collision
     for (int index = 4; index < 8 && collisionCount == 0; index++) {
         if (collisions[index]) {
             Vec2 pos = this->map->tileToWorld(collisions[index]);
@@ -113,10 +130,12 @@ void BasicScene::resolveCollision(Player* player) {
                 this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
             } else {
                 this->resolveVertCollision(tileWidth, playerHeight, pos, &velocity, &desiredPosition);
+                // left/right bottom collision, so the player is on the ground
                 if (index == 5 || index == 6) {
                     player->isOnGround = true;
                 }
             }
+            // We only resolve one corner collision
             collisionCount++;
         }
     }
