@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "GameDirector.h"
+#include "BasicScene.h"
 
 USING_NS_CC;
 
@@ -7,7 +7,7 @@ AppDelegate::AppDelegate() {
 
 }
 
-AppDelegate::~AppDelegate() 
+AppDelegate::~AppDelegate()
 {
 }
 
@@ -24,7 +24,22 @@ void AppDelegate::initGLContextAttrs()
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
-    GameDirector::getInstance()->init();
+    Director* director = Director::getInstance();
+    auto glview = director->getOpenGLView();
+
+    if (!glview) {
+        glview = GLViewImpl::create("My Game");
+        director->setOpenGLView(glview);
+    }
+
+    // turn on display FPS
+    director->setDisplayStats(true);
+
+    // set FPS. the default value is 1.0/60 if you don't call this
+    director->setAnimationInterval(1.0 / 60);
+    
+    // create a scene. it's an autorelease object && run
+    director->runWithScene(BasicScene::createScene());
     return true;
 }
 
