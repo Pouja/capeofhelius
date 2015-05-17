@@ -54,14 +54,9 @@ Vec2 GameMap::tileToWorld(Sprite* tile) {
 
 Vec2 GameMap::objectPoint(std::string group, std::string objectName) {
     TMXObjectGroup* objectGroup = this->getObjectGroup(group);
-    if (!objectGroup) {
-        log("The map %s has no group %s", this->name.c_str(), group.c_str());
-    }
-    ValueMap object = objectGroup->getObject(objectName);
-    // if(!object){
-    //     log("The map %s with group %s has no object %s", this->name.c_str(), group.c_str(), objectName.c_str());
+    assert(objectGroup != nullptr);
 
-    // }
+    ValueMap object = objectGroup->getObject(objectName);
     int x = object.at("x").asInt() * this->getScale();
     int y = object.at("y").asInt() * this->getScale();
 
