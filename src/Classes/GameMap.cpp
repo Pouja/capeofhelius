@@ -8,7 +8,6 @@ GameMap::GameMap(std::string mapName, float scale) {
     this->initWithXML(str->getCString(), "");
     this->autorelease();
     this->setScale(scale);
-    log("tilesize (%f,%f)", this->getTileSize().width * scale, this->getTileSize().height * scale);
 }
 
 std::vector<Sprite*> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {

@@ -34,6 +34,14 @@ public:
     */
     cocos2d::Vec2 getViewPointCenter(cocos2d::Vec2 position);
 
+    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+
+    void onEvent(std::string id);
+    void onDeath();
+    void onStart();
+    void onWin();
+
     /** Called on each game tick */
     void update(float);
 

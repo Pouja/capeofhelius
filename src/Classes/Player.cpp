@@ -108,10 +108,6 @@ Vec2 Player::getState() {
     return this->playerState;
 }
 
-bool Player::isKeyTransparent() {
-    return false;
-}
-
 Vec2 Player::getDesiredPosition() {
     return this->desiredPosition;
 }

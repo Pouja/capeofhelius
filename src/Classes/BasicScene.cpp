@@ -7,7 +7,6 @@ Scene* BasicScene::createScene()
     auto scene = Scene::create();
     auto layer = BasicScene::create();
     scene->addChild(layer);
-
     return scene;
 }
 
@@ -18,15 +17,18 @@ bool BasicScene::init()
         return false;
     }
 
+    this->paused = false;
+
     // Create the tilemap
     this->map = new GameMap("tilemap.tmx", 2.0);
     addChild(this->map);
 
+    this->hub = new GameHub();
+    this->hub->init();
+    addChild(this->hub);
+
     this->drawNode = DrawNode::create();
     addChild(this->drawNode);
-
-    // Set the view point of the tilemap
-    this->setViewPointCenter(this->map->objectPoint("objects", "spawnpoint"));
 
     // Create the player
     this->mainPlayer = new Player(this->map->objectPoint("objects", "spawnpoint"));
@@ -34,29 +36,43 @@ bool BasicScene::init()
 
     // Creating a keyboard event listener
     auto listener = EventListenerKeyboard::create();
-    listener->onKeyPressed = CC_CALLBACK_2(Player::onKeyPressed, this->mainPlayer);
-    listener->onKeyReleased = CC_CALLBACK_2(Player::onKeyReleased, this->mainPlayer);
+    listener->onKeyPressed = CC_CALLBACK_2(BasicScene::onKeyPressed, this);
+    listener->onKeyReleased = CC_CALLBACK_2(BasicScene::onKeyReleased, this);
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     this->scheduleUpdate();
+
+    this->onStart();
     return true;
+}
+
+void BasicScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
+{
+    this->mainPlayer->onKeyPressed(keyCode, event);
+    this->hub->onKeyPressed(keyCode, event);
+}
+
+void BasicScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
+{
+    this->mainPlayer->onKeyReleased(keyCode, event);
+    this->hub->onKeyReleased(keyCode, event);
 }
 
 void BasicScene::resolveVertCollision(float tileHeight, float playerHeight, Vec2 tilePos, Vec2* velocity, Vec2* desiredPosition) {
     if (desiredPosition->y > tilePos.y) {
-        desiredPosition->y = tilePos.y  + playerHeight/2  + tileHeight / 2;
+        desiredPosition->y = tilePos.y  + playerHeight / 2  + tileHeight / 2;
     } else {
-        desiredPosition->y = tilePos.y - playerHeight/2  - tileHeight / 2;
+        desiredPosition->y = tilePos.y - playerHeight / 2  - tileHeight / 2;
     }
     velocity->y = 0;
 }
 
 void BasicScene::resolveHorCollision(float tileWidth, float playerWidth, Vec2 tilePos, Vec2* desiredPosition) {
     if (desiredPosition->x > tilePos.x) {
-        desiredPosition->x = tilePos.x + playerWidth/2 + tileWidth / 2;
+        desiredPosition->x = tilePos.x + playerWidth / 2 + tileWidth / 2;
     } else {
-        desiredPosition->x = tilePos.x - playerWidth/2 - tileWidth / 2;
+        desiredPosition->x = tilePos.x - playerWidth / 2 - tileWidth / 2;
     }
 }
 
@@ -91,7 +107,7 @@ void BasicScene::resolveCollision(Player* player) {
         collisionCount++;
     }
     for (int index = 4; index < 8 && collisionCount == 0; index++) {
-        if (collisions[index]) {            
+        if (collisions[index]) {
             Vec2 pos = this->map->tileToWorld(collisions[index]);
             if (fabsf(pos.x - desiredPosition.x) > fabsf(pos.y - desiredPosition.y)) {
                 this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);

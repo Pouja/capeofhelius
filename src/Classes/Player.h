@@ -1,17 +1,15 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include "IKeyListener.h"
 #include "cocos2d.h"
 
-class Player: public IKeyListener, public cocos2d::Sprite {
+class Player: public cocos2d::Sprite {
 public:
     Player(cocos2d::Vec2 position);
     
     // Overide from IKeyListener
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
-    bool isKeyTransparent();
 
     /** Gets the 8 surrounding points of the sprite with respect to the pov.
     The points are returned in the following order: bottom, top, left, right, left top, left bottom, right bottom, right top.
