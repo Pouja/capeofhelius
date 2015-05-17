@@ -20,8 +20,8 @@ private:
 
     // Collision resolving
     void resolveCollision(Player* player);
-    void resolveVertCollision(float playerHeight, cocos2d::Vec2 tilePos, cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
-    void resolveHorCollision(float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
+    void resolveVertCollision(float tileHeight, float playerHeight, cocos2d::Vec2 tilePos, cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
+    void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
 public:
     /** Creates the parent scenes and adds this scene instance to the parent */
     static cocos2d::Scene* createScene();

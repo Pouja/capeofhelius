@@ -43,20 +43,20 @@ bool BasicScene::init()
     return true;
 }
 
-void BasicScene::resolveVertCollision(float playerHeight, Vec2 tilePos, Vec2* velocity, Vec2* desiredPosition) {
+void BasicScene::resolveVertCollision(float tileHeight, float playerHeight, Vec2 tilePos, Vec2* velocity, Vec2* desiredPosition) {
     if (desiredPosition->y > tilePos.y) {
-        desiredPosition->y = tilePos.y  + playerHeight + 1;
+        desiredPosition->y = tilePos.y  + playerHeight/2  + tileHeight / 2;
     } else {
-        desiredPosition->y = tilePos.y - playerHeight - 1;
+        desiredPosition->y = tilePos.y - playerHeight/2  - tileHeight / 2;
     }
     velocity->y = 0;
 }
 
-void BasicScene::resolveHorCollision(float playerWidth, Vec2 tilePos, Vec2* desiredPosition) {
+void BasicScene::resolveHorCollision(float tileWidth, float playerWidth, Vec2 tilePos, Vec2* desiredPosition) {
     if (desiredPosition->x > tilePos.x) {
-        desiredPosition->x = tilePos.x + playerWidth + 1;
+        desiredPosition->x = tilePos.x + playerWidth/2 + tileWidth / 2;
     } else {
-        desiredPosition->x = tilePos.x - playerWidth - 1;
+        desiredPosition->x = tilePos.x - playerWidth/2 - tileWidth / 2;
     }
 }
 
@@ -65,6 +65,9 @@ void BasicScene::resolveCollision(Player* player) {
 
     float playerHeight = player->getContentSize().height;
     float playerWidth = player->getContentSize().width;
+
+    float tileHeight = this->map->getTileSize().height * this->map->getScale();
+    float tileWidth = this->map->getTileSize().width * this->map->getScale();
 
     std::vector<Sprite*> collisions = this->map->groundCollision(player->getBoundingPoints(desiredPosition));
 
@@ -78,22 +81,22 @@ void BasicScene::resolveCollision(Player* player) {
     if (collisions[0] || collisions[1]) {
         int index = (collisions[0]) ? 0 : 1;
         Vec2 pos = this->map->tileToWorld(collisions[index]);
-        this->resolveVertCollision(playerHeight, pos, &velocity, &desiredPosition);
+        this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
         collisionCount++;
     }
     if (collisions[2] || collisions[3]) {
         int index = (collisions[2]) ? 2 : 3;
         Vec2 pos = this->map->tileToWorld(collisions[index]);
-        this->resolveHorCollision(playerWidth,  pos, &desiredPosition);
+        this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
         collisionCount++;
     }
     for (int index = 5; index < 8 && collisionCount == 0; index++) {
         if (collisions[index]) {
             Vec2 pos = this->map->tileToWorld(collisions[index]);
             if (fabsf(pos.x - desiredPosition.x) > fabsf(pos.y - desiredPosition.y)) {
-                this->resolveHorCollision(playerWidth,  pos, &desiredPosition);
+                this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
             } else {
-                this->resolveVertCollision(playerHeight, pos, &velocity, &desiredPosition);
+                this->resolveVertCollision(tileWidth, playerHeight, pos, &velocity, &desiredPosition);
                 if (index == 5 || index == 6) {
                     player->isOnGround = true;
                 }

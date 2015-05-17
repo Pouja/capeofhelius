@@ -8,19 +8,23 @@ GameMap::GameMap(std::string mapName, float scale) {
     this->initWithXML(str->getCString(), "");
     this->autorelease();
     this->setScale(scale);
+    log("tilesize (%f,%f)", this->getTileSize().width * scale, this->getTileSize().height * scale);
 }
 
 std::vector<Sprite*> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
     std::vector<Sprite*> collisions;
     TMXLayer* layer = this->getLayer("foreground");
-
     for (Vec2 point : points) {
         Vec2 mapCoord = this->worldToMap(point);
-        collisions.push_back(layer->getTileAt(mapCoord));
+        Size mapSize = this->getMapSize();
+        if (mapCoord.x < 0 || mapCoord.y < 0 || mapCoord.x >= mapSize.width || mapCoord.y >= mapSize.height) {
+            collisions.push_back(nullptr);
+        } else {
+            collisions.push_back(layer->getTileAt(mapCoord));
+        }
     }
     return collisions;
 }
-
 
 Vec2 GameMap::worldToMap(Vec2 worldCoord) {
     // Scale with the map size.
@@ -43,11 +47,18 @@ Vec2 GameMap::mapToWorld(Vec2 mapCoord) {
 }
 
 Vec2 GameMap::tileToWorld(Sprite* tile) {
+    // Get the tile position
     Vec2 position = tile->getPosition();
+    // Scale it with the same scale as the tiled map
     position.scale(this->getScale());
+
+    // The position returned is the bottom left, we want the center
     Vec2 halfTileSize = this->getTileSize();
     halfTileSize.scale(0.5);
+
+    // Again take the tiled map scale in account
     halfTileSize.scale(this->getScale());
+
     position.add(halfTileSize);
     return position;
 }

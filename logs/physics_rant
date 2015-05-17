@@ -63,3 +63,22 @@ end algorithm
 
 So for the tile position and the player position it is necessary to use the center point, otherwise this algorithm will fail.
 Why the +/- 1 for calculating the correct desired position. That ensures that the sprite is barerly not colliding with the sprite.
+
+# Rant 3
+I suck at math.
+The correct algorithms for resolving horizontal/vertical collision is this:
+    Resolving horizontal collision:
+        if the tile is left of the desired position then
+            desiredPosition.x = tilePosition.x + spriteWidth/2 + tileWidth/2
+        else 
+            desiredPosition.x = tilePosition.x - spriteWidth/2 - tileWidth/2
+        end if
+
+    Resolving vertical collision:
+        if the tile is above the desired position then
+            desiredPosition.y = tilePosition.y + spriteHeight/2 + tileHeight/2
+        else
+            desiredPosition.y = tilePosition.y - spriteHeight/2 - tileHeight/2
+        end if
+        set y velocity to 0
+That bullcrap about that rounding was just plain wrong....

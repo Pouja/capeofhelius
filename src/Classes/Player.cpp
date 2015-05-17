@@ -24,7 +24,7 @@ std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
     std::vector<Vec2> points;
     Rect boundingBox = this->getBoundingBox();
 
-    float left = std::fmax(pov.x - (boundingBox.size.width / 2), 0);
+    float left = pov.x - boundingBox.size.width / 2;
     float right = pov.x + (boundingBox.size.width / 2);
     float top = pov.y + (boundingBox.size.height / 2);
     float bottom = pov.y - (boundingBox.size.height / 2);
