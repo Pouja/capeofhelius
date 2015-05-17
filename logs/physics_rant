@@ -1,0 +1,65 @@
+current problem,
+calculating collision on 8 points of a sprite.
+1 2 3
+4 C 5
+6 7 8
+
+if any point in the desiredPosition collides, move the sprite amount of units back in such a way that it barerly collids and set the velocity correctly.
+For point 1,2,3,6,7,8 set velocity.y to zero.
+For point 4 and 5 set velocity.x to zero
+
+This approach will probably work for most usecases
+
+The priority of the cases are as followed:
+5 2 5
+3 C 4
+5 1 5
+
+# Rant 2
+New collision algorithm
+8 points again
+But this time we have two cases: bottom collision, horizontal collision.
+Why not only vertical and horizontal, well because we want to know when we are on the ground and when not.
+But why do you want to know that? Well that is easier for the animation controller to figure out which animation to run.
+
+Definitions:
+    The desired position of a sprite is the position after resolving the gravity, velocity, accelarition, friction, clamping etc.
+    A "ground" tile is a tile that is defined in your tile map as a ground.
+
+The algorithm:
+    - Retrieve the 8 points surrounding the sprite in his desired position
+    - For each point, retrieve the "ground" tile in which it resides
+    - Define collision as: if a point is in a ground tile, it is a collision
+    - Define the 8 points as: B bottom, T top, L left, R right, TL top left, TR top right etc.
+    - If B has collision: onGround is true
+    - If B or T collide: resolve vertical collision on of them
+    - If L or R collide: resolve horizontal collision on of them
+    - For(_point in {TL, TR, BL, BR})
+        if _point collides then
+            if the vertical distance of the _point and the center _point of the tile is larger than the horizontal distance then:
+                resolve vertical collision
+            else
+                resolve horizontal collision
+            end if
+            break
+        end if
+    end for
+
+    Resolving horizontal collision:
+        if the tile is left of the desired position then
+            desiredPosition.x = tilePosition.x + spriteWidth + 1
+        else 
+            desiredPosition.x = tilePosition.x - spriteWidth - 1
+        end if
+
+    Resolving vertical collision:
+        if the tile is above the desired position then
+            desiredPosition.y = tilePosition.y + spriteHeight + 1
+        else
+            desiredPosition.y = tilePosition.y - spriteHeight - 1
+        end if
+        set y velocity to 0
+end algorithm
+
+So for the tile position and the player position it is necessary to use the center point, otherwise this algorithm will fail.
+Why the +/- 1 for calculating the correct desired position. That ensures that the sprite is barerly not colliding with the sprite.
