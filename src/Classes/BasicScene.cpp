@@ -126,11 +126,16 @@ void BasicScene::resolveCollision(Player* player) {
 }
 
 void BasicScene::update(float delta) {
-    this->mainPlayer->update(delta);
-    this->resolveCollision(this->mainPlayer);
+    if (!this->paused && this->hub->isDone()) {
+        this->mainPlayer->update(delta);
+        this->resolveCollision(this->mainPlayer);
+    }
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
-    
+
     this->setPosition(vpc);
+
+    this->hub->setPosition(vpc * -1);
+    this->hub->update(delta);
 }
 
 Vec2 BasicScene::getViewPointCenter(Vec2 position) {
@@ -155,4 +160,10 @@ Vec2 BasicScene::getViewPointCenter(Vec2 position) {
     }
 
     return Vec2(-1 * xView, yView);
+}
+
+void BasicScene::onStart() {
+    std::queue<std::string> textQueue;
+    textQueue.push("Lets start the game!");
+    this->hub->setText(textQueue);
 }

@@ -6,14 +6,18 @@
 #include "GameMap.h"
 #include "math/Vec2.h"
 #include "Player.h"
+#include "GameHub.h"
 
 class BasicScene : public cocos2d::Layer
 {
 private:
+    bool paused;
     cocos2d::DrawNode* drawNode;
 
     // The TMXTileMap to use with this scene
-    GameMap *map;
+    GameMap* map;
+
+    GameHub* hub;
 
     // The main player
     Player* mainPlayer;
