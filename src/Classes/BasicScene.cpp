@@ -90,8 +90,8 @@ void BasicScene::resolveCollision(Player* player) {
         this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
         collisionCount++;
     }
-    for (int index = 5; index < 8 && collisionCount == 0; index++) {
-        if (collisions[index]) {
+    for (int index = 4; index < 8 && collisionCount == 0; index++) {
+        if (collisions[index]) {            
             Vec2 pos = this->map->tileToWorld(collisions[index]);
             if (fabsf(pos.x - desiredPosition.x) > fabsf(pos.y - desiredPosition.y)) {
                 this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
@@ -101,7 +101,7 @@ void BasicScene::resolveCollision(Player* player) {
                     player->isOnGround = true;
                 }
             }
-            break;
+            collisionCount++;
         }
     }
 
@@ -112,10 +112,12 @@ void BasicScene::resolveCollision(Player* player) {
 void BasicScene::update(float delta) {
     this->mainPlayer->update(delta);
     this->resolveCollision(this->mainPlayer);
-    this->setViewPointCenter(this->mainPlayer->getPosition());
+    Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
+    
+    this->setPosition(vpc);
 }
 
-void BasicScene::setViewPointCenter(Vec2 position) {
+Vec2 BasicScene::getViewPointCenter(Vec2 position) {
     Size winSize = Director::getInstance()->getWinSize();
 
     Size mapSize = this->map->getMapSize();
@@ -136,5 +138,5 @@ void BasicScene::setViewPointCenter(Vec2 position) {
         yView = mapSize.height - winSize.height;
     }
 
-    this->setPosition(Vec2(-1 * xView, yView));
+    return Vec2(-1 * xView, yView);
 }

@@ -32,7 +32,7 @@ public:
     /** Sets the view point of the scene.
     * @param position The center point
     */
-    void setViewPointCenter(cocos2d::Vec2 position);
+    cocos2d::Vec2 getViewPointCenter(cocos2d::Vec2 position);
 
     /** Called on each game tick */
     void update(float);
