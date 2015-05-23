@@ -1,3 +1,4 @@
+# rant 1
 So an event system
 What kinda collisions/events do we have?
 Collision with the wall layer
@@ -23,3 +24,22 @@ So when that method is invoked, the complex stuff can happen... sounds sound.
 
 The only downside is that it is hard to implement custom events in cocos2d-x...
 We will see how it goes.
+
+# rant 2
+So i didn extend the event system handler of cocos2d-x since it will just make things more complicated.
+The current approach is that the basicscene checks if the player position is on a non empty tile in the layer "event".
+If that is true it will fetch the tile property "event" from the tile which is an integer presenting the kind of event that is should triger.
+The current events are:
+    DEATH
+    WALL
+    SLOPE
+    START
+    FINISH
+    COLLECTABLE
+    TEXTBOX
+    NONE
+
+So there is an event tile SLOPE and WALL but those are currently not used. Maybe something for in the future.
+So how does TEXTBOX work? For now the basicscene should check the tile position when such event is triggered to display the correct text in the game hub.
+
+I had an idea that I could create an array of TileProperty, where each entry is one of the events. That will make the lookup for collisions a bit faster. The memory it will take: in the worst case I have to create an array of 200 (length) * 200 (width) * 16 (roughly 4 byte for an integer, plus overhead) = 640kb. Other downsides? If I'm changing the location of removing a tile, I also have to update that integer array. Is it possible to have two different kind of tiles placed on each other...hmm.. I think I will reconsider this approach when I have finished the level designs.
