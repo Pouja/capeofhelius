@@ -1,0 +1,25 @@
+So an event system
+What kinda collisions/events do we have?
+Collision with the wall layer
+Collision with the slope layer
+Collision with game objects (spikes, water, road direction, end/start thingy, coins, doors)
+Colision with another sprite (ie enemy or a spell)
+
+Resolving wall/slope collision is easy and almost implemented (except slope).
+So we can have something like a game object class that represents a game object. But how are we going to represent all the different kinds of game objects in a class?
+
+Hmm maybe we should first (I dont get it why I alwasy talkin in 'we' form but ok) which kinda events can be triggered:
+Obvious ones:
+    Death event
+    Begin event (when the player spawns in the scene/map)
+    Win event (when the player reaches the end of the map, the bord with the exit on. There still has to be checked if the player has all the winning conditions, like having 10 coins, or just simply reached the end).
+    Text event (when the player collides with a sign and text should be shown)
+
+Now I think about it, wall and slope collision are also events... hmm
+We can also have more complexed events, like when hitting a rock the gravity of the game will change.
+But that can be done smh like:
+    AwesomeScene::onGameObject(GID tileId, TileType tileType, Event* event);
+So when that method is invoked, the complex stuff can happen... sounds sound.
+
+The only downside is that it is hard to implement custom events in cocos2d-x...
+We will see how it goes.
