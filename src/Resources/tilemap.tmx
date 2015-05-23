@@ -1,75 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="15" tilewidth="21" tileheight="21" nextobjectid="20">
- <tileset firstgid="1" name="spritesheet_removed" tilewidth="21" tileheight="21" spacing="2">
+ <tileset firstgid="1" name="tileset" tilewidth="21" tileheight="21" spacing="2">
   <image source="spritesheet.png" trans="5e81a2" width="688" height="366"/>
-  <tile id="92" terrain=",,0,"/>
-  <tile id="121" terrain=",0,,0"/>
-  <tile id="122" terrain="0,0,0,0"/>
-  <tile id="123" terrain="0,0,0,0"/>
-  <tile id="151" terrain="0,0,0,"/>
-  <tile id="152" terrain="0,0,0,0"/>
-  <tile id="153" terrain="0,0,0,0"/>
-  <tile id="154" terrain=",0,,0"/>
-  <tile id="155" terrain="0,0,0,"/>
-  <tile id="181" terrain="0,,0,0"/>
-  <tile id="182" terrain="0,0,0,0"/>
-  <tile id="183" terrain="0,0,0,0"/>
-  <tile id="184" terrain=",0,0,0"/>
-  <tile id="211" terrain=",0,,"/>
-  <tile id="212" terrain="0,0,0,0"/>
-  <tile id="213" terrain="0,0,0,0"/>
-  <tile id="214" terrain="0,,,"/>
- </tileset>
- <tileset firstgid="481" name="squares" tilewidth="21" tileheight="21">
-  <image source="squares.png" width="105" height="21"/>
-  <tile id="0">
+  <tile id="70">
    <properties>
-    <property name="ground" value="true"/>
+    <property name="event" value="0"/>
    </properties>
   </tile>
-  <tile id="1">
+  <tile id="76">
    <properties>
-    <property name="death" value="true"/>
+    <property name="event" value="5"/>
    </properties>
   </tile>
-  <tile id="2">
+  <tile id="77">
    <properties>
-    <property name="objective" value=""/>
+    <property name="event" value="5"/>
    </properties>
   </tile>
-  <tile id="3">
+  <tile id="78">
    <properties>
-    <property name="death" value="true"/>
+    <property name="event" value="5"/>
    </properties>
   </tile>
-  <tile id="4">
+  <tile id="253">
    <properties>
-    <property name="ground" value=""/>
+    <property name="4" value=""/>
+   </properties>
+  </tile>
+  <tile id="254">
+   <properties>
+    <property name="event" value="6"/>
+   </properties>
+  </tile>
+  <tile id="255">
+   <properties>
+    <property name="event" value="6"/>
+   </properties>
+  </tile>
+  <tile id="256">
+   <properties>
+    <property name="event" value="6"/>
    </properties>
   </tile>
  </tileset>
- <layer name="bg" width="30" height="15" visible="0">
+ <layer name="background" width="30" height="15">
   <data encoding="base64" compression="zlib">
-   eJztzTkOg0AUBNE/EjuYQ7BvZ+Z4YHaOQKVO0RgRTEkva6kHERkM4w9GfDFhxoIVG3YcODVvLSViw4ELDz4ChIjwQaz0bhOkyJCjQIkKNRq06DRv75SoX0/VP3f1qm/T+7sA/Pqpzw==
+   eJzt0lsOgjAQheEhES8oLqJcvex/SeAFhSX4v5A0hOJE65M0+V6ak5nmpJWIVLPZD9S44Iob7mjwwBMtOs/ZRSASYokV1tggwhY7xNgHfrMGCVJkyFGgxAFHnHD2nM2/YM8xirz9Pk1+aq82O+xkbO9Ud33G7u7d28fmuWZp92r6cu399K8Yx51m3r+dF0hnvx0=
   </data>
  </layer>
- <layer name="foreground" width="30" height="15">
+ <layer name="walls" width="30" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF1ALVePBAuYOWZg+0P2kFRoIfQWDUj4MfVOHB+PyGTx8xeKQBACG+IYw=
-  </data>
- </layer>
- <layer name="definitions" width="30" height="15" visible="0">
-  <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGLgAABwgAAQ==
+   eJxjYBgFo2AUjAL6gjogrsGC5wykowYhwBZG9MAjDQAACK4SDw==
   </data>
  </layer>
  <objectgroup name="objects">
-  <object id="14" name="spawnpoint" x="57.3096" y="197.025" rotation="-2.78665"/>
+  <object id="14" name="spawnpoint" x="10.3096" y="242.025"/>
   <object id="18" name="end" x="599" y="27.333"/>
  </objectgroup>
- <layer name="special" width="30" height="15" visible="0">
+ <layer name="events" width="30" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjCTQMGr3KBgFKAAA6zUBgQ==
+   eJxjYBgFo2AUjAIGBv+BdsBgBoyYQu54lP+ngpX/qGDGKCAOAACL8wKV
+  </data>
+ </layer>
+ <layer name="decor" width="30" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUoIPggXYAFUEQhfoDqOKK4Q0MB9oBo4AiAACMjQEn
   </data>
  </layer>
 </map>
