@@ -1,6 +1,5 @@
 #include "GameHub.h"
 
-
 USING_NS_CC;
 
 GameHub::GameHub() {
@@ -22,7 +21,6 @@ bool GameHub::init() {
 void GameHub::update(float delta) {
     Director* director = Director::getInstance();
     Size contentSize = director->getVisibleSize();
-
     this->label->setPosition(contentSize.width * 0.3, 40);
 }
 
@@ -41,7 +39,13 @@ void GameHub::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
     }
 }
 
+void GameHub::clearText() {
+    std::queue<std::string>().swap(this->textQueue);
+    this->label->setString("");
+}
+
 void GameHub::setText(std::queue<std::string> textQueue) {
+    this->clearText();
     this->textQueue = textQueue;
     std::string nextText = this->textQueue.front();
     this->label->setString(nextText);

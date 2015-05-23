@@ -10,9 +10,24 @@ GameMap::GameMap(std::string mapName, float scale) {
     this->setScale(scale);
 }
 
+GameMap::CollisionType GameMap::eventCollision(Vec2 tilePosition) {
+    // Can be optimized by storing the reference, instead of requesting it.
+    TMXLayer* layer = this->getLayer("events");
+    uint32_t tileGID = layer->getTileGIDAt(tilePosition);
+    if (tileGID != 0) {
+        ValueMap properties = this->getPropertiesForGID(tileGID).asValueMap();
+        if(!properties.empty()){
+            CollisionType type = (CollisionType) properties["event"].asInt();
+            return type;
+        }
+    }
+    return CollisionType::NONE;
+}
+
 std::vector<Sprite*> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
     std::vector<Sprite*> collisions;
-    TMXLayer* layer = this->getLayer("foreground");
+    // Can be optimized by storing the reference, instead of requesting it.
+    TMXLayer* layer = this->getLayer("walls");
     for (Vec2 point : points) {
         Vec2 mapCoord = this->worldToMap(point);
         Size mapSize = this->getMapSize();

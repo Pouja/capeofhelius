@@ -28,6 +28,7 @@ public:
     cocos2d::Vec2 getState();
 
     // velocity and isOnGround are public and are allowed to be freely changed.
+    // TODO make methods like: hitGround, isInAir, isOnSlope, isOnGround, instead of letting using public members
     cocos2d::Vec2 velocity;
     bool isOnGround;
 

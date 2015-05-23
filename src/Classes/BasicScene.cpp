@@ -1,4 +1,5 @@
 #include "BasicScene.h"
+
 USING_NS_CC;
 
 
@@ -16,6 +17,7 @@ bool BasicScene::init()
     {
         return false;
     }
+    this->previousEvent = GameMap::CollisionType::NONE;
 
     this->paused = false;
 
@@ -42,8 +44,7 @@ bool BasicScene::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     this->scheduleUpdate();
-
-    this->onStart();
+    onStart();
     return true;
 }
 
@@ -90,7 +91,7 @@ void BasicScene::resolveCollision(Player* player) {
     // Make sure that the player can not move outside the map
     if (desiredPosition.x - playerWidth / 2 < 0) {
         desiredPosition.x = playerWidth / 2;
-    } else if (desiredPosition.x + playerWidth / 2 > mapWidth) {
+    } else if (desiredPosition.x + playerWidth / 2 >= mapWidth) {
         desiredPosition.x = mapWidth - playerWidth / 2;
     }
 
@@ -144,10 +145,36 @@ void BasicScene::resolveCollision(Player* player) {
     player->setPosition(desiredPosition);
 }
 
+void BasicScene::onEventEnter(GameMap::CollisionType event, Vec2 tilePosition) {
+    switch (event) {
+    case GameMap::CollisionType::TEXTBOX:
+        onTextBox(tilePosition);
+        break;
+    case GameMap::CollisionType::START:
+        onStart();
+        break;
+    case GameMap::CollisionType::DEATH:
+        onDeath();
+        break;
+    default:
+        break;
+    }
+}
+
+void BasicScene::resolveEvent(Player* sprite) {
+    Vec2 tilePosition = this->map->worldToMap(sprite->getDesiredPosition());
+    GameMap::CollisionType type = this->map->eventCollision(tilePosition);
+    if (previousEvent != type) {
+        onEventEnter(type, tilePosition);
+    }
+    previousEvent = type;
+}
+
 void BasicScene::update(float delta) {
-    if (!this->paused && this->hub->isDone()) {
+    if (!this->paused) {
         this->mainPlayer->update(delta);
         this->resolveCollision(this->mainPlayer);
+        this->resolveEvent(this->mainPlayer);
     }
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
 
@@ -181,8 +208,24 @@ Vec2 BasicScene::getViewPointCenter(Vec2 position) {
     return Vec2(-1 * xView, yView);
 }
 
+void BasicScene::onTextBox(Vec2 tilePosition) {
+    std::queue<std::string> textQueue;
+    textQueue.push("Couple of message inbouding! (1)");
+    textQueue.push("Couple of message inbouding! (2)");
+    textQueue.push("Couple of message inbouding! (3)");
+    this->hub->setText(textQueue);
+}
+
+void BasicScene::onDeath() {
+    this->mainPlayer->setPosition(this->map->objectPoint("objects", "spawnpoint"));
+
+    std::queue<std::string> textQueue;
+    textQueue.push("Oh noo you died :(. But try again!");
+    this->hub->setText(textQueue);
+}
+
 void BasicScene::onStart() {
     std::queue<std::string> textQueue;
-    textQueue.push("Lets start the game!");
+    textQueue.push("Lets start the game!\nPress spacebar to continue...");
     this->hub->setText(textQueue);
 }

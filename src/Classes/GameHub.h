@@ -15,6 +15,9 @@ public:
 
     // Returns true iff there are no more text to be displayed
     bool isDone();
+    
+    void clearText();
+
 
     // Sets the queue for text to be displayed.
     void setText(std::queue<std::string> text);

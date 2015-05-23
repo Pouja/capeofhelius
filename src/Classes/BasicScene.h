@@ -1,6 +1,5 @@
 #ifndef __BASIC_SCENE_H__
 #define __BASIC_SCENE_H__
-#define COCOS2D_DEBUG 1
 
 #include "cocos2d.h"
 #include "GameMap.h"
@@ -11,6 +10,7 @@
 class BasicScene : public cocos2d::Layer
 {
 private:
+    GameMap::CollisionType previousEvent;
     bool paused;
     cocos2d::DrawNode* drawNode;
 
@@ -23,6 +23,9 @@ private:
     Player* mainPlayer;
 
     // Collision resolving
+    void resolveEvent(Player*);
+    void onEventEnter(GameMap::CollisionType, cocos2d::Vec2);
+    void onEventLeave(GameMap::CollisionType, cocos2d::Vec2);
     void resolveCollision(Player* player);
     void resolveVertCollision(float tileHeight, float playerHeight, cocos2d::Vec2 tilePos, cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
     void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
@@ -41,7 +44,7 @@ public:
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
-    void onEvent(std::string id);
+    void onTextBox(cocos2d::Vec2 tilePosition);
     void onDeath();
     void onStart();
     void onWin();
