@@ -1,5 +1,6 @@
 #include "Player.h"
 
+#define SCALE 1.2
 #define GRAVITY -1.0
 #define FRICTION 5.0
 #define HORIZONTAL_FORCE 2.0
@@ -11,16 +12,29 @@
 
 USING_NS_CC;
 
+Player* Player::create(Vec2 position) {
+    Player* player = new Player(position);
+    if(player && player->initWithSpriteFrameName("right.png")){
+        player->autorelease();
+        player->initAnimations();
+        return player;        
+    }
+
+    CC_SAFE_DELETE(player);
+    return nullptr;
+} 
+
 Player::Player(cocos2d::Vec2 position) {
     this->animationState = AnimationState::IDLE_RIGHT;
     this->velocity = cocos2d::Vec2::ZERO;
-    this->playerState = cocos2d::Vec2::ZERO;
-    this->initWithSpriteFrameName("right.png");
-    this->setScale(1.2);
+    this->movingState = cocos2d::Vec2::ZERO;
+    this->setScale(SCALE);
     this->setPosition(position);
     this->desiredPosition = position;
     this->isOnGround = false;
+}
 
+void Player::initAnimations(){
     SpriteFrameCache* cache = SpriteFrameCache::getInstance();
 
     Vector<SpriteFrame*> walkLeftFrames(9);
@@ -57,8 +71,7 @@ Player::Player(cocos2d::Vec2 position) {
 }
 
 void Player::updateAnimation() {
-    log("anim state %d", this->animationState);
-    if (this->playerState.isZero()) {
+    if (this->movingState.isZero()) {
         if (this->isOnGround && !(this->animationState == AnimationState::IDLE_LEFT
                                   || this->animationState == AnimationState::IDLE_RIGHT)) {
             this->stopAllActions();
@@ -71,8 +84,8 @@ void Player::updateAnimation() {
                 this->animationState = IDLE_RIGHT;
             }
         }
-    } else if (this->playerState.y == 0 && this->isOnGround) {
-        if (this->playerState.x >= 0 ) {
+    } else if (this->movingState.y == 0 && this->isOnGround) {
+        if (this->movingState.x >= 0 ) {
             if (this->animationState == WALKING_RIGHT && this->velocity.x > 7) {
                 this->stopAllActions();
                 this->runAction(RepeatForever::create(this->runningRight));
@@ -95,7 +108,7 @@ void Player::updateAnimation() {
         }
     } else {
         this->stopAllActions();
-        if (this->playerState.x >= 0) {
+        if (this->movingState.x >= 0) {
             this->setSpriteFrame("right_jump.png");
             this->animationState = JUMP_RIGHT;
         } else {
@@ -130,13 +143,13 @@ void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
     switch (keyCode) {
     case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        this->playerState.x = -1;
+        this->movingState.x = -1;
         break;
     case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        this->playerState.y = 1;
+        this->movingState.y = 1;
         break;
     case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        this->playerState.x = 1;
+        this->movingState.x = 1;
         break;
     default:
         break;
@@ -147,37 +160,37 @@ void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
 {
     switch (keyCode) {
     case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        this->playerState.x = fmaxf(this->playerState.x, 0);
+        this->movingState.x = fmaxf(this->movingState.x, 0);
         break;
     case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        this->playerState.y = 0;
+        this->movingState.y = 0;
         break;
     case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        this->playerState.x = fminf(this->playerState.x, 0);
+        this->movingState.x = fminf(this->movingState.x, 0);
         break;
     default:
         break;
     }
 }
 
-void Player::update(float delta) {
+void Player::updatePhysics() {
     Vec2 gravity(0.0, GRAVITY);
     this->velocity.add(gravity);
 
     Vec2 horizontalForce(HORIZONTAL_FORCE, 0.0);
-    horizontalForce.scale(this->playerState.x);
+    horizontalForce.scale(this->movingState.x);
 
     Vec2 verticalForce(0.0, VERTICAL_FORCE);
-    verticalForce.scale(this->playerState.y);
+    verticalForce.scale(this->movingState.y);
 
     if (this->isOnGround) {
         this->velocity.add(verticalForce);
         horizontalForce.scale(1 / FRICTION);
         this->velocity.add(horizontalForce);
-    } else if (this->playerState.x == 0 || (this->playerState.x == -1 && this->velocity.x >= 0) || (this->playerState.x == 1 && this->velocity.x <= 0)) {
+    } else if (this->movingState.x == 0 || (this->movingState.x == -1 && this->velocity.x >= 0) || (this->movingState.x == 1 && this->velocity.x <= 0)) {
         this->velocity.add(horizontalForce);
     }
-    if (this->playerState.x == 0) {
+    if (this->movingState.x == 0) {
         this->velocity = Vec2(this->velocity.x * 0.1, this->velocity.y);
     }
 
@@ -190,7 +203,7 @@ void Player::update(float delta) {
 
 
 Vec2 Player::getState() {
-    return this->playerState;
+    return this->movingState;
 }
 
 Vec2 Player::getDesiredPosition() {
@@ -198,5 +211,8 @@ Vec2 Player::getDesiredPosition() {
 }
 
 Player::~Player() {
-    this->release();
+    CC_SAFE_RELEASE(walkLeft);
+    CC_SAFE_RELEASE(runningLeft);
+    CC_SAFE_RELEASE(runningRight);
+    CC_SAFE_RELEASE(walkRight);
 }

@@ -33,7 +33,7 @@ bool BasicScene::init()
     addChild(this->drawNode);
 
     // Create the player
-    this->mainPlayer = new Player(this->map->objectPoint("objects", "spawnpoint"));
+    this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"));
     addChild(this->mainPlayer);
 
     // Creating a keyboard event listener
@@ -172,7 +172,7 @@ void BasicScene::resolveEvent(Player* sprite) {
 
 void BasicScene::update(float delta) {
     if (!this->paused) {
-        this->mainPlayer->update(delta);
+        this->mainPlayer->updatePhysics();
         this->resolveCollision(this->mainPlayer);
         this->resolveEvent(this->mainPlayer);
     }
@@ -229,4 +229,11 @@ void BasicScene::onStart() {
     std::queue<std::string> textQueue;
     textQueue.push("Lets start the game!\nPress spacebar to continue...");
     this->hub->setText(textQueue);
+}
+
+BasicScene::~BasicScene(){
+    CC_SAFE_RELEASE(map);
+    CC_SAFE_RELEASE(hub);
+    CC_SAFE_RELEASE(mainPlayer);
+    this->release();    
 }

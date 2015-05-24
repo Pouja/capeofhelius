@@ -53,6 +53,8 @@ public:
     void update(float);
 
     CREATE_FUNC(BasicScene);
+
+    ~BasicScene();
 };
 
 #endif // __BASIC_SCENE_H__
