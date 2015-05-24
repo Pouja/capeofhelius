@@ -107,3 +107,5 @@ The algorithm for slope collision is:
         set y velocity to 0
 
 Now you are wondering, but what if L or R are colliding with slope. Well. They dont. The only position which can collide is bottom, the other points will act as if there is no tile there.
+
+Problem now is, how do we know that the slope is negative or not. One way is to store it as dictionary in the tile properties. But that is expensive. Once again, I come back to maintaining an array list of tile properties.
