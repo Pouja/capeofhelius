@@ -15,9 +15,8 @@ public:
         TEXTBOX, //6
         NONE //7
     };
+    static GameMap* create(const std::string& mapName, float scale);
     
-    GameMap(std::string mapName, float scale);
-
     CollisionType eventCollision(cocos2d::Vec2 tilePos);
 
     /** Converts a map coordinate to the world coordinate */
@@ -34,8 +33,9 @@ public:
 
     /** Retrieves the sprites for each point in the layer "ground" */
     std::vector<cocos2d::Sprite*> groundCollision(std::vector<cocos2d::Vec2> points);
-    ~GameMap();
 private:
+    GameMap(const std::string& mapName, float scale);
+
     std::string name;
 };
 

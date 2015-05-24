@@ -22,7 +22,7 @@ bool BasicScene::init()
     this->paused = false;
 
     // Create the tilemap
-    this->map = new GameMap("tilemap.tmx", 2.0);
+    this->map = GameMap::create("tilemap.tmx", 2.0);
     addChild(this->map);
 
     this->hub = new GameHub();
@@ -80,8 +80,8 @@ void BasicScene::resolveHorCollision(float tileWidth, float playerWidth, Vec2 ti
 void BasicScene::resolveCollision(Player* player) {
     Vec2 desiredPosition = player->getDesiredPosition();
 
-    float playerHeight = player->getContentSize().height;
-    float playerWidth = player->getContentSize().width;
+    float playerHeight = player->getContentSize().height * player->getScale();
+    float playerWidth = player->getContentSize().width * player->getScale();
 
     float tileHeight = this->map->getTileSize().height * this->map->getScale();
     float tileWidth = this->map->getTileSize().width * this->map->getScale();
@@ -232,8 +232,8 @@ void BasicScene::onStart() {
 }
 
 BasicScene::~BasicScene(){
-    CC_SAFE_RELEASE(map);
-    CC_SAFE_RELEASE(hub);
+    this->stopAllActions();
     CC_SAFE_RELEASE(mainPlayer);
-    this->release();    
+    // CC_SAFE_RELEASE(map);
+    CC_SAFE_RELEASE(hub);
 }

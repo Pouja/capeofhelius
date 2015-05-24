@@ -2,11 +2,21 @@
 
 USING_NS_CC;
 
-GameMap::GameMap(std::string mapName, float scale) {
-    this->name = mapName;
+GameMap* GameMap::create(const std::string& mapName, float scale){
+    GameMap* gameMap = new GameMap(mapName, scale);
     auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename(mapName.c_str()).c_str());
-    this->initWithXML(str->getCString(), "");
-    this->autorelease();
+
+    if(gameMap && gameMap->initWithXML(str->getCString(), "")){
+        gameMap->autorelease();
+        return gameMap;
+    }
+
+    CC_SAFE_DELETE(gameMap);
+    return nullptr;
+}
+
+GameMap::GameMap(const std::string& mapName, float scale) {
+    this->name = mapName;
     this->setScale(scale);
 }
 
@@ -87,4 +97,3 @@ Vec2 GameMap::objectPoint(std::string group, std::string objectName) {
 
     return Vec2(x, y);
 }
-GameMap::~GameMap() {}

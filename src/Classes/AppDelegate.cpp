@@ -25,18 +25,19 @@ void AppDelegate::initGLContextAttrs()
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     Director* director = Director::getInstance();
-    auto glview = director->getOpenGLView();
+    GLView* glview = director->getOpenGLView();
 
     if (!glview) {
-        glview = GLViewImpl::create("My Game");
+        glview = GLViewImpl::createWithFullScreen("Cape of Helius");
         director->setOpenGLView(glview);
     }
 
     SpriteFrameCache* cache = SpriteFrameCache::getInstance();
     cache->addSpriteFramesWithFile("player.plist");
+    cache->addSpriteFramesWithFile("ui.plist");
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
