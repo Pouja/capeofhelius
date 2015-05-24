@@ -21,6 +21,8 @@ public:
     /** Called when the player needs to updated his position and or other logic. */
     void update(float delta);
 
+    void updateAnimation();
+
     /** Returns the desired position of this sprite */
     cocos2d::Vec2 getDesiredPosition();
 
@@ -34,6 +36,19 @@ public:
 
     ~Player();
 private:
+    enum AnimationState{
+        WALKING_LEFT,
+        WALKING_RIGHT,
+        IDLE_LEFT,
+        IDLE_RIGHT,
+        JUMP_LEFT,
+        JUMP_RIGHT
+    };
+
+    AnimationState animationState;
+
+    cocos2d::Animate* walkLeft;
+    cocos2d::Animate* walkRight;
     // The desired position after resolving the gravity, velocity etc.
     cocos2d::Vec2 desiredPosition;
 
