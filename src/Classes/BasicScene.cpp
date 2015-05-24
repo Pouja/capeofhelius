@@ -193,14 +193,14 @@ Vec2 BasicScene::getViewPointCenter(Vec2 position) {
     mapSize.height = mapSize.height * this->map->getTileSize().height * this->map->getScale();
 
     float xView = position.x - winSize.width / 2;
-    if (position.x <= winSize.width / 2) {
+    if (position.x <= winSize.width / 2 || winSize.width >= mapSize.width) {
         xView = 0;
     } else if (mapSize.width - winSize.width / 2 <= position.x ) {
         xView = mapSize.width - winSize.width;
     }
 
     float yView = position.y - winSize.height / 2;;
-    if (position.y <= winSize.height / 2) {
+    if (position.y <= winSize.height / 2 || winSize.height >= mapSize.height) {
         yView = 0;
     } else if (mapSize.height - winSize.height / 2 <= position.y) {
         yView = mapSize.height - winSize.height;
