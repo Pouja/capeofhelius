@@ -82,3 +82,28 @@ The correct algorithms for resolving horizontal/vertical collision is this:
         end if
         set y velocity to 0
 That bullcrap about that rounding was just plain wrong....
+
+# Rant 4
+Resolving slope collision. I already wrote this rant #4, but due wrong commiting I lost everything I wrote :(.
+The algorithm for slope collision is:
+    
+    - If B has collision:
+        - If tile is a slope: resolve slope collision
+        - else resolve vertical collision
+        - onGround is true
+    - else if T collide: resolve vertical collision
+
+    Resolving slope collision:
+        if the slope is negative:
+            define p1 as left bottom point of the tile
+            define p2 as right top point of the tile
+        else
+            define p1 as left top oint of the tile
+            define p2 as right bottom of the tile
+        define a = (p1.y - p2.y) / (p1.x - p2.x);
+        
+        desiredPosition.y = a * desiredPosition.x + (-1 * a * p1.x) - p1.y
+        
+        set y velocity to 0
+
+Now you are wondering, but what if L or R are colliding with slope. Well. They dont. The only position which can collide is bottom, the other points will act as if there is no tile there.
