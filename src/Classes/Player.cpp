@@ -36,6 +36,10 @@ Player::Player(cocos2d::Vec2 position) {
     this->walkLeft = Animate::create(walkLeftAnimation);
     this->walkLeft->retain();
 
+    Animation* runningLeftAnimation = Animation::createWithSpriteFrames(walkLeftFrames, 0.025);
+    this->runningLeft = Animate::create(runningLeftAnimation);
+    this->runningLeft->retain();
+
     Vector<SpriteFrame*> walkRightFrames(9);
     for (int i = 1; i < 9; i++)
     {
@@ -46,16 +50,20 @@ Player::Player(cocos2d::Vec2 position) {
     Animation* walkRightAnimation = Animation::createWithSpriteFrames(walkRightFrames, 0.05);
     this->walkRight = Animate::create(walkRightAnimation);
     this->walkRight->retain();
+
+    Animation* runningRightAnimation = Animation::createWithSpriteFrames(walkRightFrames, 0.025);
+    this->runningRight = Animate::create(runningRightAnimation);
+    this->runningRight->retain();
 }
 
 void Player::updateAnimation() {
-    log("anim state: %d", this->animationState);
-
+    log("anim state %d", this->animationState);
     if (this->playerState.isZero()) {
-        if (!(this->animationState == AnimationState::IDLE_LEFT
-                || this->animationState == AnimationState::IDLE_RIGHT)) {
+        if (this->isOnGround && !(this->animationState == AnimationState::IDLE_LEFT
+                                  || this->animationState == AnimationState::IDLE_RIGHT)) {
             this->stopAllActions();
-            if (this->animationState == JUMP_LEFT || this->animationState == WALKING_LEFT) {
+            if (this->animationState == JUMP_LEFT || this->animationState == WALKING_LEFT
+                    || this->animationState == RUNNING_LEFT) {
                 this->setSpriteFrame("left.png");
                 this->animationState = IDLE_LEFT;
             } else {
@@ -63,16 +71,27 @@ void Player::updateAnimation() {
                 this->animationState = IDLE_RIGHT;
             }
         }
-    } else if (this->playerState.y == 0) {
-        if (this->playerState.x >= 0 && this->animationState != WALKING_RIGHT) {
-            this->stopAllActions();
-            this->runAction(RepeatForever::create(this->walkRight));
-            this->animationState = WALKING_RIGHT;
-        }
-        if (this->playerState.x < 0 && this->animationState != WALKING_LEFT) {
-            this->stopAllActions();
-            this->runAction(RepeatForever::create(this->walkLeft));
-            this->animationState = WALKING_LEFT;
+    } else if (this->playerState.y == 0 && this->isOnGround) {
+        if (this->playerState.x >= 0 ) {
+            if (this->animationState == WALKING_RIGHT && this->velocity.x > 7) {
+                this->stopAllActions();
+                this->runAction(RepeatForever::create(this->runningRight));
+                this->animationState = RUNNING_RIGHT;
+            } else if (this->animationState != WALKING_RIGHT && this->animationState != RUNNING_RIGHT) {
+                this->stopAllActions();
+                this->runAction(RepeatForever::create(this->walkRight));
+                this->animationState = WALKING_RIGHT;
+            }
+        } else {
+            if (this->animationState == WALKING_LEFT && this->velocity.x < -7) {
+                this->stopAllActions();
+                this->runAction(RepeatForever::create(this->runningLeft));
+                this->animationState = RUNNING_LEFT;
+            } else if (this->animationState != WALKING_LEFT && this->animationState != RUNNING_LEFT) {
+                this->stopAllActions();
+                this->runAction(RepeatForever::create(this->walkLeft));
+                this->animationState = WALKING_LEFT;
+            }
         }
     } else {
         this->stopAllActions();

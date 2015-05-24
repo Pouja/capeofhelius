@@ -42,12 +42,16 @@ private:
         IDLE_LEFT,
         IDLE_RIGHT,
         JUMP_LEFT,
-        JUMP_RIGHT
+        JUMP_RIGHT,
+        RUNNING_LEFT,
+        RUNNING_RIGHT
     };
 
     AnimationState animationState;
 
     cocos2d::Animate* walkLeft;
+    cocos2d::Animate* runningLeft;
+    cocos2d::Animate* runningRight;
     cocos2d::Animate* walkRight;
     // The desired position after resolving the gravity, velocity etc.
     cocos2d::Vec2 desiredPosition;
