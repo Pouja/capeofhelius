@@ -43,8 +43,13 @@ public:
     cocos2d::Vec2 velocity;
     bool isOnGround;
 
+    void addCoin();
+
+    int getScore();
+
     ~Player();
 private:
+    int coins;
     /**
     * Sets the default values for the player.
     * @param position The position in the parent node that it should be placed.

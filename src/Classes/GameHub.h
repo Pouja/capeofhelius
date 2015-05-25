@@ -5,6 +5,10 @@
 
 class GameHub : public cocos2d::Layer {
 private:
+    cocos2d::Sprite* goldCoin;
+    cocos2d::Sprite* xGoldCoin;
+    cocos2d::Sprite* n1GoldCoin;
+    cocos2d::Sprite* n2GoldCoin;
     cocos2d::Sprite* textbox;
     cocos2d::Label* label;
     std::queue<std::string> textQueue;
@@ -18,7 +22,7 @@ public:
     bool isDone();
     
     void clearText();
-
+    void setCoins(int number);
 
     // Sets the queue for text to be displayed.
     void setText(std::queue<std::string> text);

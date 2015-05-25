@@ -25,6 +25,7 @@ Player* Player::create(Vec2 position) {
 } 
 
 Player::Player(cocos2d::Vec2 position) {
+    this->coins = 0;
     this->animationState = AnimationState::IDLE_RIGHT;
     this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
@@ -32,6 +33,14 @@ Player::Player(cocos2d::Vec2 position) {
     this->setPosition(position);
     this->desiredPosition = position;
     this->isOnGround = false;
+}
+
+void Player::addCoin(){
+    this->coins++;
+}
+
+int Player::getScore(){
+    return this->coins;
 }
 
 void Player::initAnimations(){

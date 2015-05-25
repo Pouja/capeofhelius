@@ -8,14 +8,17 @@ bool GameHub::init() {
     Director* director = Director::getInstance();
     Size contentSize = director->getVisibleSize();
 
-    Sprite* hud3 = cocos2d::Sprite::createWithSpriteFrameName("hud_3.png");
-    hud3->setPosition(contentSize.width * 0.9 - 30, contentSize.height * 0.9);
+    this->n1GoldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_0.png");
+    this->n1GoldCoin->setPosition(contentSize.width * 0.8, contentSize.height * 0.9);
 
-    Sprite* hudX = cocos2d::Sprite::createWithSpriteFrameName("hud_x.png");
-    hudX->setPosition(contentSize.width * 0.9, contentSize.height * 0.9);
+    this->n2GoldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_0.png");
+    this->n2GoldCoin->setPosition(contentSize.width * 0.8 + 40, contentSize.height * 0.9);
 
-    Sprite* coin = cocos2d::Sprite::createWithSpriteFrameName("hud_coins.png");
-    coin->setPosition(contentSize.width * 0.9 + 40, contentSize.height * 0.9);
+    xGoldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_x.png");
+    xGoldCoin->setPosition(contentSize.width * 0.8 + 80, contentSize.height * 0.9);
+
+    goldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_coins.png");
+    goldCoin->setPosition(contentSize.width * 0.8 + 120, contentSize.height * 0.9);
 
     this->textbox = cocos2d::Sprite::create("textbox.png");
     this->textbox->setScaleX(contentSize.width / this->textbox->getContentSize().width);
@@ -24,12 +27,33 @@ bool GameHub::init() {
     this->label->setColor(cocos2d::Color3B::BLACK);
     this->label->setWidth(contentSize.width * 0.5);
 
-    this->addChild(hud3, 1);
-    this->addChild(coin, 1);
-    this->addChild(hudX, 1);
+    this->addChild(this->n1GoldCoin, 1);
+    this->addChild(this->n2GoldCoin, 1);
+    this->addChild(goldCoin, 1);
+    this->addChild(xGoldCoin, 1);
     this->addChild(this->textbox, 1);
     this->addChild(this->label, 2);
     return true;
+}
+
+void GameHub::setCoins(int number) {
+    int secondDigit = number % 10;
+    int firstDigit = (number >= 10) ? (number - secondDigit) / 10 : 0;
+
+    char str[100] = {0};
+    sprintf(str, "hud_%d.png", firstDigit);
+    n1GoldCoin->setSpriteFrame(str);
+
+    sprintf(str, "hud_%d.png", secondDigit);
+    n2GoldCoin->setSpriteFrame(str);
+
+    // auto shakeRight = MoveBy::create(0.05f, Vec2(10,0));
+    // auto shakeLeft = MoveBy::create(0.05f, Vec2(-20,0));
+    // auto reposition = MoveBy::create(0.05f, Vec2(10,0));
+    auto shakeRight = MoveBy::create(0.05f, Vec2(0,20));
+    auto shakeLeft = MoveBy::create(0.1f, Vec2(0,-20));
+    auto seq = Sequence::create(shakeRight, shakeLeft, nullptr);
+    goldCoin->runAction(seq);
 }
 
 void GameHub::update(float delta) {

@@ -147,6 +147,10 @@ void BasicScene::resolveCollision(Player* player) {
 
 void BasicScene::onEventEnter(GameMap::CollisionType event, Vec2 tilePosition) {
     switch (event) {
+    case GameMap::CollisionType::COLLECTABLE:
+        this->mainPlayer->addCoin();
+        this->hub->setCoins(this->mainPlayer->getScore());
+        break;
     case GameMap::CollisionType::TEXTBOX:
         onTextBox(tilePosition);
         break;
@@ -232,8 +236,8 @@ void BasicScene::onStart() {
 }
 
 BasicScene::~BasicScene(){
-    this->stopAllActions();
-    CC_SAFE_RELEASE(mainPlayer);
+    // this->stopAllActions();
+    // CC_SAFE_RELEASE(mainPlayer);
     // CC_SAFE_RELEASE(map);
-    CC_SAFE_RELEASE(hub);
+    // CC_SAFE_RELEASE(hub);
 }
