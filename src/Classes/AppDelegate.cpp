@@ -34,7 +34,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     SpriteFrameCache* cache = SpriteFrameCache::getInstance();
     cache->addSpriteFramesWithFile("player.plist");
-    cache->addSpriteFramesWithFile("ui.plist");
+    cache->addSpriteFramesWithFile("hud.plist");
 
     // turn on display FPS
     director->setDisplayStats(false);

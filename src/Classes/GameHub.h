@@ -5,6 +5,7 @@
 
 class GameHub : public cocos2d::Layer {
 private:
+    cocos2d::Sprite* textbox;
     cocos2d::Label* label;
     std::queue<std::string> textQueue;
 public:
