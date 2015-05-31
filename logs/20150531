@@ -1,0 +1,21 @@
+day 8: 20150531
+
+So long time since I did a blog thingy.
+Since the last time I implemented:
+ * the physics for rectangle type of ground tiles.
+ * the main player animatin.
+ * collision detection.
+ * basic event handling.
+ * basic game hud.
+
+I also finished the story.
+What will happen now, is that will make the level design. Designing the five levels.
+After that I have to implement a map to scene converter. That sets up the scene with all the animation.
+I also have to implement the dialog system (when multiple characters are talking to each other.)
+I have to implement enemy animation with death on collision.
+
+So a lot to do.
+That will be some long night, since the deadline is the birthday of Zoe which is 20 april.
+That gives me 19 days, 18 nights, so around 10 working days.
+
+We will see how it goes
