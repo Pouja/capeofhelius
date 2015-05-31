@@ -42,4 +42,7 @@ The current events are:
 So there is an event tile SLOPE and WALL but those are currently not used. Maybe something for in the future.
 So how does TEXTBOX work? For now the basicscene should check the tile position when such event is triggered to display the correct text in the game hub.
 
-I had an idea that I could create an array of TileProperty, where each entry is one of the events. That will make the lookup for collisions a bit faster. The memory it will take: in the worst case I have to create an array of 200 (length) * 200 (width) * 16 (roughly 4 byte for an integer, plus overhead) = 640kb. Other downsides? If I'm changing the location of removing a tile, I also have to update that integer array. Is it possible to have two different kind of tiles placed on each other...hmm.. I think I will reconsider this approach when I have finished the level designs.
+I had an idea that I could create an array of TileProperty, where each entry is one of the events. That will make the lookup for collisions a bit faster. The memory it will take: in the worst case I have to create an array of 200 (length) * 200 (width) * 2 (roughly 1 byte for an integer, plus overhead) = 80kb which is nothing tbh. Another possible downsides? If I'm changing the location of removing a tile, I also have to update that integer array. Is it possible to have two different kind of tiles placed on each other...hmm.. I think I will reconsider this approach when I have finished the level designs.
+
+After some reconsideration I have to implement this, because I really want slopes and jump through tiles.
+In the tile map I can then define which tiles are walls, which are jump through, which are left/right slopes, where enemies should spawn and walk to.
