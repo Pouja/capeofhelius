@@ -117,10 +117,11 @@ void Player::updateAnimation() {
         }
     } else {
         this->stopAllActions();
-        if (this->movingState.x >= 0) {
+        if (this->movingState.x >= 0 && 
+            (animationState == RUNNING_RIGHT || animationState == WALKING_RIGHT || animationState == IDLE_RIGHT) ) {
             this->setSpriteFrame("right_jump.png");
             this->animationState = JUMP_RIGHT;
-        } else {
+        } else if(animationState != JUMP_RIGHT){
             this->setSpriteFrame("left_jump.png");
             this->animationState = JUMP_LEFT;
         }
