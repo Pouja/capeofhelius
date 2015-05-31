@@ -161,6 +161,7 @@ void BasicScene::onEventEnter(GameMap::CollisionType event, Vec2 tilePosition) {
         onDeath();
         break;
     default:
+        this->hub->clearText();
         break;
     }
 }
