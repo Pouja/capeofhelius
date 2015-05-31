@@ -47,12 +47,9 @@ void GameHub::setCoins(int number) {
     sprintf(str, "hud_%d.png", secondDigit);
     n2GoldCoin->setSpriteFrame(str);
 
-    // auto shakeRight = MoveBy::create(0.05f, Vec2(10,0));
-    // auto shakeLeft = MoveBy::create(0.05f, Vec2(-20,0));
-    // auto reposition = MoveBy::create(0.05f, Vec2(10,0));
-    auto shakeRight = MoveBy::create(0.05f, Vec2(0,20));
-    auto shakeLeft = MoveBy::create(0.1f, Vec2(0,-20));
-    auto seq = Sequence::create(shakeRight, shakeLeft, nullptr);
+    auto goUp = MoveBy::create(0.05f, Vec2(0,20));
+    auto goDown = MoveBy::create(0.1f, Vec2(0,-20));
+    auto seq = Sequence::create(goUp, goDown, nullptr);
     goldCoin->runAction(seq);
 }
 
