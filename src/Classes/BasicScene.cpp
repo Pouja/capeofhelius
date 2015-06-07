@@ -18,7 +18,7 @@ bool BasicScene::init()
         return false;
     }
     this->previousEvent = GameMap::CollisionType::NONE;
-    
+
     this->paused = false;
 
     // Create the tilemap
@@ -33,7 +33,7 @@ bool BasicScene::init()
     addChild(this->drawNode);
 
     // Create the player
-    this->mainPlayer = Player::create(this->map->objectPoint("objects","spawnpoint"));
+    this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"));
     addChild(this->mainPlayer);
 
     // Creating a keyboard event listener
@@ -76,7 +76,7 @@ void BasicScene::resolveHorCollision(float tileWidth, float playerWidth, Vec2 ti
     }
 }
 
-void BasicScene::resolveSlopeCollision(Vec2 tilePos, float playerHeight, Vec2* desiredPosition, bool isLeftSlope){
+void BasicScene::resolveSlopeCollision(Vec2 tilePos, float playerHeight, Vec2* desiredPosition, bool isLeftSlope) {
     float a = (isLeftSlope) ? 1.0 : -1.0;
     float b = tilePos.y + (playerHeight / 2) - a * tilePos.x;
     desiredPosition->y = (a * desiredPosition->x) + b + 3;
@@ -111,31 +111,31 @@ void BasicScene::resolveCollision(Player* player) {
 
     // Keep track of the number of collisions
     int collisionCount = 0;
-    
+
     // Bottom collision, so the player is on the ground
     if (collisions[0] != GameMap::CollisionType::NONE) {
         player->isOnGround = true;
     }
-    
+
     // Slope collision
     if (collisions[0] == GameMap::CollisionType::SLOPE_LEFT || collisions[0] == GameMap::CollisionType::SLOPE_RIGHT) {
         bool isLeft = collisions[0] == GameMap::CollisionType::SLOPE_LEFT;
 
         Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
         Vec2 pos = this->map->mapToWorld(mapCoord);
-        
+
         resolveSlopeCollision(pos, playerHeight, &desiredPosition, isLeft);
-        collisionCount++;            
+        collisionCount++;
     } else if (collisions[0] == GameMap::CollisionType::STUMP) {
         Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
         Vec2 pos = this->map->mapToWorld(mapCoord);
-        
+
         // Magic numbers which makes the slopes a bit better, I honestly do not know why this works
         pos.x += 3;
         pos.y += 3;
-        
+
         this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
-        collisionCount++;   
+        collisionCount++;
     } else {
         // Bottom (no slope) or top collision
         if (collisions[0] == GameMap::CollisionType::WALL || collisions[1] == GameMap::CollisionType::WALL) {
@@ -143,7 +143,7 @@ void BasicScene::resolveCollision(Player* player) {
             Vec2 mapCoord = this->map->worldToMap(boundingPoints[index]);
             Vec2 pos = this->map->mapToWorld(mapCoord);
             this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
-            collisionCount++;            
+            collisionCount++;
         }
         // Left or Right collision
         if (collisions[2] == GameMap::CollisionType::WALL || collisions[3] == GameMap::CollisionType::WALL) {
@@ -210,5 +210,5 @@ Vec2 BasicScene::getViewPointCenter(Vec2 position) {
         yView = mapSize.height - winSize.height;
     }
 
-    return Vec2(-1 * xView, -1 *yView);
+    return Vec2(-1 * xView, -1 * yView);
 }

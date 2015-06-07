@@ -10,50 +10,50 @@
 class BasicScene : public cocos2d::Layer
 {
 private:
-    GameMap::CollisionType previousEvent;
-    bool paused;
-    cocos2d::DrawNode* drawNode;
+	GameMap::CollisionType previousEvent;
+	bool paused;
+	cocos2d::DrawNode* drawNode;
 
-    // The TMXTileMap to use with this scene
-    GameMap* map;
+	// The TMXTileMap to use with this scene
+	GameMap* map;
 
-    GameHub* hub;
+	GameHub* hub;
 
-    // The main player
-    Player* mainPlayer;
+	// The main player
+	Player* mainPlayer;
 
-    // Collision resolving
-    void resolveEvent(Player*);
-    void onEventEnter(GameMap::CollisionType, cocos2d::Vec2);
-    void onEventLeave(GameMap::CollisionType, cocos2d::Vec2);
-    void resolveCollision(Player* player);
-    void resolveSlopeCollision(cocos2d::Vec2 tilePos, float playerHeight, cocos2d::Vec2* desiredPosition, bool isLeftSlope); 
-    void resolveVertCollision(float tileHeight, float playerHeight, cocos2d::Vec2 tilePos, cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
-    void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
+	// Collision resolving
+	void resolveEvent(Player*);
+	void onEventEnter(GameMap::CollisionType, cocos2d::Vec2);
+	void onEventLeave(GameMap::CollisionType, cocos2d::Vec2);
+	void resolveCollision(Player* player);
+	void resolveSlopeCollision(cocos2d::Vec2 tilePos, float playerHeight, cocos2d::Vec2* desiredPosition, bool isLeftSlope);
+	void resolveVertCollision(float tileHeight, float playerHeight, cocos2d::Vec2 tilePos, cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
+	void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
 public:
-    /** Creates the parent scenes and adds this scene instance to the parent */
-    static cocos2d::Scene* createScene();
+	/** Creates the parent scenes and adds this scene instance to the parent */
+	static cocos2d::Scene* createScene();
 
-    /** Initializes all the sprites, the map, sets the viewpoint etc. */
-    virtual bool init();
+	/** Initializes all the sprites, the map, sets the viewpoint etc. */
+	virtual bool init();
 
-    /** Sets the view point of the scene.
-    * @param position The center point
-    */
-    cocos2d::Vec2 getViewPointCenter(cocos2d::Vec2 position);
+	/** Sets the view point of the scene.
+	* @param position The center point
+	*/
+	cocos2d::Vec2 getViewPointCenter(cocos2d::Vec2 position);
 
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+	void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
-    void onTextBox(cocos2d::Vec2 tilePosition);
-    void onDeath();
-    void onStart();
-    void onWin();
+	void onTextBox(cocos2d::Vec2 tilePosition);
+	void onDeath();
+	void onStart();
+	void onWin();
 
-    /** Called on each game tick */
-    void update(float);
+	/** Called on each game tick */
+	void update(float);
 
-    CREATE_FUNC(BasicScene);
+	CREATE_FUNC(BasicScene);
 };
 
 #endif // __BASIC_SCENE_H__

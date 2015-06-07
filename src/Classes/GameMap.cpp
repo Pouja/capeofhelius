@@ -29,10 +29,10 @@ GameMap::CollisionType parseTileProperties(ValueMap properties) {
         if (type.compare("slope") == 0) {
             if (properties["angle"].asString().compare("left") == 0) {
                 return GameMap::CollisionType::SLOPE_LEFT;
-            }  
+            }
             return GameMap::CollisionType::SLOPE_RIGHT;
         }
-        if(type.compare("stump") == 0) {
+        if (type.compare("stump") == 0) {
             return GameMap::CollisionType::STUMP;
         }
         if (type.compare("wall") == 0) {
@@ -105,5 +105,5 @@ Vec2 GameMap::objectPoint(std::string group, std::string objectName) {
     int x = object.at("x").asInt() * this->getScale();
     int y = object.at("y").asInt() * this->getScale();
 
-    return Vec2(x,y);
+    return Vec2(x, y);
 }
