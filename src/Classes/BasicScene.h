@@ -27,6 +27,7 @@ private:
     void onEventEnter(GameMap::CollisionType, cocos2d::Vec2);
     void onEventLeave(GameMap::CollisionType, cocos2d::Vec2);
     void resolveCollision(Player* player);
+    void resolveSlopeCollision(cocos2d::Vec2 tilePos, float playerHeight, cocos2d::Vec2* desiredPosition, bool isLeftSlope); 
     void resolveVertCollision(float tileHeight, float playerHeight, cocos2d::Vec2 tilePos, cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
     void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
 public:
@@ -53,8 +54,6 @@ public:
     void update(float);
 
     CREATE_FUNC(BasicScene);
-
-    ~BasicScene();
 };
 
 #endif // __BASIC_SCENE_H__

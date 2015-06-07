@@ -18,11 +18,11 @@ bool BasicScene::init()
         return false;
     }
     this->previousEvent = GameMap::CollisionType::NONE;
-
+    
     this->paused = false;
 
     // Create the tilemap
-    this->map = GameMap::create("tilemap.tmx", 2.0);
+    this->map = GameMap::create("chapter1.tmx", 0.5);
     addChild(this->map);
 
     this->hub = new GameHub();
@@ -33,7 +33,7 @@ bool BasicScene::init()
     addChild(this->drawNode);
 
     // Create the player
-    this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"));
+    this->mainPlayer = Player::create(this->map->objectPoint("objects","spawnpoint"));
     addChild(this->mainPlayer);
 
     // Creating a keyboard event listener
@@ -44,7 +44,6 @@ bool BasicScene::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     this->scheduleUpdate();
-    onStart();
     return true;
 }
 
@@ -77,6 +76,12 @@ void BasicScene::resolveHorCollision(float tileWidth, float playerWidth, Vec2 ti
     }
 }
 
+void BasicScene::resolveSlopeCollision(Vec2 tilePos, float playerHeight, Vec2* desiredPosition, bool isLeftSlope){
+    float a = (isLeftSlope) ? 1.0 : -1.0;
+    float b = tilePos.y + (playerHeight / 2) - a * tilePos.x;
+    desiredPosition->y = (a * desiredPosition->x) + b + 3;
+}
+
 void BasicScene::resolveCollision(Player* player) {
     Vec2 desiredPosition = player->getDesiredPosition();
 
@@ -96,7 +101,8 @@ void BasicScene::resolveCollision(Player* player) {
     }
 
     // Retrieve all the sprites on which the player collides
-    std::vector<Sprite*> collisions = this->map->groundCollision(player->getBoundingPoints(desiredPosition));
+    std::vector<Vec2> boundingPoints = player->getBoundingPoints(desiredPosition);
+    std::vector<GameMap::CollisionType> collisions = this->map->groundCollision(boundingPoints);
 
     Vec2 velocity = player->velocity;
 
@@ -105,28 +111,52 @@ void BasicScene::resolveCollision(Player* player) {
 
     // Keep track of the number of collisions
     int collisionCount = 0;
-
+    
     // Bottom collision, so the player is on the ground
-    if (collisions[0]) {
+    if (collisions[0] != GameMap::CollisionType::NONE) {
         player->isOnGround = true;
     }
-    if (collisions[0] || collisions[1]) {
-        int index = (collisions[0]) ? 0 : 1;
-        Vec2 pos = this->map->tileToWorld(collisions[index]);
+    
+    // Slope collision
+    if (collisions[0] == GameMap::CollisionType::SLOPE_LEFT || collisions[0] == GameMap::CollisionType::SLOPE_RIGHT) {
+        bool isLeft = collisions[0] == GameMap::CollisionType::SLOPE_LEFT;
+
+        Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
+        Vec2 pos = this->map->mapToWorld(mapCoord);
+        
+        resolveSlopeCollision(pos, playerHeight, &desiredPosition, isLeft);
+        collisionCount++;            
+    } else if (collisions[0] == GameMap::CollisionType::STUMP) {
+        Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
+        Vec2 pos = this->map->mapToWorld(mapCoord);
+        
+        // Magic numbers which makes the slopes a bit better, I honestly do not know why this works
+        pos.x += 3;
+        pos.y += 3;
+        
         this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
-        collisionCount++;
-    }
-    // Left or Right collision
-    if (collisions[2] || collisions[3]) {
-        int index = (collisions[2]) ? 2 : 3;
-        Vec2 pos = this->map->tileToWorld(collisions[index]);
-        this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
-        collisionCount++;
+        collisionCount++;   
+    } else {
+        // Bottom (no slope) or top collision
+        if (collisions[0] == GameMap::CollisionType::WALL || collisions[1] == GameMap::CollisionType::WALL) {
+            int index = (collisions[0] == GameMap::CollisionType::WALL) ? 0 : 1;
+            Vec2 mapCoord = this->map->worldToMap(boundingPoints[index]);
+            Vec2 pos = this->map->mapToWorld(mapCoord);
+            this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
+            collisionCount++;            
+        }
+        // Left or Right collision
+        if (collisions[2] == GameMap::CollisionType::WALL || collisions[3] == GameMap::CollisionType::WALL) {
+            int index = (collisions[2] == GameMap::CollisionType::WALL) ? 2 : 3;
+            Vec2 pos = this->map->mapToWorld(this->map->worldToMap(boundingPoints[index]));
+            this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
+            collisionCount++;
+        }
     }
     // Left/right top/bottom collision
     for (int index = 4; index < 8 && collisionCount == 0; index++) {
-        if (collisions[index]) {
-            Vec2 pos = this->map->tileToWorld(collisions[index]);
+        if (collisions[index] == GameMap::CollisionType::WALL) {
+            Vec2 pos = this->map->mapToWorld(this->map->worldToMap(boundingPoints[index]));
             if (fabsf(pos.x - desiredPosition.x) > fabsf(pos.y - desiredPosition.y)) {
                 this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
             } else {
@@ -145,44 +175,13 @@ void BasicScene::resolveCollision(Player* player) {
     player->setPosition(desiredPosition);
 }
 
-void BasicScene::onEventEnter(GameMap::CollisionType event, Vec2 tilePosition) {
-    switch (event) {
-    case GameMap::CollisionType::COLLECTABLE:
-        this->mainPlayer->addCoin();
-        this->hub->setCoins(this->mainPlayer->getScore());
-        break;
-    case GameMap::CollisionType::TEXTBOX:
-        onTextBox(tilePosition);
-        break;
-    case GameMap::CollisionType::START:
-        onStart();
-        break;
-    case GameMap::CollisionType::DEATH:
-        onDeath();
-        break;
-    default:
-        this->hub->clearText();
-        break;
-    }
-}
-
-void BasicScene::resolveEvent(Player* sprite) {
-    Vec2 tilePosition = this->map->worldToMap(sprite->getDesiredPosition());
-    GameMap::CollisionType type = this->map->eventCollision(tilePosition);
-    if (previousEvent != type) {
-        onEventEnter(type, tilePosition);
-    }
-    previousEvent = type;
-}
 
 void BasicScene::update(float delta) {
     if (!this->paused) {
         this->mainPlayer->updatePhysics();
         this->resolveCollision(this->mainPlayer);
-        this->resolveEvent(this->mainPlayer);
     }
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
-
     this->setPosition(vpc);
 
     this->hub->setPosition(vpc * -1);
@@ -211,34 +210,5 @@ Vec2 BasicScene::getViewPointCenter(Vec2 position) {
         yView = mapSize.height - winSize.height;
     }
 
-    return Vec2(-1 * xView, yView);
-}
-
-void BasicScene::onTextBox(Vec2 tilePosition) {
-    std::queue<std::string> textQueue;
-    textQueue.push("Couple of message inbouding! (1)");
-    textQueue.push("Couple of message inbouding! (2)");
-    textQueue.push("Couple of message inbouding! (3)");
-    this->hub->setText(textQueue);
-}
-
-void BasicScene::onDeath() {
-    this->mainPlayer->setPosition(this->map->objectPoint("objects", "spawnpoint"));
-
-    std::queue<std::string> textQueue;
-    textQueue.push("Oh noo you died :(. But try again!");
-    this->hub->setText(textQueue);
-}
-
-void BasicScene::onStart() {
-    std::queue<std::string> textQueue;
-    textQueue.push("Lets start the game!\nPress spacebar to continue...");
-    this->hub->setText(textQueue);
-}
-
-BasicScene::~BasicScene(){
-    // this->stopAllActions();
-    // CC_SAFE_RELEASE(mainPlayer);
-    // CC_SAFE_RELEASE(map);
-    // CC_SAFE_RELEASE(hub);
+    return Vec2(-1 * xView, -1 *yView);
 }

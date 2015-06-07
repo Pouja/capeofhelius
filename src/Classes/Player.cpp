@@ -1,6 +1,6 @@
 #include "Player.h"
 
-#define SCALE 1.2
+#define SCALE 1.0
 #define GRAVITY -1.0
 #define FRICTION 5.0
 #define HORIZONTAL_FORCE 2.0
@@ -200,7 +200,7 @@ void Player::updatePhysics() {
     } else if (this->movingState.x == 0 || (this->movingState.x == -1 && this->velocity.x >= 0) || (this->movingState.x == 1 && this->velocity.x <= 0)) {
         this->velocity.add(horizontalForce);
     }
-    if (this->movingState.x == 0) {
+    if (this->movingState.x == 0 && this->isOnGround) {
         this->velocity = Vec2(this->velocity.x * 0.1, this->velocity.y);
     }
 
