@@ -20,8 +20,8 @@ Flag::Flag(Vec2 postion) {
 void Flag::start() {
 	Vector<SpriteFrame*> animFrames;
 	animFrames.reserve(2);
-	animFrames.pushBack(cocos2d::SpriteFrame::create("flagRed.png"));
-	animFrames.pushBack(cocos2d::SpriteFrame::create("flagRed2.png"));
+	animFrames.pushBack(cocos2d::SpriteFrame::create("flagRed.png", Rect(0,0,70,70)));
+	animFrames.pushBack(cocos2d::SpriteFrame::create("flagRed2.png", Rect(0,0,70,70)));
 	Animation* animation = Animation::createWithSpriteFrames(animFrames, 1.0f);
 	Animate* animate = Animate::create(animation);
 	this->runAction(RepeatForever::create(animate));
