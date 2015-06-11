@@ -35,7 +35,7 @@ bool GameHub::init() {
     this->addChild(this->label, 2);
     return true;
 }
-
+ 
 void GameHub::setCoins(int number) {
     int secondDigit = number % 10;
     int firstDigit = (number >= 10) ? (number - secondDigit) / 10 : 0;

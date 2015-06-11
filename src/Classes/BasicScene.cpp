@@ -17,23 +17,16 @@ bool BasicScene::init()
     {
         return false;
     }
+    
     this->previousEvent = GameMap::CollisionType::NONE;
-
     this->paused = false;
-
-    // Create the tilemap
-    this->map = GameMap::create("chapter1.tmx", 0.5);
-    addChild(this->map);
-
+    this->map = GameMap::create("chapter1.tmx", 1);
     this->hub = new GameHub();
     this->hub->init();
-    addChild(this->hub);
-
-    this->drawNode = DrawNode::create();
-    addChild(this->drawNode);
-
-    // Create the player
     this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"));
+
+    addChild(this->map);
+    addChild(this->hub);
     addChild(this->mainPlayer);
 
     // Creating a keyboard event listener
@@ -131,8 +124,7 @@ void BasicScene::resolveCollision(Player* player) {
         Vec2 pos = this->map->mapToWorld(mapCoord);
 
         // Magic numbers which makes the slopes a bit better, I honestly do not know why this works
-        pos.x += 3;
-        pos.y += 3;
+        pos.add(Vec2(3, 3));
 
         this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
         collisionCount++;

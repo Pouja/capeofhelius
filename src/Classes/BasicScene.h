@@ -11,12 +11,11 @@ class BasicScene : public cocos2d::Layer
 {
 private:
 	GameMap::CollisionType previousEvent;
+
+	// If this is set to true it will not update the player or the enemies or check for collisions
 	bool paused;
-	cocos2d::DrawNode* drawNode;
 
-	// The TMXTileMap to use with this scene
 	GameMap* map;
-
 	GameHub* hub;
 
 	// The main player
@@ -44,11 +43,6 @@ public:
 
 	void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-
-	void onTextBox(cocos2d::Vec2 tilePosition);
-	void onDeath();
-	void onStart();
-	void onWin();
 
 	/** Called on each game tick */
 	void update(float);

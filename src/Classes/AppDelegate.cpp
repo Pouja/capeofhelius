@@ -4,7 +4,6 @@
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
-
 }
 
 AppDelegate::~AppDelegate()
@@ -18,7 +17,6 @@ void AppDelegate::initGLContextAttrs()
     //set OpenGL context attributions,now can only set six attributions:
     //red,green,blue,alpha,depth,stencil
     GLContextAttrs glContextAttrs = {8, 8, 8, 8, 24, 8};
-
     GLView::setGLContextAttrs(glContextAttrs);
 }
 

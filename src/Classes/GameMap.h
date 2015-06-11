@@ -15,7 +15,6 @@ public:
 		NONE //5
 	};
 	void initTiles();
-
 	static GameMap* create(const std::string& mapName, float scale);
 
 	/** Converts a map coordinate to the world coordinate */
