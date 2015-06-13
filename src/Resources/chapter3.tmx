@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="70" tilewidth="70" tileheight="70" nextobjectid="1">
+ <tileset firstgid="1" name="base tiles" tilewidth="70" tileheight="70" spacing="2">
+  <image source="base_pack.png" width="914" height="936"/>
+ </tileset>
+ <tileset firstgid="157" name="building tiles" tilewidth="70" tileheight="70">
+  <image source="building_pack.png" width="980" height="490"/>
+ </tileset>
+ <tileset firstgid="255" name="items" tilewidth="129" tileheight="71">
+  <tile id="0">
+   <image width="70" height="70" source="items/bomb.png"/>
+  </tile>
+  <tile id="1">
+   <image width="70" height="70" source="items/bombFlash.png"/>
+  </tile>
+  <tile id="2">
+   <image width="70" height="70" source="items/bush.png"/>
+  </tile>
+  <tile id="3">
+   <image width="70" height="70" source="items/buttonBlue.png"/>
+  </tile>
+  <tile id="4">
+   <image width="70" height="70" source="items/buttonBlue_pressed.png"/>
+  </tile>
+  <tile id="5">
+   <image width="70" height="70" source="items/buttonGreen.png"/>
+  </tile>
+  <tile id="6">
+   <image width="70" height="70" source="items/buttonGreen_pressed.png"/>
+  </tile>
+  <tile id="7">
+   <image width="70" height="70" source="items/buttonRed.png"/>
+  </tile>
+  <tile id="8">
+   <image width="70" height="70" source="items/buttonRed_pressed.png"/>
+  </tile>
+  <tile id="9">
+   <image width="70" height="70" source="items/buttonYellow.png"/>
+  </tile>
+  <tile id="10">
+   <image width="70" height="70" source="items/buttonYellow_pressed.png"/>
+  </tile>
+  <tile id="11">
+   <image width="70" height="70" source="items/cactus.png"/>
+  </tile>
+  <tile id="12">
+   <image width="70" height="70" source="items/chain.png"/>
+  </tile>
+  <tile id="13">
+   <image width="128" height="71" source="items/cloud1.png"/>
+  </tile>
+  <tile id="14">
+   <image width="129" height="71" source="items/cloud2.png"/>
+  </tile>
+  <tile id="15">
+   <image width="129" height="71" source="items/cloud3.png"/>
+  </tile>
+  <tile id="16">
+   <image width="70" height="70" source="items/coinBronze.png"/>
+  </tile>
+  <tile id="17">
+   <image width="70" height="70" source="items/coinGold.png"/>
+  </tile>
+  <tile id="18">
+   <image width="70" height="70" source="items/coinSilver.png"/>
+  </tile>
+  <tile id="19">
+   <image width="70" height="70" source="items/fireball.png"/>
+  </tile>
+  <tile id="20">
+   <image width="70" height="70" source="items/flagBlue.png"/>
+  </tile>
+  <tile id="21">
+   <image width="70" height="70" source="items/flagBlue2.png"/>
+  </tile>
+  <tile id="22">
+   <image width="70" height="70" source="items/flagBlueHanging.png"/>
+  </tile>
+  <tile id="23">
+   <image width="70" height="70" source="items/flagGreen.png"/>
+  </tile>
+  <tile id="24">
+   <image width="70" height="70" source="items/flagGreen2.png"/>
+  </tile>
+  <tile id="25">
+   <image width="70" height="70" source="items/flagGreenHanging.png"/>
+  </tile>
+  <tile id="26">
+   <image width="70" height="70" source="items/flagRed.png"/>
+  </tile>
+  <tile id="27">
+   <image width="70" height="70" source="items/flagRed2.png"/>
+  </tile>
+  <tile id="28">
+   <image width="70" height="70" source="items/flagRedHanging.png"/>
+  </tile>
+  <tile id="29">
+   <image width="70" height="70" source="items/flagYellow.png"/>
+  </tile>
+  <tile id="30">
+   <image width="70" height="70" source="items/flagYellow2.png"/>
+  </tile>
+  <tile id="31">
+   <image width="70" height="70" source="items/flagYellowHanging.png"/>
+  </tile>
+  <tile id="32">
+   <image width="70" height="70" source="items/gemBlue.png"/>
+  </tile>
+  <tile id="33">
+   <image width="70" height="70" source="items/gemGreen.png"/>
+  </tile>
+  <tile id="34">
+   <image width="70" height="70" source="items/gemRed.png"/>
+  </tile>
+  <tile id="35">
+   <image width="70" height="70" source="items/gemYellow.png"/>
+  </tile>
+  <tile id="36">
+   <image width="70" height="70" source="items/keyBlue.png"/>
+  </tile>
+  <tile id="37">
+   <image width="70" height="70" source="items/keyGreen.png"/>
+  </tile>
+  <tile id="38">
+   <image width="70" height="70" source="items/keyRed.png"/>
+  </tile>
+  <tile id="39">
+   <image width="70" height="70" source="items/keyYellow.png"/>
+  </tile>
+  <tile id="40">
+   <image width="70" height="70" source="items/mushroomBrown.png"/>
+  </tile>
+  <tile id="41">
+   <image width="70" height="70" source="items/mushroomRed.png"/>
+  </tile>
+  <tile id="42">
+   <image width="19" height="14" source="items/particleBrick1a.png"/>
+  </tile>
+  <tile id="43">
+   <image width="21" height="21" source="items/particleBrick1b.png"/>
+  </tile>
+  <tile id="44">
+   <image width="19" height="14" source="items/particleBrick2a.png"/>
+  </tile>
+  <tile id="45">
+   <image width="21" height="21" source="items/particleBrick2b.png"/>
+  </tile>
+  <tile id="46">
+   <image width="70" height="70" source="items/plant.png"/>
+  </tile>
+  <tile id="47">
+   <image width="70" height="70" source="items/plantPurple.png"/>
+  </tile>
+  <tile id="48">
+   <image width="70" height="70" source="items/rock.png"/>
+  </tile>
+  <tile id="49">
+   <image width="70" height="70" source="items/snowhill.png"/>
+  </tile>
+  <tile id="50">
+   <image width="70" height="70" source="items/spikes.png"/>
+  </tile>
+  <tile id="51">
+   <image width="70" height="70" source="items/springboardDown.png"/>
+  </tile>
+  <tile id="52">
+   <image width="70" height="70" source="items/springboardUp.png"/>
+  </tile>
+  <tile id="53">
+   <image width="70" height="70" source="items/star.png"/>
+  </tile>
+  <tile id="54">
+   <image width="70" height="70" source="items/switchLeft.png"/>
+  </tile>
+  <tile id="55">
+   <image width="70" height="70" source="items/switchMid.png"/>
+  </tile>
+  <tile id="56">
+   <image width="70" height="70" source="items/switchRight.png"/>
+  </tile>
+  <tile id="57">
+   <image width="70" height="70" source="items/weight.png"/>
+  </tile>
+  <tile id="58">
+   <image width="70" height="70" source="items/weightChained.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="314" name="bg grasslands" tilewidth="70" tileheight="70">
+  <image source="bg_grasslands-resized.png" width="980" height="490"/>
+ </tileset>
+ <tileset firstgid="412" name="properties" tilewidth="70" tileheight="70">
+  <image source="tiles.png" width="140" height="350"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="wall"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="angle" value="left"/>
+    <property name="type" value="slope"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="angle" value="right"/>
+    <property name="type" value="slope"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="name" value="coin"/>
+    <property name="type" value="collectable"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="name" value="key"/>
+    <property name="type" value="collectable"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="type" value="death"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="background" width="150" height="70">
+  <data encoding="base64" compression="zlib">
+   eJzt1ldqxDAABFDnWnuQ9N572fR+jeS2mZ/AYqTVBlJY8j4eyJZHBnuQPZjpugEAAN9mLuZjIRZjKZZjJVZjLdZjIzZjK2bl5Bq5ndiNvdiPgziMoziOkziNsziPi9iWk2vkLuMqruMmbuMu7uMhHuMpnuMlXmMoJ9fIvQEAAAAAAAAAAAAAAL/uvSuPP49LSvnS/Ohxba1a7q+fCz/fq35/StfUutCf16v/odWr/rjWgXH9+uo+qFfTb5Je1b5vk+xntXVr+doaTJdaX2rvf/R8rSule7S+f+P+4QAAAAAAAAAAAAAAAAAAAAAAAAAAAABo+wDvHVhV
+  </data>
+ </layer>
+ <layer name="walls" width="150" height="70">
+  <data encoding="base64" compression="zlib">
+   eJztnb+O1DAQxnMd0F+N6KGgQhRUiOIKnoCraIACqnsBiquo6OBtueg2khnZk7H9jWeczE/6pNus13bsL+M/ye4tSxAEQRAEQRAEQRAEAYavJ1HKz8uxbydsh1H6exLtYV2/0Jzaw7p+R1PwSLQJhu8XBY+ErzCsnnpnXQlHhK8wRLz6n9RXdG1za1iv2djzFV2bf3jQ2we9EuQtTbuXzmpdbMEdU7eRvka1Z4m1fX8Zy9Napua60ubFgr2mUrTXg+t7T4zlyVdeWD2leb6oPH9fRLHqUw+SYBG/Vk9dL3P46n7J+yrwhZantHxFx9qnsJYIVhDz8XTsK40v2txcJIX67M8S3mpBa1ykccpqfNl89fxKplwM0/ZWSx+g+k2ylvJCbuxb+xblq5p1ZWl8k+zbaHjL2/pcMkfxQGndh9rb0pyv7Wn0mKgZx2raEVVuzz5Tqa4ILD2Veqt07jnPeYpPG7XtaFFmT91q2tyDp7zFsxZa2lEST9L7AjXxRsNXNW1h7ZkjeGuGa3OUr2ZsC26stFSuHW8Kf2+vU5XS0LRcfpJ86ed6fZWb19G20Mbak6Ml8QH1RMkrXP6lcnp8JUESl0bQU87Ievai4as9b432lRdPLZ1lncFXLV7Q8NUePZ5CPHdDoeXVfnZ2X9E5T27eVPJKKWZJ521cHjW+6vXU9U7+NaTnk8LVje7t5upMvZh+9/MHSYt+/XEpIxlnvIoD4SlkbMj56q6yfrnjafrRz5d6urc3ApSnasasmvuDKdI6ph68LXz+yWAhrzvvID2l0W6tvloKx619pbkf5kk9nqoda1vg4g2VZH5l7atQGe4+DhpkvNqbn4VsPcXFOEQMTSn5gqaR+CrwicV+qcRDuWMlDwa+sHqWsdVX3PHABzXPxWyg1hVrnrl5O01D05XSjlLAY/EsY0opNknK9jg/5ej1b+73I1Hvt7zH/Z5l7bNWaErz9r2yadpR9JQ3yr+WtF6n6HEEFa9G0dMO4SubeLVXr9xnc/2czsM8fo9ij/AVph69++2oennx4JF8xb2XS4dcD9aWnUtbgxf/lEjP6/XVXOr1FbINN5DzdkvvlJ5/lNI6lniU9LzQWMSrPXo8ye3bSH/XwNoLSEnXLWdfD3LU3FvlsPaChdCseSLn7Va/FVO7v8zFLus+Poqv6OtRZdfAeQ/xXfkZ0fIVej1Y+3y7hJwfkHN61PfDZ2b2eCXx6ZeBarkP1nNuLfPXkczqK4leDhRyHEDLCuvrKq2HdN4ewvXT0aHXlnV/nEX3TJ8cAeqroB1kPJtd4Ssc1jHQmzaetTWnmDPNL2ZAM6aMjFc5L+cI741hdl+lYy7nK5pOAw/P6Hiow8obxbzX/tP+v4ncvJVLF3FLl8+KeWuteenaoCTumbTWuGX5f1I064Cu4ydQPjk0fHW/tK23S2mOvtdjxXvFvGnfIvcvUKopF33/sUZW/6/Yeq9Ku/9DoU1BEASz8A9C4nUg
+  </data>
+ </layer>
+ <layer name="foreground-back" width="150" height="70">
+  <data encoding="base64" compression="zlib">
+   eJzt1ktT01AYgOGTX+PK8Rer9boRAS8bFYqwUQEvGxVQ+QOyY+Gw88u0HWM4qdOQWmieZ+adlBC+npAQmlKz99GHKX2sHPsmenvB3tXefzVaG7c+ZZ3z1NV59W3ONN+i71P6UTn2c/Tlgn2tvf8guhMdR3f/sdZ56eq8+jan6jTze30SPc30LHPso2ilZY8z8wbR8zS6t8r7am/G9jMz2+jqvPo0p7Sbmq/Hveh+tBOdjF+X2wfpvJvRw+hW9Klhm9tX/sztzLxBGt1T5b1V3leHM3aUmdlGV+fVpzmlg9R8PRb5vKp+vpq1Lj+PXYXnw2WbMzG5hvXrUT6vTtKfZ9XOeNv0vKrf17mv638P055Xk/+Dx5XXuX31/V1+HuvqvPo0Z2Ij2oyGlX0/o63odabtdN6L6GXLXtVmnVXW1KZhaud6MZ/zKucu25yiaJ4DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACyf00UvgCvpV8P+3Wiv0v5/WxHL7CA6rHS02OWwRFajtWh90Qvh0rtRjLZn0bXi7++VX1f3bUSb0bB2DAAA3fsNKVZH3Q==
+  </data>
+ </layer>
+ <layer name="foreground" width="150" height="70">
+  <data encoding="base64" compression="zlib">
+   eJzt3MtunDAUgOHhLapue5lk0WUfo89ZTfZRum/UffsCrXpTs0jVTZUmi6oTZdC4R+eYYzBgzP9JiLExYAPGYBg2m27vjd/eeVLjgLHdKHF/Js/FkawHXeGYD444LY21niH1dkheuqZZ3hq/u9KmxpXs08Bw66MjTktj0dbjjRvDVOupxc+B4da1I05LY9HW440LtfX8Romzwt78WDz15/t++KIMX5XhmzH8UJb7OSGfU5Jl8rDKnYu2/S3W/koZtP2l2Rnxsv68jiwjPKbb5f1W4rR0ml8i/K4jfBZZ1hCXh/EuMSxp5Y7FWdtGW483ritfct5YGms9p8G08/1wFZn3NkjXZdtsNhdKvDeu9bcjL9Kbwzgsx6mWUHgpwnci3DQP4zCvt4fwtjnGXYj0YVopXJa2fBm+C5bj2Y6NsQ9kXsK8htO0eVPSAgAAAMDSPGm606CfRwVu223PPMk+BIzjeYHHDPKT9fBE2e8lnj8AS9+2BajF4wxpYtM9y4fP/fMe+SwL43jRHAcA8OK6Mg3t2npo/QZYL+36Koxb27k0LC91pSzcCwAAPNbU99nnWsW7fda0HVEu6zjMcXzmrgvUmXRsM0ztxNHXIe87+9yH0peAUvHe2Pxo++bT5/2ZPteiS35Px2rz2vjwXY3SywKgHEs+Xyw57wDmo11Tre19C4+c19pTXrfneLd/SvRtA5hD7ne7no7Ujqb249PvD8xradfUff/vWWvfc61ix2VKe1jT/rPaS9rRZanpmKypLEDJ+I8PhpjzXL3UdmJp90e1WOrxAr9nGevWlu/hAEAVUr65k9p/O9f7DGPp0+5xfYVSlHKP9Wri9ZVSbg3nB5Qs9syL+0CEOJehFjneQ2ZaPtb3IL1tUGpb5fn+pFwm74cA9ZjjvJjrnFr7/2hKvqdHOfiuDICSLe2+gbYXKMMuMs16ti+fv8nzTwn1e+o8hNukhPL30ZYh3O9hucLvpGnj1v385/vx1Qh5BAAAwP/+AcEwpm4=
+  </data>
+ </layer>
+ <layer name="collectable" width="150" height="70">
+  <data encoding="base64" compression="zlib">
+   eJzt2+0KwiAUAND1Br3/08Z+jGAMmZsfVz0HgqiVd+7q1GzbAAAAAAAAAGA930/e67nH9NYzxlTZ5/dGqMvootfhHl/qukePH6hH+weAP/fF/p5cA9cN6tLG8ozUj+WUe3Xs6rmRe/6r1xekaB8A7ehzAQDWYwwIPHXsO33yKFH21XOY1Zv/VNQ+9un3zNx2Zz434pJ3XJEX9CYHgbverDGc1xvu9j0l5lkAremjgFGlxmr6NlJa5Icc7KvkfLBX/Kyh9G+t8haAmbxdly/9GShB7rUx8nwQAJiXMQYAsLNfgZnJPUYUIW8jxFDbCucIAHdFvy9GiC9CDAd7DQAA5vcDjO0JxA==
+  </data>
+ </layer>
+ <layer name="static scene" width="150" height="70" opacity="0.4">
+  <data encoding="base64" compression="zlib">
+   eJztw0ENAAAIBKCzfwa72sGfEzYSAAAAAAAAAAAAAAAAAAAAAD7p2gcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALhgAKDyCUM=
+  </data>
+ </layer>
+</map>
