@@ -686,13 +686,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>item_spritesheet.png</string>
+            <string>items.png</string>
             <key>size</key>
             <string>{934,286}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:258d1cf5e5bcf2990bfb937ff7283280:642c734422a9d2aed621814fc73cda4b:8ce65fbbd5221a52f26fa5d3d1166ebe$</string>
             <key>textureFileName</key>
-            <string>item_spritesheet.png</string>
+            <string>items.png</string>
         </dict>
     </dict>
 </plist>
