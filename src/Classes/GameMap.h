@@ -5,6 +5,7 @@
 
 class GameMap : public cocos2d::TMXTiledMap {
 public:
+	int a;
 	enum CollisionType {
 		DEATH, //0
 		WALL, //1
@@ -14,7 +15,6 @@ public:
 		STUMP, // 4
 		NONE //5
 	};
-	void initTiles();
 	static GameMap* create(const std::string& mapName, float scale);
 
 	/** Converts a map coordinate to the world coordinate */
@@ -29,6 +29,19 @@ public:
 	/** Retrieves the sprites for each point in the layer "ground" */
 	std::vector<CollisionType> groundCollision(std::vector<cocos2d::Vec2> points);
 private:
+	/**
+	 * @brief Initializes the collision tiles.
+	 * @details Should be called after initWithXml.
+	 */
+	void initTiles();
+	
+	/**
+	 * @brief Loads all the dynamic non collidable sprites (such as torches and clouds).
+	 * @details Should be called after initWithXml.
+	 */
+	void loadDynamicScene();
+
+
 	GameMap(const std::string& mapName, float scale);
 	std::vector<CollisionType> tiles;
 	std::string name;

@@ -1,4 +1,7 @@
 #include "GameMap.h"
+#include "animations/Torch.h"
+#include "animations/Cloud.h"
+#include "animations/Flag.h"
 
 USING_NS_CC;
 
@@ -7,6 +10,7 @@ GameMap* GameMap::create(const std::string& mapName, float scale) {
     auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename(mapName.c_str()).c_str());
     if (gameMap && gameMap->initWithXML(str->getCString(), "")) {
         gameMap->initTiles();
+        gameMap->loadDynamicScene();
         gameMap->autorelease();
         return gameMap;
     }
@@ -18,6 +22,24 @@ GameMap* GameMap::create(const std::string& mapName, float scale) {
 GameMap::GameMap(const std::string& mapName, float scale) {
     this->name = mapName;
     this->setScale(scale);
+}
+
+void GameMap::loadDynamicScene(){
+    TMXObjectGroup* objectGroup = this->getObjectGroup("animations");
+    for (Value object : objectGroup->getObjects()){
+        ValueMap dict = object.asValueMap();
+        std::string name = dict.at("name").asString();
+        float x = dict.at("x").asFloat() * this->getScale();
+        float y = dict.at("y").asFloat() * this->getScale();
+        Vec2 coord = mapToWorld(worldToMap(Vec2(x,y)));
+        if(name.compare("torch") == 0){
+            addChild(Torch::create(coord),1);
+        } else if(name.compare("flag") == 0){
+            addChild(Flag::create(coord), 1);
+        } else if(name.compare("cloud") == 0) {
+            addChild(Cloud::create(coord), 1);
+        }
+    }
 }
 
 GameMap::CollisionType parseTileProperties(ValueMap properties) {

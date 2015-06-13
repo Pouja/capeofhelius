@@ -1,5 +1,5 @@
-#ifndef _FLAG_H_
-#define _FLAG_H_
+#ifndef _GAME_FLAG_H_
+#define _GAME_FLAG_H_
 
 #include "cocos2d.h"
 

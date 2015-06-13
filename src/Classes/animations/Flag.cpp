@@ -4,7 +4,7 @@ USING_NS_CC;
 
 Flag* Flag::create(cocos2d::Vec2 position) {
 	Flag* flag = new Flag(position);
-	if (flag && flag->initWithFile("flagRed.png")) {
+	if (flag && flag->initWithSpriteFrameName("flagRed.png")) {
 		flag->autorelease();
 		flag->start();
 		return flag;
@@ -20,8 +20,9 @@ Flag::Flag(Vec2 postion) {
 void Flag::start() {
 	Vector<SpriteFrame*> animFrames;
 	animFrames.reserve(2);
-	animFrames.pushBack(cocos2d::SpriteFrame::create("flagRed.png", Rect(0,0,70,70)));
-	animFrames.pushBack(cocos2d::SpriteFrame::create("flagRed2.png", Rect(0,0,70,70)));
+	SpriteFrameCache* cache = SpriteFrameCache::getInstance();
+	animFrames.pushBack(cache->getSpriteFrameByName("flagRed.png"));
+	animFrames.pushBack(cache->getSpriteFrameByName("flagRed2.png"));
 	Animation* animation = Animation::createWithSpriteFrames(animFrames, 1.0f);
 	Animate* animate = Animate::create(animation);
 	this->runAction(RepeatForever::create(animate));

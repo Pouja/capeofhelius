@@ -33,6 +33,7 @@ bool GameHub::init() {
     this->addChild(xGoldCoin, 1);
     this->addChild(this->textbox, 1);
     this->addChild(this->label, 2);
+    // addChild(cocos2d::LayerColor::create(cocos2d::Color4B(0,0,0,170), 10000,10000));
     return true;
 }
  
