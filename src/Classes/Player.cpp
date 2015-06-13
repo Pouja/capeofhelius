@@ -9,23 +9,23 @@
 #define MAX_VERTICAL_VELOCITY 20.0
 #define MIN_HORIZONTAL_VELOCITY -10.0
 #define MIN_VERTICAL_VELOCITY -15.0
+#define BOTTOM_OFFSET 3
 
 USING_NS_CC;
 
 Player* Player::create(Vec2 position) {
     Player* player = new Player(position);
-    if(player && player->initWithSpriteFrameName("right.png")){
+    if (player && player->initWithSpriteFrameName("right.png")) {
         player->autorelease();
         player->initAnimations();
-        return player;        
+        return player;
     }
 
     CC_SAFE_DELETE(player);
     return nullptr;
-} 
+}
 
 Player::Player(cocos2d::Vec2 position) {
-    this->coins = 0;
     this->animationState = AnimationState::IDLE_RIGHT;
     this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
@@ -35,15 +35,18 @@ Player::Player(cocos2d::Vec2 position) {
     this->isOnGround = false;
 }
 
-void Player::addCoin(){
+void Player::addCoin() {    
     this->coins++;
 }
 
-int Player::getScore(){
+int Player::getScore() {
     return this->coins;
 }
 
-void Player::initAnimations(){
+void Player::initAnimations() {
+    float initHeigh = this->getContentSize().height;
+    this->setAnchorPoint(Vec2(0.5, ((initHeigh / 2) + BOTTOM_OFFSET) / initHeigh));
+
     SpriteFrameCache* cache = SpriteFrameCache::getInstance();
 
     Vector<SpriteFrame*> walkLeftFrames(9);
@@ -117,11 +120,11 @@ void Player::updateAnimation() {
         }
     } else {
         this->stopAllActions();
-        if (this->movingState.x >= 0 && 
-            (animationState == RUNNING_RIGHT || animationState == WALKING_RIGHT || animationState == IDLE_RIGHT) ) {
+        if (this->movingState.x >= 0 &&
+                (animationState == RUNNING_RIGHT || animationState == WALKING_RIGHT || animationState == IDLE_RIGHT) ) {
             this->setSpriteFrame("right_jump.png");
             this->animationState = JUMP_RIGHT;
-        } else if(animationState != JUMP_RIGHT){
+        } else if (animationState != JUMP_RIGHT) {
             this->setSpriteFrame("left_jump.png");
             this->animationState = JUMP_LEFT;
         }
@@ -135,7 +138,7 @@ std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
     float left = pov.x - boundingBox.size.width / 2;
     float right = pov.x + (boundingBox.size.width / 2);
     float top = pov.y + (boundingBox.size.height / 2);
-    float bottom = pov.y - (boundingBox.size.height / 2);
+    float bottom = pov.y - (boundingBox.size.height / 2) - BOTTOM_OFFSET;
 
     points.push_back(Vec2(pov.x, bottom));
     points.push_back(Vec2(pov.x, top));

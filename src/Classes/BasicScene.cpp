@@ -17,7 +17,6 @@ bool BasicScene::init()
     {
         return false;
     }
-    
     this->previousEvent = GameMap::CollisionType::NONE;
     this->paused = false;
     this->map = GameMap::create("chapter1.tmx", 1);
@@ -78,13 +77,14 @@ void BasicScene::resolveSlopeCollision(Vec2 tilePos, float playerHeight, Vec2* d
 void BasicScene::resolveCollision(Player* player) {
     Vec2 desiredPosition = player->getDesiredPosition();
 
-    float playerHeight = player->getContentSize().height * player->getScale();
-    float playerWidth = player->getContentSize().width * player->getScale();
-
     float tileHeight = this->map->getTileSize().height * this->map->getScale();
     float tileWidth = this->map->getTileSize().width * this->map->getScale();
-
     float mapWidth = this->map->getMapSize().width * tileWidth;
+
+    // Retrieve all the sprites on which the player collides
+    std::vector<Vec2> boundingPoints = player->getBoundingPoints(desiredPosition);
+    float playerHeight = boundingPoints[1].y - boundingPoints[0].y;
+    float playerWidth = boundingPoints[3].x - boundingPoints[2].x;
 
     // Make sure that the player can not move outside the map
     if (desiredPosition.x - playerWidth / 2 < 0) {
@@ -93,8 +93,6 @@ void BasicScene::resolveCollision(Player* player) {
         desiredPosition.x = mapWidth - playerWidth / 2;
     }
 
-    // Retrieve all the sprites on which the player collides
-    std::vector<Vec2> boundingPoints = player->getBoundingPoints(desiredPosition);
     std::vector<GameMap::CollisionType> collisions = this->map->groundCollision(boundingPoints);
 
     Vec2 velocity = player->velocity;
