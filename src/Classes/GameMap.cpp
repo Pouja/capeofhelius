@@ -59,11 +59,11 @@ void GameMap::loadPlatforms() {
 
         float x = dict.at("x").asFloat() * this->getScale();
         float y = dict.at("y").asFloat() * this->getScale();
-        Vec2 start = mapToWorld(worldToMap(Vec2(x, y)));
+        Vec2 start = Vec2(x, y);
 
         float xStep = dict.at("move_x").asFloat() * this->getScale();
         float yStep = dict.at("move_y").asFloat() * this->getScale();
-        Vec2 end = mapToWorld(worldToMap(Vec2(x + xStep * tileWidth, y + yStep * tileWidth)));
+        Vec2 end = Vec2(x + xStep * tileWidth, y + yStep * tileWidth);
 
         Vec2 velocity = Vec2(tileWidth * 2, tileHeight * 2);
         if(xStep == 0) velocity.x = 0;
