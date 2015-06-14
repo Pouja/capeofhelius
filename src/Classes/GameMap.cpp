@@ -120,6 +120,10 @@ void GameMap::initTiles() {
     layer->setVisible(false);
 }
 
+std::vector<Platform*> GameMap::getPlatforms(){
+    return this->platforms;
+}
+
 std::vector<GameMap::CollisionType> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
     std::vector<GameMap::CollisionType> collisions;
     for (Vec2 point : points) {

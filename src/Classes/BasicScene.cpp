@@ -165,6 +165,36 @@ void BasicScene::resolveCollision(Player* player) {
     player->setPosition(desiredPosition);
 }
 
+void BasicScene::resolvePlatforms(Player* player) {
+    Platform* collidedPlatform = nullptr;
+
+    std::vector<Vec2> boundingPoints = player->getBoundingPoints(player->getPosition());
+
+    float playerHeight = boundingPoints[1].y - boundingPoints[0].y;
+    float playerWidth = boundingPoints[3].x - boundingPoints[2].x;
+    Vec2 playerPosition = player->getPosition();
+
+    for (Platform* platform : this->map->getPlatforms()) {
+        Size platformSize = platform->getContentSize();
+        Vec2 platformPos = platform->getPosition();
+        Rect platformRect;
+        platformRect.origin = Vec2(platformPos.x - platformSize.width / 2, platformPos.y - platformSize.height / 2);
+        platformRect.size = platformSize;
+
+        if (platformRect.containsPoint(boundingPoints[0])) {
+            playerPosition.y = platformPos.y + playerHeight / 2 + platformSize.height / 2;
+            player->velocity.y = 0;
+            player->isOnGround = true;
+            break;
+        } else if (platformRect.containsPoint(boundingPoints[1])) {
+            playerPosition.y = platformPos.y - playerHeight / 2 - platformSize.height / 2;
+            player->velocity.y = 0;
+            break;
+        }
+    }
+    
+    player->setPosition(playerPosition);
+}
 
 void BasicScene::update(float delta) {
     if (!this->paused) {
@@ -174,6 +204,7 @@ void BasicScene::update(float delta) {
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
     this->setPosition(vpc);
     this->map->update(delta);
+    this->resolvePlatforms(this->mainPlayer);
     this->hub->setPosition(vpc * -1);
     this->hub->update(delta);
     this->mainPlayer->updateAnimation();

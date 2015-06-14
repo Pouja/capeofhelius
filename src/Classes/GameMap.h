@@ -31,6 +31,8 @@ public:
 
 	/** Called when the map is allowed to update **/
 	void update(float delta);
+
+	std::vector<Platform*> getPlatforms();
 private:
 	/**
 	 * @brief Initializes the collision tiles.
