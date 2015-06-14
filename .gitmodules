@@ -1,6 +1,3 @@
-[submodule "src/cocos2d"]
-	path = src/cocos2d
-	url = https://github.com/cocos2d/cocos2d-x
 [submodule "src/Resources"]
 	path = src/Resources
 	url = https://pnikray@bitbucket.org/pnikray/capeofhelius-resources

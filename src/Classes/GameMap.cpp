@@ -37,7 +37,7 @@ void GameMap::loadDynamicScene(){
         } else if(name.compare("flag") == 0){
             addChild(Flag::create(coord), 1);
         } else if(name.compare("cloud") == 0) {
-            addChild(Cloud::create(coord), 1);
+            //addChild(Cloud::create(coord), 1);
         }
     }
 }
