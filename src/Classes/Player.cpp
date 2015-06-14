@@ -216,6 +216,7 @@ void Player::updatePhysics() {
 
     this->velocity.clamp(minMovement, maxMovement);
     this->desiredPosition = this->getPosition() + this->velocity + this->externalForce;
+    this->externalForce = Vec2::ZERO;
 }
 
 
