@@ -47,6 +47,8 @@ public:
 
     int getScore();
 
+    void setExternalForce(cocos2d::Vec2 force);
+
     ~Player();
 private:
     int coins;
@@ -84,6 +86,8 @@ private:
 
     // The player state indicating which direction  it wants to go.
     cocos2d::Vec2 movingState;
+
+    cocos2d::Vec2 externalForce;
 };
 
 #endif

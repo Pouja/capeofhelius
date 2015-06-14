@@ -186,6 +186,10 @@ void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
     }
 }
 
+void Player::setExternalForce(cocos2d::Vec2 force){
+    this->externalForce = force;
+}
+
 void Player::updatePhysics() {
     Vec2 gravity(0.0, GRAVITY);
     this->velocity.add(gravity);
@@ -211,7 +215,7 @@ void Player::updatePhysics() {
     Vec2 maxMovement(MAX_HORIZONTAL_VELOCITY, MAX_VERTICAL_VELOCITY);
 
     this->velocity.clamp(minMovement, maxMovement);
-    this->desiredPosition = this->getPosition() + this->velocity;
+    this->desiredPosition = this->getPosition() + this->velocity + this->externalForce;
 }
 
 
