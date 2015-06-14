@@ -4,7 +4,10 @@ USING_NS_CC;
 
 Cloud* Cloud::create(cocos2d::Vec2 startPosition) {
     Cloud* cloud = new Cloud(startPosition);
-    if (cloud && cloud->initWithFile("cloud1.png")) {
+    int cloudIndex = RandomHelper::random_int(1, 3);
+    char name[100] = {0};
+    sprintf(name, "cloud%d.png", cloudIndex);
+    if (cloud && cloud->initWithFile(name)) {
         cloud->autorelease();
         cloud->reset();
         return cloud;
