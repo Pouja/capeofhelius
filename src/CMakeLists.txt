@@ -39,6 +39,9 @@ set(BUILD_LUA_LIBS OFF CACHE BOOL "disable lua binding")
 set(BUILD_LUA_TESTS OFF CACHE BOOL "disable lua tests")
 set(BUILD_JS_LIBS OFF CACHE BOOL "disable js binding")
 set(BUILD_JS_TESTS OFF CACHE BOOL "disable js tests")
+set(BUILD_EDITOR_SPINE OFF CACHE BOOL "disable editor support for spine")
+set(BUILD_EDITOR_COCOSTUDIO ON CACHE BOOL "disable editor support for cocostudio")
+set(BUILD_EDITOR_COCOSBUILDER OFF CACHE BOOL "disable editor support for cocosbuilder")
 add_subdirectory(${COCOS2D_ROOT})
 
 # Some macro definitions
