@@ -11,6 +11,7 @@ GameMap* GameMap::create(const std::string& mapName, float scale) {
     if (gameMap && gameMap->initWithXML(str->getCString(), "")) {
         gameMap->initTiles();
         gameMap->loadDynamicScene();
+        gameMap->loadPlatforms();
         gameMap->autorelease();
         return gameMap;
     }
@@ -24,21 +25,55 @@ GameMap::GameMap(const std::string& mapName, float scale) {
     this->setScale(scale);
 }
 
-void GameMap::loadDynamicScene(){
+void GameMap::update(float delta){
+    for(Platform* platform : platforms){
+        platform->update(delta);
+    }
+}
+
+void GameMap::loadDynamicScene() {
     TMXObjectGroup* objectGroup = this->getObjectGroup("animations");
-    for (Value object : objectGroup->getObjects()){
+    for (Value object : objectGroup->getObjects()) {
         ValueMap dict = object.asValueMap();
         std::string name = dict.at("name").asString();
         float x = dict.at("x").asFloat() * this->getScale();
         float y = dict.at("y").asFloat() * this->getScale();
-        Vec2 coord = mapToWorld(worldToMap(Vec2(x,y)));
-        if(name.compare("torch") == 0){
-            addChild(Torch::create(coord),1);
-        } else if(name.compare("flag") == 0){
+        Vec2 coord = mapToWorld(worldToMap(Vec2(x, y)));
+        if (name.compare("torch") == 0) {
+            addChild(Torch::create(coord), 1);
+        } else if (name.compare("flag") == 0) {
             addChild(Flag::create(coord), 1);
-        } else if(name.compare("cloud") == 0) {
+        } else if (name.compare("cloud") == 0) {
             addChild(Cloud::create(coord));
         }
+    }
+}
+
+void GameMap::loadPlatforms() {
+    TMXObjectGroup* objectGroup = this->getObjectGroup("platforms");
+    float tileWidth = this->getTileSize().width * this->getScale();
+    float tileHeight = this->getTileSize().height * this->getScale();
+    for (Value object : objectGroup->getObjects()) {
+        ValueMap dict = object.asValueMap();
+        std::string name = dict.at("sprite").asString();
+
+        float x = dict.at("x").asFloat() * this->getScale();
+        float y = dict.at("y").asFloat() * this->getScale();
+        Vec2 start = mapToWorld(worldToMap(Vec2(x, y)));
+
+        float xStep = dict.at("move_x").asFloat() * this->getScale();
+        float yStep = dict.at("move_y").asFloat() * this->getScale();
+        Vec2 end = mapToWorld(worldToMap(Vec2(x + xStep * tileWidth, y + yStep * tileWidth)));
+
+        Vec2 velocity = Vec2(tileWidth * 2, tileHeight * 2);
+        if(xStep == 0) velocity.x = 0;
+        if(yStep == 0) velocity.y = 0;
+
+        bool alternate = dict.find("alternate") != dict.end();
+        Platform* platform = Platform::create(start, end, velocity, name, this->getScale(), alternate);
+
+        addChild(platform);
+        platforms.push_back(platform);
     }
 }
 

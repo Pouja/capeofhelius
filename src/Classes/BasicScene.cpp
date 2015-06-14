@@ -173,7 +173,7 @@ void BasicScene::update(float delta) {
     }
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
     this->setPosition(vpc);
-
+    this->map->update(delta);
     this->hub->setPosition(vpc * -1);
     this->hub->update(delta);
     this->mainPlayer->updateAnimation();
