@@ -13,10 +13,6 @@ Scene* BasicScene::createScene()
 
 bool BasicScene::init()
 {
-    if ( !Layer::init() )
-    {
-        return false;
-    }
     this->previousEvent = GameMap::CollisionType::NONE;
     this->paused = false;
     this->map = GameMap::create("chapter1.tmx", 1);

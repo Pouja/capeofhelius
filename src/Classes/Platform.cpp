@@ -24,7 +24,7 @@ Platform* Platform::create(Vec2 start, Vec2 end, Vec2 velocity, const std::strin
 
 void Platform::initPosition(bool alternate) {
 	Size size = this->getContentSize();
-	Vec2 center(size.width / 2, size.height / 2);
+	Vec2 center(size.width * getScale() / 2, size.height * getScale() / 2);
 
 	start.add(center);
 	end.add(center);

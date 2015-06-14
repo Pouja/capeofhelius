@@ -44,7 +44,7 @@ void GameMap::loadDynamicScene() {
         } else if (name.compare("flag") == 0) {
             addChild(Flag::create(coord), 1);
         } else if (name.compare("cloud") == 0) {
-            addChild(Cloud::create(coord));
+            addChild(Cloud::create(coord), -1);
         }
     }
 }
@@ -61,8 +61,8 @@ void GameMap::loadPlatforms() {
         float y = dict.at("y").asFloat() * this->getScale();
         Vec2 start = Vec2(x, y);
 
-        float xStep = dict.at("move_x").asFloat() * this->getScale();
-        float yStep = dict.at("move_y").asFloat() * this->getScale();
+        float xStep = dict.at("move_x").asFloat();
+        float yStep = dict.at("move_y").asFloat();
         Vec2 end = Vec2(x + xStep * tileWidth, y + yStep * tileWidth);
 
         Vec2 velocity = Vec2(tileWidth * 2, tileHeight * 2);
