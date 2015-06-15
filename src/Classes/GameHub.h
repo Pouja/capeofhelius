@@ -9,6 +9,7 @@ private:
     cocos2d::Sprite* xGoldCoin;
     cocos2d::Sprite* n1GoldCoin;
     cocos2d::Sprite* n2GoldCoin;
+    cocos2d::Sprite* lives;
     cocos2d::Sprite* textbox;
     cocos2d::Label* label;
     std::queue<std::string> textQueue;
@@ -24,6 +25,8 @@ public:
     
     void clearText();
     void setCoins(int number);
+
+    void setLives(int lives);
 
     // Sets the queue for text to be displayed.
     void setText(std::queue<std::string> text);

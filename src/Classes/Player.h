@@ -53,6 +53,8 @@ public:
      */
     int getScore();
 
+    int getLives();
+
     /**
      * @brief Adds an external force to the player.
      * @details The force will be added after the physics is applied.
@@ -66,9 +68,9 @@ public:
 
     ~Player();
 private:
-    // The score of the player
-    int coins;
-    
+    int coins;    
+    int lives;
+
     /**
     * Sets the default values for the player.
     * @param position The position in the parent node that it should be placed.

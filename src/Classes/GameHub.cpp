@@ -18,6 +18,9 @@ bool GameHub::init() {
     goldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_coins.png");
     goldCoin->setPosition(contentSize.width * 0.8 + 120, contentSize.height * 0.9);
 
+    lives = Sprite::createWithSpriteFrameName("hud_heartFull.png");
+    lives->setPosition(contentSize.width * 0.1, contentSize.height * 0.9);
+
     this->textbox = cocos2d::Sprite::create("textbox.png");
     this->textbox->setScaleX(contentSize.width / this->textbox->getContentSize().width);
 
@@ -25,6 +28,7 @@ bool GameHub::init() {
     this->label->setColor(cocos2d::Color3B::BLACK);
     this->label->setWidth(contentSize.width * 0.5);
 
+    this->addChild(lives, 1);
     this->addChild(this->n1GoldCoin, 1);
     this->addChild(this->n2GoldCoin, 1);
     this->addChild(goldCoin, 1);
@@ -56,6 +60,17 @@ void GameHub::update(float delta) {
     Size contentSize = director->getVisibleSize();
     this->label->setPosition(contentSize.width * 0.3, 40);
     this->textbox->setPosition(contentSize.width / 2, 45);
+}
+
+void GameHub::setLives(int nLives){
+    assert(nLives <= 2 && nLives >= 0);
+    if(nLives == 2) {
+        lives->setSpriteFrame("hud_heartFull.png");
+    } else if(nLives == 1){
+        lives->setSpriteFrame("hud_heartHalf.png");
+    } else {
+        lives->setSpriteFrame("hud_heartEmpty.png");
+    }
 }
 
 bool GameHub::isDone() {

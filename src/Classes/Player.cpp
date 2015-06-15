@@ -33,6 +33,7 @@ Player::Player(cocos2d::Vec2 position) {
     this->setPosition(position);
     this->desiredPosition = position;
     this->isOnGround = false;
+    this->lives = 2;
 }
 
 void Player::addCoin() {    
@@ -41,6 +42,10 @@ void Player::addCoin() {
 
 int Player::getScore() {
     return this->coins;
+}
+
+int Player::getLives() {
+    return this->lives;
 }
 
 void Player::initAnimations() {
@@ -221,6 +226,7 @@ void Player::updatePhysics() {
 }
 
 void Player::die(CallFunc* callback){
+    this->lives--;
     this->animationState = AnimationState::IDLE_RIGHT;
     this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
