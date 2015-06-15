@@ -5,7 +5,6 @@
 
 class TitleScreen : public cocos2d::Layer {
 private:
-	cocos2d::LayerColor* dimScreen;
 	cocos2d::Label* title;
 	cocos2d::Label* message;
 	TitleScreen(){};

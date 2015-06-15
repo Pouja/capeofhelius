@@ -17,7 +17,6 @@ bool TitleScreen::init(const std::string& title, const std::string& message, boo
 	Director* director = Director::getInstance();
 	Size contentSize = director->getVisibleSize();
 
-	this->dimScreen = cocos2d::LayerColor::create(cocos2d::Color4B(0, 0, 0, 170), contentSize.width, contentSize.height);
 	this->title = Label::createWithTTF(title, "kenpixel.ttf", 40, Size(200,200), TextHAlignment::CENTER);
 	this->title->setColor(cocos2d::Color3B::WHITE);
 	this->title->setWidth(contentSize.width * 0.5);
@@ -28,10 +27,9 @@ bool TitleScreen::init(const std::string& title, const std::string& message, boo
 	this->message->setWidth(contentSize.width * 0.5);
 	this->message->setPosition(Vec2(contentSize.width / 2, contentSize.height / 2 - 50));
 
-	if (withDim) {
-		addChild(this->dimScreen);
-	}
+	float transparency = (withDim) ? 170 : 255;
 
+	addChild(cocos2d::LayerColor::create(cocos2d::Color4B(0, 0, 0, transparency), contentSize.width, contentSize.height));
 	addChild(this->title);
 	addChild(this->message);
 	return true;
