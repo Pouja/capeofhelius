@@ -62,7 +62,7 @@ public:
     void setExternalForce(cocos2d::Vec2 force);
 
     void die(cocos2d::CallFunc* callback);
-    void respawn(cocos2d::Vec2 position);
+    void respawn(cocos2d::Vec2 position, cocos2d::CallFunc* callback);
 
     ~Player();
 private:

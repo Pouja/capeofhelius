@@ -88,6 +88,10 @@ void BasicScene::resolveCollision(Player* player) {
     }
 
     std::vector<GameMap::CollisionType> collisions = this->map->groundCollision(boundingPoints);
+    if (collisions[8] == GameMap::CollisionType::DEATH) {
+        onDeath();
+        return;
+    }
 
     Vec2 velocity = player->velocity;
 
@@ -105,7 +109,6 @@ void BasicScene::resolveCollision(Player* player) {
     // Slope collision
     if (collisions[0] == GameMap::CollisionType::SLOPE_LEFT || collisions[0] == GameMap::CollisionType::SLOPE_RIGHT) {
         bool isLeft = collisions[0] == GameMap::CollisionType::SLOPE_LEFT;
-
         Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
         Vec2 pos = this->map->mapToWorld(mapCoord);
 
@@ -191,14 +194,17 @@ void BasicScene::resolvePlatforms(Player* player, float delta) {
 }
 
 void BasicScene::onDeath() {
-
     this->paused = true;
-    CallFunc* cb = CallFunc::create([this] {
-        this->mainPlayer->respawn(this->map->objectPoint("objects", "spawnpoint"));
+
+    CallFunc* cbDead = CallFunc::create([this] {
+        CallFunc* cbRespawn = CallFunc::create([this]{
+            this->paused = false;
+        });
+
+        this->mainPlayer->respawn(this->map->objectPoint("objects", "spawnpoint"), cbRespawn);
         this->removeChildByTag(1);
-        this->paused = false;
     });
-    this->mainPlayer->die(cb);
+    this->mainPlayer->die(cbDead);
 
     TitleScreen* titleScreen = TitleScreen::create("Oh now you died :(", "Be carefull!", true);
     titleScreen->setPosition(this->getPosition() * -1);
@@ -209,12 +215,16 @@ void BasicScene::update(float delta) {
     if (!this->paused) {
         this->mainPlayer->updatePhysics();
         this->resolveCollision(this->mainPlayer);
-        this->mainPlayer->updateAnimation();
     }
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
     this->setPosition(vpc);
     this->map->update(delta);
     this->resolvePlatforms(this->mainPlayer, delta);
+
+    if (!this->paused) {
+        this->mainPlayer->updateAnimation();
+    }
+
     this->hub->setPosition(vpc * -1);
     this->hub->update(delta);
 }

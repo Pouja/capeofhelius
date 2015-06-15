@@ -148,6 +148,7 @@ std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
     points.push_back(Vec2(left, bottom));
     points.push_back(Vec2(right, bottom));
     points.push_back(Vec2(right, top));
+    points.push_back(Vec2((left + right) /2 , (top + bottom)/2));
     return points;
 }
 
@@ -223,23 +224,23 @@ void Player::die(CallFunc* callback){
     this->animationState = AnimationState::IDLE_RIGHT;
     this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
-    
+
     this->stopAllActions();
     FadeOut* fadeOut = FadeOut::create(2);
     Sequence* seq = Sequence::create(fadeOut, callback, nullptr);
     this->runAction(seq);
 }
 
-void Player::respawn(Vec2 position){
+void Player::respawn(Vec2 position, CallFunc* cb){
     this->stopAllActions();
-
 
     this->setPosition(position);
     this->desiredPosition = position;
     this->isOnGround = false;
 
     FadeIn* fadeIn = FadeIn::create(2);
-    this->runAction(fadeIn);
+    Sequence* seq = Sequence::create(fadeIn, cb, nullptr);
+    this->runAction(seq);
 }
 
 Vec2 Player::getState() {
