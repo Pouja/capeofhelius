@@ -2,7 +2,6 @@
 
 USING_NS_CC;
 
-
 Scene* BasicScene::createScene()
 {
     auto scene = Scene::create();
@@ -16,8 +15,7 @@ bool BasicScene::init()
     this->previousEvent = GameMap::CollisionType::NONE;
     this->paused = false;
     this->map = GameMap::create("chapter1.tmx", 1);
-    this->hub = new GameHub();
-    this->hub->init();
+    this->hub = GameHub::create();
     this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"));
 
     addChild(this->map);
@@ -162,12 +160,9 @@ void BasicScene::resolveCollision(Player* player) {
 }
 
 void BasicScene::resolvePlatforms(Player* player, float delta) {
-    Platform* collidedPlatform = nullptr;
-
     std::vector<Vec2> boundingPoints = player->getBoundingPoints(player->getPosition());
 
     float playerHeight = boundingPoints[1].y - boundingPoints[0].y;
-    float playerWidth = boundingPoints[3].x - boundingPoints[2].x;
     Vec2 playerPosition = player->getPosition();
 
     for (Platform* platform : this->map->getPlatforms()) {

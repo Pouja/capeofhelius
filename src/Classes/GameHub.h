@@ -12,8 +12,9 @@ private:
     cocos2d::Sprite* textbox;
     cocos2d::Label* label;
     std::queue<std::string> textQueue;
+    GameHub(){};
+
 public:
-    GameHub();
     
     void update(float delta);
     virtual bool init();
