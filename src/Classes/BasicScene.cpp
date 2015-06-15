@@ -12,7 +12,6 @@ Scene* BasicScene::createScene()
 
 bool BasicScene::init()
 {
-    this->previousEvent = GameMap::CollisionType::NONE;
     this->paused = false;
     this->map = GameMap::create("chapter1.tmx", 1);
     this->hub = GameHub::create();

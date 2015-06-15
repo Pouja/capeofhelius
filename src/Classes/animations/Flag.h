@@ -5,12 +5,30 @@
 
 class Flag : public cocos2d::Sprite {
 public:
-	static Flag* create(cocos2d::Vec2 position);
+    /**
+     * @brief Creates a new Flag and starts the animation.
+     *
+     * @param position
+     * @return pointer to the flag
+     */
+    static Flag* create(cocos2d::Vec2 position);
 
-	void start();
-	void stop();
+    /**
+     * @brief Starts the animation of the flag.
+     */
+    void start();
+
+    /**
+     * @brief Stops the animation of the flag.
+     */
+    void stop();
 private:
-	Flag(cocos2d::Vec2 position);
+    /**
+     * @brief Creates a new flag with the given position
+     *
+     * @param position
+     */
+    Flag(cocos2d::Vec2 position);
 };
 
 #endif

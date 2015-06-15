@@ -43,15 +43,29 @@ public:
     cocos2d::Vec2 velocity;
     bool isOnGround;
 
+    /**
+     * @brief Adds a score point to the player
+     */
     void addCoin();
 
+    /**
+     * @return The score of the player
+     */
     int getScore();
 
+    /**
+     * @brief Adds an external force to the player.
+     * @details The force will be added after the physics is applied.
+     * 
+     * @param force
+     */
     void setExternalForce(cocos2d::Vec2 force);
 
     ~Player();
 private:
+    // The score of the player
     int coins;
+    
     /**
     * Sets the default values for the player.
     * @param position The position in the parent node that it should be placed.
@@ -61,6 +75,7 @@ private:
     /** Initializes all the animation, should be called in the create function.*/
     void initAnimations();
 
+    // The different animation state in which the player can be.
     enum AnimationState{
         WALKING_LEFT,
         WALKING_RIGHT,
@@ -87,6 +102,7 @@ private:
     // The player state indicating which direction  it wants to go.
     cocos2d::Vec2 movingState;
 
+    // The external force to be applied on each tick.
     cocos2d::Vec2 externalForce;
 };
 
