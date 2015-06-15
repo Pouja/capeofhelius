@@ -196,18 +196,28 @@ void BasicScene::resolvePlatforms(Player* player, float delta) {
 void BasicScene::onDeath() {
     this->paused = true;
 
-    CallFunc* cbDead = CallFunc::create([this] {
-        CallFunc* cbRespawn = CallFunc::create([this]{
-            this->paused = false;
-        });
-
-        this->mainPlayer->respawn(this->map->objectPoint("objects", "spawnpoint"), cbRespawn);
-        this->removeChildByTag(1);
-    });
-    this->mainPlayer->die(cbDead);
-
-    TitleScreen* titleScreen = TitleScreen::create("Oh now you died :(", "Be carefull!", true);
+    TitleScreen* titleScreen = TitleScreen::create("Oh now you died :(", "Be carefull!", true);\
+    if (this->mainPlayer->getLives() - 1 == 0) {
+        titleScreen = TitleScreen::create("Game Over", "", false);
+    }
+    
     titleScreen->setPosition(this->getPosition() * -1);
+
+    CallFunc* cbDie = CallFunc::create([this] {
+        if (this->mainPlayer->getLives() == 0) {
+            Director::getInstance()->replaceScene(BasicScene::createScene());
+        } else {
+            CallFunc* cbRespawn = CallFunc::create([this]{
+                this->paused = false;
+            });
+            this->mainPlayer->respawn(this->map->objectPoint("objects", "spawnpoint"), cbRespawn);
+            this->removeChildByTag(1);
+            this->hub->setLives(this->mainPlayer->getLives());
+        }
+    });
+
+    this->mainPlayer->die(cbDie);
+
     addChild(titleScreen, 3, 1);
 }
 
