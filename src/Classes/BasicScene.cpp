@@ -1,4 +1,5 @@
 #include "BasicScene.h"
+#include "TitleScreen.h"
 
 USING_NS_CC;
 
@@ -189,10 +190,26 @@ void BasicScene::resolvePlatforms(Player* player, float delta) {
     player->setPosition(playerPosition);
 }
 
+void BasicScene::onDeath() {
+
+    this->paused = true;
+    CallFunc* cb = CallFunc::create([this] {
+        this->mainPlayer->respawn(this->map->objectPoint("objects", "spawnpoint"));
+        this->removeChildByTag(1);
+        this->paused = false;
+    });
+    this->mainPlayer->die(cb);
+
+    TitleScreen* titleScreen = TitleScreen::create("Oh now you died :(", "Be carefull!", true);
+    titleScreen->setPosition(this->getPosition() * -1);
+    addChild(titleScreen, 3, 1);
+}
+
 void BasicScene::update(float delta) {
     if (!this->paused) {
         this->mainPlayer->updatePhysics();
         this->resolveCollision(this->mainPlayer);
+        this->mainPlayer->updateAnimation();
     }
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
     this->setPosition(vpc);
@@ -200,7 +217,6 @@ void BasicScene::update(float delta) {
     this->resolvePlatforms(this->mainPlayer, delta);
     this->hub->setPosition(vpc * -1);
     this->hub->update(delta);
-    this->mainPlayer->updateAnimation();
 }
 
 Vec2 BasicScene::getViewPointCenter(Vec2 position) {

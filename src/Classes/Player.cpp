@@ -219,6 +219,28 @@ void Player::updatePhysics() {
     this->externalForce = Vec2::ZERO;
 }
 
+void Player::die(CallFunc* callback){
+    this->animationState = AnimationState::IDLE_RIGHT;
+    this->velocity = cocos2d::Vec2::ZERO;
+    this->movingState = cocos2d::Vec2::ZERO;
+    
+    this->stopAllActions();
+    FadeOut* fadeOut = FadeOut::create(2);
+    Sequence* seq = Sequence::create(fadeOut, callback, nullptr);
+    this->runAction(seq);
+}
+
+void Player::respawn(Vec2 position){
+    this->stopAllActions();
+
+
+    this->setPosition(position);
+    this->desiredPosition = position;
+    this->isOnGround = false;
+
+    FadeIn* fadeIn = FadeIn::create(2);
+    this->runAction(fadeIn);
+}
 
 Vec2 Player::getState() {
     return this->movingState;

@@ -61,6 +61,9 @@ public:
      */
     void setExternalForce(cocos2d::Vec2 force);
 
+    void die(cocos2d::CallFunc* callback);
+    void respawn(cocos2d::Vec2 position);
+
     ~Player();
 private:
     // The score of the player

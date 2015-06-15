@@ -70,6 +70,8 @@ private:
 	 * @param desiredPosition
 	 */
 	void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
+
+	void onDeath();
 public:
 	/**
 	 * @brief Creates and intializes the scene with all players, tiles etc.

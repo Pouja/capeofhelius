@@ -18,15 +18,15 @@ bool TitleScreen::init(const std::string& title, const std::string& message, boo
 	Size contentSize = director->getVisibleSize();
 
 	this->dimScreen = cocos2d::LayerColor::create(cocos2d::Color4B(0, 0, 0, 170), contentSize.width, contentSize.height);
-	this->title = Label::createWithTTF(title, "kenpixel.ttf", 20);
-	this->title->setColor(cocos2d::Color3B::BLACK);
+	this->title = Label::createWithTTF(title, "kenpixel.ttf", 40, Size(200,200), TextHAlignment::CENTER);
+	this->title->setColor(cocos2d::Color3B::WHITE);
 	this->title->setWidth(contentSize.width * 0.5);
 	this->title->setPosition(Vec2(contentSize.width / 2, contentSize.height / 2));
 
-	this->message = Label::createWithTTF(message, "kenpixel.ttf", 15);
-	this->message->setColor(cocos2d::Color3B::BLACK);
+	this->message = Label::createWithTTF(message, "kenpixel.ttf", 20, Size(200,200), TextHAlignment::CENTER);
+	this->message->setColor(cocos2d::Color3B::WHITE);
 	this->message->setWidth(contentSize.width * 0.5);
-	this->title->setPosition(Vec2(contentSize.width / 2, (contentSize.height / 2) - 30));
+	this->message->setPosition(Vec2(contentSize.width / 2, contentSize.height / 2 - 50));
 
 	if (withDim) {
 		addChild(this->dimScreen);
