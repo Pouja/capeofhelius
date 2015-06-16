@@ -34,6 +34,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     cache->addSpriteFramesWithFile("characters/zoe-nocape.plist");
     cache->addSpriteFramesWithFile("tiles/hud.plist");
     cache->addSpriteFramesWithFile("tiles/items.plist");
+    cache->addSpriteFramesWithFile("enemies/enemies.plist");
 
     // turn on display FPS
     director->setDisplayStats(false);
