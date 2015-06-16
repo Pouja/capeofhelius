@@ -32,6 +32,7 @@ public:
 	/** Called when the map is allowed to update **/
 	void update(float delta);
 
+    void removeCollectable(cocos2d::Vec2 worldCoord);
 	std::vector<Platform*> getPlatforms();
 private:
 	/**

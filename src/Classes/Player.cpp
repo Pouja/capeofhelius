@@ -33,6 +33,7 @@ Player::Player(cocos2d::Vec2 position, const std::string& name) {
     this->desiredPosition = position;
     this->isOnGround = false;
     this->lives = 2;
+    this->coins = 0;
     this->name = name;
 }
 

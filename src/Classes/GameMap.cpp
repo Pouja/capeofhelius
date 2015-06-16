@@ -25,8 +25,8 @@ GameMap::GameMap(const std::string& mapName, float scale) {
     this->setScale(scale);
 }
 
-void GameMap::update(float delta){
-    for(Platform* platform : platforms){
+void GameMap::update(float delta) {
+    for (Platform* platform : platforms) {
         platform->update(delta);
     }
 }
@@ -66,8 +66,8 @@ void GameMap::loadPlatforms() {
         Vec2 end = Vec2(x + xStep * tileWidth, y + yStep * tileWidth);
 
         Vec2 velocity = Vec2(tileWidth * 2, tileHeight * 2);
-        if(xStep == 0) velocity.x = 0;
-        if(yStep == 0) velocity.y = 0;
+        if (xStep == 0) velocity.x = 0;
+        if (yStep == 0) velocity.y = 0;
 
         bool alternate = dict.find("alternate") != dict.end();
         Platform* platform = Platform::create(start, end, velocity, name, this->getScale(), alternate);
@@ -82,22 +82,20 @@ GameMap::TileTyp parseTileProperties(ValueMap properties) {
         std::string type = properties["type"].asString();
         if (type.compare("death") == 0) {
             return GameMap::TileTyp::DEATH;
-        }
-        if (type.compare("slope") == 0) {
+        } else if (type.compare("slope") == 0) {
             if (properties["angle"].asString().compare("left") == 0) {
                 return GameMap::TileTyp::SLOPE_LEFT;
             }
             return GameMap::TileTyp::SLOPE_RIGHT;
-        }
-        if (type.compare("stump") == 0) {
+        } else if (type.compare("stump") == 0) {
             return GameMap::TileTyp::STUMP;
-        }
-        if (type.compare("wall") == 0) {
+        } else if (type.compare("wall") == 0) {
             return GameMap::TileTyp::WALL;
+        } else if (type.compare("collectable") == 0) {
+            return GameMap::TileTyp::COLLECTABLE;
         }
     }
     return GameMap::TileTyp::NONE;
-
 }
 
 void GameMap::initTiles() {
@@ -120,7 +118,20 @@ void GameMap::initTiles() {
     layer->setVisible(false);
 }
 
-std::vector<Platform*> GameMap::getPlatforms(){
+void GameMap::removeCollectable(cocos2d::Vec2 worldCoord) {
+    Vec2 mapCoord = this->worldToMap(worldCoord);
+
+    // First remove it the sprite
+    TMXLayer* layer = this->getLayer("items");
+    layer->removeTileAt(mapCoord);
+
+    // Update the tile map collisions
+    Size mapSize = this->getMapSize();
+    int index = (int) mapCoord.x + mapSize.width * mapCoord.y;
+    tiles[index] = TileTyp::NONE;
+}
+
+std::vector<Platform*> GameMap::getPlatforms() {
     return this->platforms;
 }
 

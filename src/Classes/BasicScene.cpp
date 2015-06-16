@@ -96,6 +96,8 @@ void BasicScene::resolveCollision(Player* player) {
     if (collisions[8] == GameMap::TileTyp::DEATH) {
         onDeath();
         return;
+    } else if(collisions[8] == GameMap::TileTyp::COLLECTABLE) {
+        onCollectable(boundingPoints[8]);
     }
 
     Vec2 velocity = player->velocity;
@@ -196,6 +198,12 @@ void BasicScene::resolvePlatforms(Player* player, float delta) {
     }
 
     player->setPosition(playerPosition);
+}
+
+void BasicScene::onCollectable(Vec2 position){
+    this->map->removeCollectable(position);
+    this->mainPlayer->addCoin();
+    this->hub->setCoins(this->mainPlayer->getScore());
 }
 
 void BasicScene::onDeath() {
