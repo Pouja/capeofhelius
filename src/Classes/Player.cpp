@@ -12,7 +12,7 @@
 #define BOTTOM_OFFSET 3
 
 USING_NS_CC;
-
+//TODO make name variable
 Player* Player::create(Vec2 position) {
     Player* player = new Player(position);
     if (player && player->initWithSpriteFrameName("zoe-nocape-walk-right/0.png")) {
