@@ -15,7 +15,7 @@ USING_NS_CC;
 
 Player* Player::create(Vec2 position) {
     Player* player = new Player(position);
-    if (player && player->initWithSpriteFrameName("right.png")) {
+    if (player && player->initWithSpriteFrameName("zoe-nocape-walk-right/0.png")) {
         player->autorelease();
         player->initAnimations();
         return player;
@@ -57,9 +57,9 @@ void Player::initAnimations() {
     Vector<SpriteFrame*> walkLeftFrames(9);
 
     char str[100] = {0};
-    for (int i = 1; i < 9; i++)
+    for (int i = 0; i < 9; i++)
     {
-        sprintf(str, "walk_left/%d.png", i);
+        sprintf(str, "zoe-nocape-walk-left/%d.png", i);
         SpriteFrame* frame = cache->getSpriteFrameByName( str );
         walkLeftFrames.pushBack(frame);
     }
@@ -74,7 +74,7 @@ void Player::initAnimations() {
     Vector<SpriteFrame*> walkRightFrames(9);
     for (int i = 1; i < 9; i++)
     {
-        sprintf(str, "walk_right/%d.png", i);
+        sprintf(str, "zoe-nocape-walk-right/%d.png", i);
         SpriteFrame* frame = cache->getSpriteFrameByName( str );
         walkRightFrames.pushBack(frame);
     }
@@ -94,10 +94,10 @@ void Player::updateAnimation() {
             this->stopAllActions();
             if (this->animationState == JUMP_LEFT || this->animationState == WALKING_LEFT
                     || this->animationState == RUNNING_LEFT) {
-                this->setSpriteFrame("left.png");
+                this->setSpriteFrame("zoe-nocape-walk-left/0.png");
                 this->animationState = IDLE_LEFT;
             } else {
-                this->setSpriteFrame("right.png");
+                this->setSpriteFrame("zoe-nocape-walk-right/0.png");
                 this->animationState = IDLE_RIGHT;
             }
         }
@@ -127,10 +127,10 @@ void Player::updateAnimation() {
         this->stopAllActions();
         if (this->movingState.x >= 0 &&
                 (animationState == RUNNING_RIGHT || animationState == WALKING_RIGHT || animationState == IDLE_RIGHT) ) {
-            this->setSpriteFrame("right_jump.png");
+            this->setSpriteFrame("zoe-nocape-walk-right/7.png");
             this->animationState = JUMP_RIGHT;
         } else if (animationState != JUMP_RIGHT) {
-            this->setSpriteFrame("left_jump.png");
+            this->setSpriteFrame("zoe-nocape-walk-left/7.png");
             this->animationState = JUMP_LEFT;
         }
     }

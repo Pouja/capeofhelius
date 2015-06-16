@@ -21,10 +21,10 @@ bool GameHub::init() {
     lives = Sprite::createWithSpriteFrameName("hud_heartFull.png");
     lives->setPosition(contentSize.width * 0.1, contentSize.height * 0.9);
 
-    this->textbox = cocos2d::Sprite::create("textbox.png");
+    this->textbox = cocos2d::Sprite::create("tiles/textbox.png");
     this->textbox->setScaleX(contentSize.width / this->textbox->getContentSize().width);
 
-    this->label = Label::createWithTTF("", "kenpixel.ttf", 12);
+    this->label = Label::createWithTTF("", "fonts/kenpixel.ttf", 12);
     this->label->setColor(cocos2d::Color3B::BLACK);
     this->label->setWidth(contentSize.width * 0.5);
 
