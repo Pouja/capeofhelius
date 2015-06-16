@@ -77,26 +77,26 @@ void GameMap::loadPlatforms() {
     }
 }
 
-GameMap::CollisionType parseTileProperties(ValueMap properties) {
+GameMap::TileTyp parseTileProperties(ValueMap properties) {
     if (!properties.empty()) {
         std::string type = properties["type"].asString();
         if (type.compare("death") == 0) {
-            return GameMap::CollisionType::DEATH;
+            return GameMap::TileTyp::DEATH;
         }
         if (type.compare("slope") == 0) {
             if (properties["angle"].asString().compare("left") == 0) {
-                return GameMap::CollisionType::SLOPE_LEFT;
+                return GameMap::TileTyp::SLOPE_LEFT;
             }
-            return GameMap::CollisionType::SLOPE_RIGHT;
+            return GameMap::TileTyp::SLOPE_RIGHT;
         }
         if (type.compare("stump") == 0) {
-            return GameMap::CollisionType::STUMP;
+            return GameMap::TileTyp::STUMP;
         }
         if (type.compare("wall") == 0) {
-            return GameMap::CollisionType::WALL;
+            return GameMap::TileTyp::WALL;
         }
     }
-    return GameMap::CollisionType::NONE;
+    return GameMap::TileTyp::NONE;
 
 }
 
@@ -110,10 +110,10 @@ void GameMap::initTiles() {
             uint32_t tileGID = layer->getTileGIDAt(Vec2(x, y));
             if (tileGID != 0) {
                 ValueMap properties = this->getPropertiesForGID(tileGID).asValueMap();
-                CollisionType tileType = parseTileProperties(properties);
+                TileTyp tileType = parseTileProperties(properties);
                 this->tiles.push_back(tileType);
             } else {
-                this->tiles.push_back(CollisionType::NONE);
+                this->tiles.push_back(TileTyp::NONE);
             }
         }
     }
@@ -124,13 +124,13 @@ std::vector<Platform*> GameMap::getPlatforms(){
     return this->platforms;
 }
 
-std::vector<GameMap::CollisionType> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
-    std::vector<GameMap::CollisionType> collisions;
+std::vector<GameMap::TileTyp> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
+    std::vector<GameMap::TileTyp> collisions;
     for (Vec2 point : points) {
         Vec2 mapCoord = this->worldToMap(point);
         Size mapSize = this->getMapSize();
         if (mapCoord.x < 0 || mapCoord.y < 0 || mapCoord.x >= mapSize.width || mapCoord.y >= mapSize.height) {
-            collisions.push_back(GameMap::CollisionType::NONE);
+            collisions.push_back(GameMap::TileTyp::NONE);
         } else {
             int index = (int) mapCoord.x + mapSize.width * mapCoord.y;
             collisions.push_back(tiles[index]);

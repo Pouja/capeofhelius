@@ -87,8 +87,8 @@ void BasicScene::resolveCollision(Player* player) {
         desiredPosition.x = mapWidth - playerWidth / 2;
     }
 
-    std::vector<GameMap::CollisionType> collisions = this->map->groundCollision(boundingPoints);
-    if (collisions[8] == GameMap::CollisionType::DEATH) {
+    std::vector<GameMap::TileTyp> collisions = this->map->groundCollision(boundingPoints);
+    if (collisions[8] == GameMap::TileTyp::DEATH) {
         onDeath();
         return;
     }
@@ -102,19 +102,19 @@ void BasicScene::resolveCollision(Player* player) {
     int collisionCount = 0;
 
     // Bottom collision, so the player is on the ground
-    if (collisions[0] != GameMap::CollisionType::NONE) {
+    if (collisions[0] != GameMap::TileTyp::NONE) {
         player->isOnGround = true;
     }
 
     // Slope collision
-    if (collisions[0] == GameMap::CollisionType::SLOPE_LEFT || collisions[0] == GameMap::CollisionType::SLOPE_RIGHT) {
-        bool isLeft = collisions[0] == GameMap::CollisionType::SLOPE_LEFT;
+    if (collisions[0] == GameMap::TileTyp::SLOPE_LEFT || collisions[0] == GameMap::TileTyp::SLOPE_RIGHT) {
+        bool isLeft = collisions[0] == GameMap::TileTyp::SLOPE_LEFT;
         Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
         Vec2 pos = this->map->mapToWorld(mapCoord);
 
         resolveSlopeCollision(pos, playerHeight, &desiredPosition, isLeft);
         collisionCount++;
-    } else if (collisions[0] == GameMap::CollisionType::STUMP) {
+    } else if (collisions[0] == GameMap::TileTyp::STUMP) {
         Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
         Vec2 pos = this->map->mapToWorld(mapCoord);
 
@@ -125,16 +125,16 @@ void BasicScene::resolveCollision(Player* player) {
         collisionCount++;
     } else {
         // Bottom (no slope) or top collision
-        if (collisions[0] == GameMap::CollisionType::WALL || collisions[1] == GameMap::CollisionType::WALL) {
-            int index = (collisions[0] == GameMap::CollisionType::WALL) ? 0 : 1;
+        if (collisions[0] == GameMap::TileTyp::WALL || collisions[1] == GameMap::TileTyp::WALL) {
+            int index = (collisions[0] == GameMap::TileTyp::WALL) ? 0 : 1;
             Vec2 mapCoord = this->map->worldToMap(boundingPoints[index]);
             Vec2 pos = this->map->mapToWorld(mapCoord);
             this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
             collisionCount++;
         }
         // Left or Right collision
-        if (collisions[2] == GameMap::CollisionType::WALL || collisions[3] == GameMap::CollisionType::WALL) {
-            int index = (collisions[2] == GameMap::CollisionType::WALL) ? 2 : 3;
+        if (collisions[2] == GameMap::TileTyp::WALL || collisions[3] == GameMap::TileTyp::WALL) {
+            int index = (collisions[2] == GameMap::TileTyp::WALL) ? 2 : 3;
             Vec2 pos = this->map->mapToWorld(this->map->worldToMap(boundingPoints[index]));
             this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
             collisionCount++;
@@ -142,7 +142,7 @@ void BasicScene::resolveCollision(Player* player) {
     }
     // Left/right top/bottom collision
     for (int index = 4; index < 8 && collisionCount == 0; index++) {
-        if (collisions[index] == GameMap::CollisionType::WALL) {
+        if (collisions[index] == GameMap::TileTyp::WALL) {
             Vec2 pos = this->map->mapToWorld(this->map->worldToMap(boundingPoints[index]));
             if (fabsf(pos.x - desiredPosition.x) > fabsf(pos.y - desiredPosition.y)) {
                 this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
@@ -196,11 +196,11 @@ void BasicScene::resolvePlatforms(Player* player, float delta) {
 void BasicScene::onDeath() {
     this->paused = true;
 
-    TitleScreen* titleScreen = TitleScreen::create("Oh now you died :(", "Be carefull!", true);\
+    TitleScreen* titleScreen = TitleScreen::create("Oh now you died :(", "Be carefull!", true); \
     if (this->mainPlayer->getLives() - 1 == 0) {
         titleScreen = TitleScreen::create("Game Over", "", false);
     }
-    
+
     titleScreen->setPosition(this->getPosition() * -1);
 
     CallFunc* cbDie = CallFunc::create([this] {
