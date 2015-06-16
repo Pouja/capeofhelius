@@ -12,10 +12,9 @@
 #define BOTTOM_OFFSET 3
 
 USING_NS_CC;
-//TODO make name variable
-Player* Player::create(Vec2 position) {
-    Player* player = new Player(position);
-    if (player && player->initWithSpriteFrameName("zoe-nocape-walk-right/0.png")) {
+Player* Player::create(Vec2 position, const std::string& name) {
+    Player* player = new Player(position, name);
+    if (player && player->initWithSpriteFrameName(name + "-walk-right/0.png")) {
         player->autorelease();
         player->initAnimations();
         return player;
@@ -25,7 +24,7 @@ Player* Player::create(Vec2 position) {
     return nullptr;
 }
 
-Player::Player(cocos2d::Vec2 position) {
+Player::Player(cocos2d::Vec2 position, const std::string& name) {
     this->animationState = AnimationState::IDLE_RIGHT;
     this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
@@ -34,9 +33,10 @@ Player::Player(cocos2d::Vec2 position) {
     this->desiredPosition = position;
     this->isOnGround = false;
     this->lives = 2;
+    this->name = name;
 }
 
-void Player::addCoin() {    
+void Player::addCoin() {
     this->coins++;
 }
 
@@ -74,7 +74,7 @@ void Player::initAnimations() {
     Vector<SpriteFrame*> walkRightFrames(9);
     for (int i = 1; i < 9; i++)
     {
-        sprintf(str, "zoe-nocape-walk-right/%d.png", i);
+        sprintf(str, (this->name + "-walk-right/%d.png").c_str(), i);
         SpriteFrame* frame = cache->getSpriteFrameByName( str );
         walkRightFrames.pushBack(frame);
     }
@@ -94,10 +94,10 @@ void Player::updateAnimation() {
             this->stopAllActions();
             if (this->animationState == JUMP_LEFT || this->animationState == WALKING_LEFT
                     || this->animationState == RUNNING_LEFT) {
-                this->setSpriteFrame("zoe-nocape-walk-left/0.png");
+                this->setSpriteFrame(this->name + "-walk-left/0.png");
                 this->animationState = IDLE_LEFT;
             } else {
-                this->setSpriteFrame("zoe-nocape-walk-right/0.png");
+                this->setSpriteFrame(this->name + "-walk-right/0.png");
                 this->animationState = IDLE_RIGHT;
             }
         }
@@ -127,10 +127,10 @@ void Player::updateAnimation() {
         this->stopAllActions();
         if (this->movingState.x >= 0 &&
                 (animationState == RUNNING_RIGHT || animationState == WALKING_RIGHT || animationState == IDLE_RIGHT) ) {
-            this->setSpriteFrame("zoe-nocape-walk-right/7.png");
+            this->setSpriteFrame(this->name + "-walk-right/7.png");
             this->animationState = JUMP_RIGHT;
         } else if (animationState != JUMP_RIGHT) {
-            this->setSpriteFrame("zoe-nocape-walk-left/7.png");
+            this->setSpriteFrame(this->name + "-walk-left/7.png");
             this->animationState = JUMP_LEFT;
         }
     }

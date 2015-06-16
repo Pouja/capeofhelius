@@ -16,7 +16,7 @@ bool BasicScene::init()
     this->paused = false;
     this->map = GameMap::create("chapter1.tmx", 1);
     this->hub = GameHub::create();
-    this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"));
+    this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"), "zoe-nocape");
 
     Size mapSize(this->map->getMapSize().width * this->map->getTileSize().width,
                  this->map->getMapSize().height * this->map->getTileSize().height);
