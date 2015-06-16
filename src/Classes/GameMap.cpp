@@ -1,7 +1,7 @@
 #include "GameMap.h"
-#include "animations/Torch.h"
-#include "animations/Cloud.h"
-#include "animations/Flag.h"
+#include "dynamic-scene/Torch.h"
+#include "dynamic-scene/Cloud.h"
+#include "dynamic-scene/Flag.h"
 
 USING_NS_CC;
 

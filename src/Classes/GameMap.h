@@ -2,7 +2,7 @@
 #define _GAME_MAP_H_
 
 #include "cocos2d.h"
-#include "Platform.h"
+#include "dynamic-scene/Platform.h"
 
 class GameMap : public cocos2d::TMXTiledMap {
 public:
@@ -39,7 +39,7 @@ private:
 	 * @details Should be called after initWithXml.
 	 */
 	void initTiles();
-	
+
 	/**
 	 * @brief Loads all the dynamic non collidable sprites (such as torches and clouds).
 	 * @details Should be called after initWithXml.
