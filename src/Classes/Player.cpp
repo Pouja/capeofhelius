@@ -60,7 +60,7 @@ void Player::initAnimations() {
     char str[100] = {0};
     for (int i = 0; i < 9; i++)
     {
-        sprintf(str, "zoe-nocape-walk-left/%d.png", i);
+        sprintf(str, (this->name + "-walk-left/%d.png").c_str(), i);
         SpriteFrame* frame = cache->getSpriteFrameByName( str );
         walkLeftFrames.pushBack(frame);
     }

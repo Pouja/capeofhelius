@@ -1,5 +1,7 @@
 #include "Cloud.h"
 
+#define MAX_CLOUD_DISTANCE 1000
+
 USING_NS_CC;
 
 Cloud* Cloud::create(cocos2d::Vec2 startPosition) {
@@ -30,7 +32,9 @@ void Cloud::reset() {
 
 void Cloud::animate() {
     FadeIn* fadeIn = FadeIn::create(2.0f);
-    MoveTo* action = cocos2d::MoveTo::create(100, Vec2(0, startPosition.y));
+    float xEnd = startPosition.x - MAX_CLOUD_DISTANCE;
+
+    MoveTo* action = cocos2d::MoveTo::create(100, Vec2(xEnd, startPosition.y));
     CallFunc* callback = CallFunc::create([this]() {
         this->reset();
     });
