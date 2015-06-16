@@ -6,6 +6,7 @@
 #include "math/Vec2.h"
 #include "Player.h"
 #include "GameHub.h"
+#include "Background.h"
 
 class BasicScene : public cocos2d::Layer
 {
@@ -13,6 +14,7 @@ private:
 	// If this is set to true it will not update the player or the enemies or check for collisions
 	bool paused;
 
+	Background* bg;
 	GameMap* map;
 	GameHub* hub;
 

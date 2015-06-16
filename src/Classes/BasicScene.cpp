@@ -18,6 +18,11 @@ bool BasicScene::init()
     this->hub = GameHub::create();
     this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"));
 
+    Size mapSize(this->map->getMapSize().width * this->map->getTileSize().width,
+                 this->map->getMapSize().height * this->map->getTileSize().height);
+    this->bg = Background::create("backgrounds/chapter1-bg.png", mapSize);
+
+    addChild(this->bg);
     addChild(this->map);
     addChild(this->hub);
     addChild(this->mainPlayer);
@@ -234,7 +239,7 @@ void BasicScene::update(float delta) {
     if (!this->paused) {
         this->mainPlayer->updateAnimation();
     }
-
+    this->bg->move(vpc * -1);
     this->hub->setPosition(vpc * -1);
     this->hub->update(delta);
 }
