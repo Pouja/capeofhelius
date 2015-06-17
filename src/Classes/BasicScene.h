@@ -14,6 +14,8 @@ private:
 	// If this is set to true it will not update the player or the enemies or check for collisions
 	bool paused;
 
+    cocos2d::Vec2 respawnPoint;
+
 	Background* bg;
 	GameMap* map;
 	GameHub* hub;

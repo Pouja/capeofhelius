@@ -16,7 +16,8 @@ bool BasicScene::init()
     this->paused = false;
     this->map = GameMap::create("chapter1.tmx", 1);
     this->hub = GameHub::create();
-    this->mainPlayer = Player::create(this->map->objectPoint("objects", "spawnpoint"), "zoe-nocape");
+    this->respawnPoint = this->map->objectPoint("objects", "spawnpoint");
+    this->mainPlayer = Player::create(respawnPoint, "zoe-nocape");
 
     Size mapSize(this->map->getMapSize().width * this->map->getTileSize().width,
                  this->map->getMapSize().height * this->map->getTileSize().height);
@@ -95,8 +96,10 @@ void BasicScene::resolveCollision(Player* player) {
     if (collisions[8] == GameMap::TileTyp::DEATH) {
         onDeath();
         return;
-    } else if(collisions[8] == GameMap::TileTyp::COLLECTABLE) {
+    } else if (collisions[8] == GameMap::TileTyp::COLLECTABLE) {
         onCollectable(boundingPoints[8]);
+    } else if (collisions[8] == GameMap::TileTyp::SPAWNPOINT) {
+        this->respawnPoint = map->mapToWorld(map->worldToMap(boundingPoints[8]));
     }
 
     Vec2 velocity = player->velocity;
@@ -199,7 +202,7 @@ void BasicScene::resolvePlatforms(Player* player, float delta) {
     player->setPosition(playerPosition);
 }
 
-void BasicScene::onCollectable(Vec2 position){
+void BasicScene::onCollectable(Vec2 position) {
     this->map->removeCollectable(position);
     this->mainPlayer->addCoin();
     this->hub->setCoins(this->mainPlayer->getScore());
@@ -219,12 +222,10 @@ void BasicScene::onDeath() {
         if (this->mainPlayer->getLives() == 0) {
             Director::getInstance()->replaceScene(BasicScene::createScene());
         } else {
-            CallFunc* cbRespawn = CallFunc::create([this]{
-                this->paused = false;
-            });
-            this->mainPlayer->respawn(this->map->objectPoint("objects", "spawnpoint"), cbRespawn);
+            this->mainPlayer->respawn(this->respawnPoint);
             this->removeChildByTag(1);
             this->hub->setLives(this->mainPlayer->getLives());
+            this->paused = false;
         }
     });
 
@@ -233,7 +234,7 @@ void BasicScene::onDeath() {
     addChild(titleScreen, 3, 1);
 }
 
-void BasicScene::checkEnemyCollision(){
+void BasicScene::checkEnemyCollision() {
     std::vector<Vec2> boundingPoints = mainPlayer->getBoundingPoints(mainPlayer->getPosition());
     float playerHeight = boundingPoints[1].y - boundingPoints[0].y;
     float playerWidth = boundingPoints[3].x - boundingPoints[2].x;
@@ -241,11 +242,11 @@ void BasicScene::checkEnemyCollision(){
 
     std::vector<Enemy*> enemies = map->getEnemies();
 
-    auto result = std::find_if(std::begin(enemies), std::end(enemies), [playerRect](Enemy* enemy){
+    auto result = std::find_if(std::begin(enemies), std::end(enemies), [playerRect](Enemy * enemy) {
         return enemy->getBoundingBox().intersectsRect(playerRect);
     });
 
-    if(result != std::end(enemies)){
+    if (result != std::end(enemies)) {
         onDeath();
     }
 }

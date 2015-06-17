@@ -75,9 +75,8 @@ public:
     /**
      * Executes the respawn procedure of the player
      * @param position The position to be respawned to.
-     * @param callback The callback for when the animations has finished.
      */
-    void respawn(cocos2d::Vec2 position, cocos2d::CallFunc* callback);
+    void respawn(cocos2d::Vec2 position);
 
     ~Player();
 private:

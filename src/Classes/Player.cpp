@@ -238,16 +238,13 @@ void Player::die(CallFunc* callback){
     this->runAction(seq);
 }
 
-void Player::respawn(Vec2 position, CallFunc* cb){
+void Player::respawn(Vec2 position){
     this->stopAllActions();
 
     this->setPosition(position);
     this->desiredPosition = position;
     this->isOnGround = false;
-
-    FadeIn* fadeIn = FadeIn::create(2);
-    Sequence* seq = Sequence::create(fadeIn, cb, nullptr);
-    this->runAction(seq);
+    this->setOpacity(255.0f);
 }
 
 Vec2 Player::getState() {
