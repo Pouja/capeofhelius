@@ -26,7 +26,6 @@ bool BasicScene::init()
     addChild(this->map);
     addChild(this->hub);
     addChild(this->mainPlayer);
-
     // Creating a keyboard event listener
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = CC_CALLBACK_2(BasicScene::onKeyPressed, this);

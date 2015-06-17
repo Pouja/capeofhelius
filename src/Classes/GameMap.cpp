@@ -34,6 +34,8 @@ void GameMap::update(float delta) {
 void GameMap::loadDynamicScene() {
     TMXObjectGroup* objectGroup = this->getObjectGroup("animations");
     for (Value object : objectGroup->getObjects()) {
+
+        //TODO: Create a seperate super class for torch, flag and cloud and call parse on that class
         ValueMap dict = object.asValueMap();
         std::string name = dict.at("name").asString();
         float x = dict.at("x").asFloat() * this->getScale();
@@ -54,6 +56,7 @@ void GameMap::loadPlatforms() {
     float tileWidth = this->getTileSize().width * this->getScale();
     float tileHeight = this->getTileSize().height * this->getScale();
     for (Value object : objectGroup->getObjects()) {
+        //TODO: move this to Platform::parse
         ValueMap dict = object.asValueMap();
         std::string name = dict.at("sprite").asString();
 
