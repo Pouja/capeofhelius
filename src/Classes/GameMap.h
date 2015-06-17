@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "dynamic-scene/Platform.h"
+#include "enemies/Enemy.h"
 
 class GameMap : public cocos2d::TMXTiledMap {
 public:
@@ -49,6 +50,9 @@ private:
 
 	void loadPlatforms();
 
+    void loadEnemies();
+
+    std::vector<Enemy*> enemies;
 	std::vector<Platform*> platforms;
 	GameMap(const std::string& mapName, float scale);
 	std::vector<TileTyp> tiles;

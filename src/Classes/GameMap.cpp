@@ -12,6 +12,7 @@ GameMap* GameMap::create(const std::string& mapName, float scale) {
         gameMap->initTiles();
         gameMap->loadDynamicScene();
         gameMap->loadPlatforms();
+        gameMap->loadEnemies();
         gameMap->autorelease();
         return gameMap;
     }
@@ -77,6 +78,16 @@ void GameMap::loadPlatforms() {
 
         addChild(platform);
         platforms.push_back(platform);
+    }
+}
+
+void GameMap::loadEnemies(){
+    Size tileSize = this->getTileSize();
+    TMXObjectGroup* objectGroup = this->getObjectGroup("enemies");
+    for(Value object : objectGroup->getObjects()){
+        Enemy* enemy = Enemy::parse(object.asValueMap(), tileSize);
+        addChild(enemy, 5);
+        this->enemies.push_back(enemy);
     }
 }
 
