@@ -233,6 +233,23 @@ void BasicScene::onDeath() {
     addChild(titleScreen, 3, 1);
 }
 
+void BasicScene::checkEnemyCollision(){
+    std::vector<Vec2> boundingPoints = mainPlayer->getBoundingPoints(mainPlayer->getPosition());
+    float playerHeight = boundingPoints[1].y - boundingPoints[0].y;
+    float playerWidth = boundingPoints[3].x - boundingPoints[2].x;
+    Rect playerRect(boundingPoints[5].x, boundingPoints[5].y, playerWidth, playerHeight);
+
+    std::vector<Enemy*> enemies = map->getEnemies();
+
+    auto result = std::find_if(std::begin(enemies), std::end(enemies), [playerRect](Enemy* enemy){
+        return enemy->getBoundingBox().intersectsRect(playerRect);
+    });
+
+    if(result != std::end(enemies)){
+        onDeath();
+    }
+}
+
 void BasicScene::update(float delta) {
     if (!this->paused) {
         this->mainPlayer->updatePhysics();
@@ -245,6 +262,7 @@ void BasicScene::update(float delta) {
 
     if (!this->paused) {
         this->mainPlayer->updateAnimation();
+        this->checkEnemyCollision();
     }
     this->bg->move(vpc * -1);
     this->hub->setPosition(vpc * -1);

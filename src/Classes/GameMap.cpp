@@ -149,6 +149,10 @@ std::vector<Platform*> GameMap::getPlatforms() {
     return this->platforms;
 }
 
+std::vector<Enemy*> GameMap::getEnemies(){
+    return this->enemies;
+}
+
 std::vector<GameMap::TileTyp> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
     std::vector<GameMap::TileTyp> collisions;
     for (Vec2 point : points) {
