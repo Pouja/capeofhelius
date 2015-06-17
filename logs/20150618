@@ -1,0 +1,21 @@
+20150618
+
+Long time since the last time I wrote a piece.
+So where is the game now?
+There are enemies, parallax background, you can die when hitting an enemy or spiky point or lava or water.
+There are moving platforms.
+There are non collidable dynamic scenery (like a torch, clouds etc).
+There are collectables.
+
+What has to happen?
+Dialog system
+Sword animation + hitting enemy with it
+Key collecting, now you can only collect coins. But it should be possible to collect keys to unlock a new part.
+Enemy AI. The current enemies just do a simple patrol.
+
+The extra thing I did today was letting my roommate play.
+The results were funny, first of all he enjoyed the game due the style and art (thx kenney!) and due the difficulty. Plus he enjoyed the different types of hurdles.
+The only thing was that I noticed that he wanted to go back. But that was not possible due the design of the map. But it should be.
+He also expected that you will not instantly die and respawn when hitting an enemy or spikes. But that you 'bounce' back and lose half a hearth. I agree with that, that is a way better way of handling death. Currently, it doesnt matter what you hit, if it can kills you, you will respawn. Which makes the game unpleasentable difficult. (Weird concept: unpleasentable difficult, but interesting).
+
+So but the code needs a lot of cleaning up, I had to rush a lot because the game (first chapter) should be fully playable in 48 hours.
