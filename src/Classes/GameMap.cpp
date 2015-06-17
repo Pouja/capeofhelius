@@ -107,6 +107,8 @@ GameMap::TileTyp parseTileProperties(ValueMap properties) {
             return GameMap::TileTyp::WALL;
         } else if (type.compare("collectable") == 0) {
             return GameMap::TileTyp::COLLECTABLE;
+        } else if (type.compare("spawnpoint") == 0) {
+            return GameMap::TileTyp::SPAWNPOINT;
         }
     }
     return GameMap::TileTyp::NONE;

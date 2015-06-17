@@ -14,7 +14,8 @@ public:
 		SLOPE_LEFT, // 3
 		SLOPE_RIGHT, // 4
 		STUMP, // 4
-		NONE //5
+        SPAWNPOINT, //5
+		NONE //6
 	};
 	static GameMap* create(const std::string& mapName, float scale);
 
