@@ -2,31 +2,28 @@
 
 USING_NS_CC;
 
-GroundEnemy* GroundEnemy::create(cocos2d::Vec2 position) {
-    GroundEnemy* groundEnemy = new GroundEnemy();
-    if (groundEnemy && groundEnemy->initWithSpriteFrameName("snail.png")) {
-        groundEnemy->autorelease();
-        groundEnemy->setPosition(position);
-        groundEnemy->initAnimation();
-        return groundEnemy;
-    }
-    CC_SAFE_DELETE(groundEnemy);
-    return nullptr;
-}
+void GroundEnemy::animate() {
+    this->stopAllActions();
 
-void GroundEnemy::initAnimation() {
-    SpriteFrameCache* cache = SpriteFrameCache::getInstance();
+    int flipped = (isFlippedX()) ? 1 : -1;
+    float step = getStepSize().width / 4;
 
-    Vector<SpriteFrame*> animFrames(2);
+    MoveBy* move = MoveBy::create(0.5, Vec2(flipped * step, 0));
 
-    animFrames.pushBack(cache->getSpriteFrameByName("bat.png"));
-    animFrames.pushBack(cache->getSpriteFrameByName("bat_fly.png"));
+    CallFunc* altFunc = CallFunc::create([this] {
+        SpriteFrameCache* cache = SpriteFrameCache::getInstance();
+        std::string frame = getName() + ((this->alt) ? "_walk.png" : ".png");
+        this->setSpriteFrame(cache->getSpriteFrameByName(frame));
+        this->alt = !this->alt;
+    });
 
-    Animation* anim = Animation::createWithSpriteFrames(animFrames, 0.5);
-    this->animation = Animate::create(anim);
-    this->runAction(RepeatForever::create(animation));
-}
+    CallFunc* reverse = CallFunc::create([this] {
+        this->setFlippedX(!this->isFlippedX());
+        this->animate();
+    });
 
-void GroundEnemy::update(float delta){
-    this->timeout += delta;
+    Sequence* animation = Sequence::create(move, altFunc, move, altFunc, nullptr);
+    Repeat* repeat = Repeat::create(animation, getSteps().x);
+    Sequence* sequence = Sequence::create(repeat, reverse, nullptr);
+    this->runAction(sequence);
 }

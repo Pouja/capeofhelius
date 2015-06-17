@@ -1,17 +1,15 @@
-#ifndef _GROUND_ENEMY_H
-#define _GROUND_ENEMY_H
+#ifndef _GROUND_ENEMY_H_
+#define _GROUND_ENEMY_H_
 
-#include "cocos2d.h"
+#include "Enemy.h"
 
-class GroundEnemy : public cocos2d::Sprite {
+class GroundEnemy : public Enemy{
 private:
-    GroundEnemy(): timeout(0) {};
-    cocos2d::Animate* animation;
-    float timeout;
+    bool alt;
+    virtual void animate();
 public:
-    static GroundEnemy* create(cocos2d::Vec2 position);
-    void update(float delta);
-    void initAnimation();
+    GroundEnemy(cocos2d::Vec2 _pointA, cocos2d::Vec2 _pointB, const std::string& _name, cocos2d::Size _size) :
+    Enemy(_pointA, _pointB, _name, _size), alt(false){};
 };
 
 #endif
