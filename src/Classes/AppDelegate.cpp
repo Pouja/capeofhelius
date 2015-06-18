@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "base/BasicScene.h"
+#include "chapters/Chapter0.h"
 
 USING_NS_CC;
 
@@ -43,7 +43,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     // create a scene. it's an autorelease object && run
-    director->runWithScene(BasicScene::createScene());
+    director->runWithScene(Chapter0::createScene());
     return true;
 }
 
