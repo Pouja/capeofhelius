@@ -17,12 +17,12 @@ bool TitleScreen::init(const std::string& title, const std::string& message, boo
 	Director* director = Director::getInstance();
 	Size contentSize = director->getVisibleSize();
 
-	this->title = Label::createWithTTF(title, "fonts/kenpixel.ttf", 40, Size(200,200), TextHAlignment::CENTER);
+	this->title = Label::createWithTTF(title, "fonts/Gasalt-Regular.ttf", 40, Size(200,200), TextHAlignment::CENTER);
 	this->title->setColor(cocos2d::Color3B::WHITE);
 	this->title->setWidth(contentSize.width * 0.5);
 	this->title->setPosition(Vec2(contentSize.width / 2, contentSize.height / 2));
 
-	this->message = Label::createWithTTF(message, "fonts/kenpixel.ttf", 20, Size(200,200), TextHAlignment::CENTER);
+	this->message = Label::createWithTTF(message, "fonts/Gasalt-Regular.ttf", 20, Size(200,200), TextHAlignment::CENTER);
 	this->message->setColor(cocos2d::Color3B::WHITE);
 	this->message->setWidth(contentSize.width * 0.5);
 	this->message->setPosition(Vec2(contentSize.width / 2, contentSize.height / 2 - 50));

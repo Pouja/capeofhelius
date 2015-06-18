@@ -4,6 +4,8 @@
 #include "cocos2d.h"
 
 class Chapter1 : public cocos2d::Layer {
+private:
+    int index;
 public:
     static cocos2d::Scene* createScene();
     virtual bool init();
