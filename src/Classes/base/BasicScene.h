@@ -113,7 +113,7 @@ public:
     void update(float delta);
 
     void updateVPC(cocos2d::Vec2 vpc);
-
+    virtual void onGameOver() = 0;
     virtual bool initVariables() = 0;
 };
 

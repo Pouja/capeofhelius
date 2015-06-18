@@ -27,6 +27,7 @@ bool BasicScene::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     this->scheduleUpdate();
+
     return true;
 }
 
@@ -226,7 +227,7 @@ void BasicScene::onDeath() {
 
     CallFunc* cbDie = CallFunc::create([this] {
         if (this->mainPlayer->getLives() == 0) {
-            // Director::getInstance()->replaceScene(BasicScene::createScene());
+            onGameOver();
         } else {
             this->mainPlayer->respawn(this->respawnPoint);
             this->removeChildByTag(1);
