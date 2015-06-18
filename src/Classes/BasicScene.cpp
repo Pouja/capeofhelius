@@ -99,7 +99,7 @@ void BasicScene::resolveCollision(Player* player) {
     } else if (collisions[8] == GameMap::TileTyp::COLLECTABLE) {
         onCollectable(boundingPoints[8]);
     } else if (collisions[8] == GameMap::TileTyp::SPAWNPOINT) {
-        this->respawnPoint = map->mapToWorld(map->worldToMap(boundingPoints[8]));
+        onSpawnpoint(boundingPoints[8]);
     }
 
     Vec2 velocity = player->velocity;
@@ -111,7 +111,11 @@ void BasicScene::resolveCollision(Player* player) {
     int collisionCount = 0;
 
     // Bottom collision, so the player is on the ground
-    if (collisions[0] != GameMap::TileTyp::NONE) {
+    if (collisions[0] == GameMap::TileTyp::SLOPE_LEFT
+            || collisions[0] == GameMap::TileTyp::SLOPE_LEFT
+            || collisions[0] == GameMap::TileTyp::SLOPE_RIGHT
+            || collisions[0] == GameMap::TileTyp::STUMP
+            || collisions[0] == GameMap::TileTyp::WALL) {
         player->isOnGround = true;
     }
 
@@ -206,6 +210,18 @@ void BasicScene::onCollectable(Vec2 position) {
     this->map->removeCollectable(position);
     this->mainPlayer->addCoin();
     this->hub->setCoins(this->mainPlayer->getScore());
+}
+
+void BasicScene::onSpawnpoint(Vec2 position) {
+    Vec2 newSpawn = map->mapToWorld(map->worldToMap(position));
+    if (!this->respawnPoint.equals(newSpawn)) {
+        std::string text[] = {"A spawnpoint, that will come in handy.",
+                              "New spawnpoint, sweet!",
+                              "I can continue my journey from here, if something happens."
+                             };
+        hub->setText(std::queue<std::string>({text[1]}));
+        this->respawnPoint = newSpawn;
+    }
 }
 
 void BasicScene::onDeath() {

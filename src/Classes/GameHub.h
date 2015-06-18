@@ -11,18 +11,19 @@ private:
     cocos2d::Sprite* n2GoldCoin;
     cocos2d::Sprite* lives;
     cocos2d::Sprite* textbox;
+    cocos2d::Sprite* pulser;
     cocos2d::Label* label;
     std::queue<std::string> textQueue;
     GameHub(){};
 
 public:
-    
+
     void update(float delta);
     virtual bool init();
 
     // Returns true iff there are no more text to be displayed
     bool isDone();
-    
+
     void clearText();
     void setCoins(int number);
 

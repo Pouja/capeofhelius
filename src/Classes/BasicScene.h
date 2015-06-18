@@ -75,6 +75,7 @@ private:
 	 */
 	void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
 
+    void onSpawnpoint(cocos2d::Vec2 position);
     void checkEnemyCollision();
     void onCollectable(cocos2d::Vec2 position);
 	void onDeath();

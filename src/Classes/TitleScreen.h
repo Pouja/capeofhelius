@@ -11,7 +11,7 @@ private:
 
 public:
 	static TitleScreen* create(const std::string& title, const std::string& message, bool withDim);
-    virtual bool init(const std::string& title, const std::string& message, bool withDim);
+    bool init(const std::string& title, const std::string& message, bool withDim);
 	void setText(const std::string& title, const std::string& message);
 };
 
