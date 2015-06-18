@@ -41,13 +41,11 @@ bool BasicScene::init()
 void BasicScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     this->mainPlayer->onKeyPressed(keyCode, event);
-    this->hub->onKeyPressed(keyCode, event);
 }
 
 void BasicScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
     this->mainPlayer->onKeyReleased(keyCode, event);
-    this->hub->onKeyReleased(keyCode, event);
 }
 
 void BasicScene::resolveVertCollision(float tileHeight, float playerHeight, Vec2 tilePos, Vec2* velocity, Vec2* desiredPosition) {
