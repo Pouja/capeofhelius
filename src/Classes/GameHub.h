@@ -2,6 +2,7 @@
 #define _GAME_HUB_H_
 
 #include "cocos2d.h"
+#include "CCLabelBMFontAnimated.h"
 
 class GameHub : public cocos2d::Layer {
 private:
@@ -12,7 +13,7 @@ private:
     cocos2d::Sprite* lives;
     cocos2d::Sprite* textbox;
     cocos2d::Sprite* pulser;
-    cocos2d::Label* label;
+    CCLabelBMFontAnimated* label;
     std::queue<std::string> textQueue;
     GameHub(){};
 
