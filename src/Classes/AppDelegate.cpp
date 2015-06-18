@@ -32,6 +32,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     SpriteFrameCache* cache = SpriteFrameCache::getInstance();
     cache->addSpriteFramesWithFile("characters/zoe-nocape.plist");
+    cache->addSpriteFramesWithFile("characters/father.plist");
+    cache->addSpriteFramesWithFile("characters/mother.plist");
+    cache->addSpriteFramesWithFile("characters/anouk.plist");
+    cache->addSpriteFramesWithFile("characters/martine.plist");
     cache->addSpriteFramesWithFile("hud/hud.plist");
     cache->addSpriteFramesWithFile("tiles/items.plist");
     cache->addSpriteFramesWithFile("enemies/enemies.plist");

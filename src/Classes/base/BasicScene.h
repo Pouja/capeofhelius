@@ -14,18 +14,18 @@ protected:
     std::string mapName;
     std::string mainName;
     std::string bgLocation;
+    std::vector<Player*> players;
+    cocos2d::Vec2 respawnPoint;
+    GameMap* map;
+
+    // The main player
+    Player* mainPlayer;
 private:
     // If this is set to true it will not update the player or the enemies or check for collisions
     bool paused;
 
-    cocos2d::Vec2 respawnPoint;
-
     Background* bg;
-    GameMap* map;
     GameHub* hub;
-
-    // The main player
-    Player* mainPlayer;
 
     /**
      * @brief Resolves the collision of the given player.
@@ -89,7 +89,7 @@ public:
      * @return true if it succeeded in setting everything, false otherwise.
      */
     virtual bool init();
-
+    virtual bool initPlayers() = 0;
     /**
      * @brief Sets the view point of the scene.
      * @details [long description]

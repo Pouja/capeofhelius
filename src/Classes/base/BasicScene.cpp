@@ -8,8 +8,6 @@ bool BasicScene::init()
     this->paused = false;
     this->map = GameMap::create(this->mapName, 1);
     this->hub = GameHub::create();
-    this->respawnPoint = this->map->objectPoint("objects", "spawnpoint");
-    this->mainPlayer = Player::create(respawnPoint, this->mainName);
 
     Size mapSize(this->map->getMapSize().width * this->map->getTileSize().width,
                  this->map->getMapSize().height * this->map->getTileSize().height);
@@ -18,7 +16,12 @@ bool BasicScene::init()
     addChild(this->bg);
     addChild(this->map);
     addChild(this->hub);
-    addChild(this->mainPlayer);
+
+    if (initPlayers()) {
+        std::for_each(players.begin(), players.end(), [this](Player * p) {
+            this->addChild(p);
+        });
+    }
     // Creating a keyboard event listener
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = CC_CALLBACK_2(BasicScene::onKeyPressed, this);
@@ -266,15 +269,20 @@ void BasicScene::updateVPC(cocos2d::Vec2 vpc) {
 
 void BasicScene::update(float delta) {
     if (!this->paused) {
-        this->mainPlayer->updatePhysics();
-        this->resolveCollision(this->mainPlayer);
+        std::for_each(players.begin(), players.end(), [this](Player * p) {
+            p->updatePhysics();
+            this->resolveCollision(p);
+        });
     }
+
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
     this->map->update(delta);
     this->resolvePlatforms(this->mainPlayer, delta);
 
     if (!this->paused) {
-        this->mainPlayer->updateAnimation();
+        std::for_each(players.begin(), players.end(), [this](Player * p) {
+            p->updateAnimation();
+        });
         this->checkEnemyCollision();
     }
 

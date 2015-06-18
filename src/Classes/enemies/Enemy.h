@@ -15,7 +15,6 @@ private:
 public:
     static Enemy* create(Enemy* enemy);
     static Enemy* parse(cocos2d::ValueMap valueMap, cocos2d::Size size);
-    virtual void update(float delta) {};
     cocos2d::Vec2 getStartPoint();
     cocos2d::Vec2 getSteps();
     cocos2d::Size getStepSize();

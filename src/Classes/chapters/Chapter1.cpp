@@ -22,8 +22,27 @@ Chapter1* Chapter1::create() {
 
 bool Chapter1::initVariables() {
     this->mapName = "chapter1.tmx";
-    this->mainName = "zoe-nocape";
     this->bgLocation = "backgrounds/chapter1-bg.png";
+
+    return true;
+}
+
+bool Chapter1::initPlayers() {
+    for(Value value : this->map->getObjectGroup("players")->getObjects()){
+        ValueMap object = value.asValueMap();
+
+        std::string name = object.at("name").asString();
+        float x = object.at("x").asFloat();
+        float y = object.at("y").asFloat();
+
+        Player* p = Player::create(Vec2(x,y), name);
+        this->players.push_back(p);
+
+        if(name.compare("zoe-nocape") == 0) {
+            this->mainPlayer = p;
+            this->respawnPoint = Vec2(x,y);
+        }
+    }
     return true;
 }
 
