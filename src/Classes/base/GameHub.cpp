@@ -91,7 +91,7 @@ void GameHub::setLives(int nLives) {
 
 void GameHub::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    if (keyCode == EventKeyboard::KeyCode::KEY_SPACE) {
+    if (keyCode == EventKeyboard::KeyCode::KEY_SPACE && !block) {
         this->pulser->stopAllActions();
         this->pulser->setVisible(false);
 
@@ -100,8 +100,9 @@ void GameHub::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
             this->label->setString(nextText);
 
             this->textQueue.pop();
-
+            this->block = true;
             this->label->animateInTypewriter(1, CallFunc::create([this] {
+                this->block = false;
                 this->pulser->setVisible(true);
                 this->pulser->runAction(
                     RepeatForever::create(

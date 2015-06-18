@@ -16,7 +16,8 @@ private:
     CCLabelBMFontAnimated* label;
     std::queue<std::string> textQueue;
     std::function<void()> callback;
-    GameHub(){};
+    bool block;
+    GameHub() : block(false){};
 
 public:
     virtual bool init();
