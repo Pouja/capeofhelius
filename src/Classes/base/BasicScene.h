@@ -4,9 +4,9 @@
 #include "cocos2d.h"
 #include "GameMap.h"
 #include "math/Vec2.h"
-#include "Player.h"
+#include "player/Player.h"
 #include "GameHub.h"
-#include "Background.h"
+#include "utils/Background.h"
 
 class BasicScene : public cocos2d::Layer
 {

@@ -2,7 +2,7 @@
 #define _GAME_HUB_H_
 
 #include "cocos2d.h"
-#include "CCLabelBMFontAnimated.h"
+#include "utils/CCLabelBMFontAnimated.h"
 
 class GameHub : public cocos2d::Layer {
 private:
