@@ -154,13 +154,15 @@ std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
     points.push_back(Vec2(left, bottom));
     points.push_back(Vec2(right, bottom));
     points.push_back(Vec2(right, top));
-    points.push_back(Vec2((left + right) /2 , (top + bottom)/2));
+    points.push_back(Vec2((left + right) / 2 , (top + bottom) / 2));
     return points;
 }
 
 
 void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
+    if (!this->targetRect.equals(Rect::ZERO)) return;
+
     switch (keyCode) {
     case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
         this->movingState.x = -1;
@@ -178,6 +180,8 @@ void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 
 void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
 {
+    if (!this->targetRect.equals(Rect::ZERO)) return;
+
     switch (keyCode) {
     case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
         this->movingState.x = fmaxf(this->movingState.x, 0);
@@ -193,11 +197,15 @@ void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
     }
 }
 
-void Player::setExternalForce(cocos2d::Vec2 force){
+void Player::setExternalForce(cocos2d::Vec2 force) {
     this->externalForce = force;
 }
 
 void Player::updatePhysics() {
+    if (!targetRect.equals(Rect::ZERO) && targetRect.containsPoint(this->getPosition())) {
+        onMoveFinish();
+    }
+
     Vec2 gravity(0.0, GRAVITY);
     this->velocity.add(gravity);
 
@@ -226,7 +234,7 @@ void Player::updatePhysics() {
     this->externalForce = Vec2::ZERO;
 }
 
-void Player::die(CallFunc* callback){
+void Player::die(CallFunc* callback) {
     this->lives--;
     this->animationState = AnimationState::IDLE_RIGHT;
     this->velocity = cocos2d::Vec2::ZERO;
@@ -238,9 +246,10 @@ void Player::die(CallFunc* callback){
     this->runAction(seq);
 }
 
-void Player::respawn(Vec2 position){
+void Player::respawn(Vec2 position) {
     this->stopAllActions();
 
+    this->movingState = Vec2::ZERO;
     this->setPosition(position);
     this->desiredPosition = position;
     this->isOnGround = false;
@@ -253,6 +262,27 @@ Vec2 Player::getState() {
 
 Vec2 Player::getDesiredPosition() {
     return this->desiredPosition;
+}
+
+void Player::moveTo(Rect target, std::function<void()> onFinish) {
+    assert(!target.equals(Rect::ZERO));
+
+    this->movingState = Vec2::ZERO;
+    this->targetRect = target;
+    this->callback = onFinish;
+
+    if (target.origin.x > this->getPosition().x) {
+        this->movingState.x = 1;
+    } else {
+        this->movingState.x = -1;
+    }
+}
+
+void Player::onMoveFinish() {
+    this->movingState = Vec2::ZERO;
+    this->callback();
+    this->targetRect = Rect::ZERO;
+    this->callback = nullptr;
 }
 
 Player::~Player() {

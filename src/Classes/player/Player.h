@@ -78,8 +78,14 @@ public:
      */
     void respawn(cocos2d::Vec2 position);
 
+    void moveTo(cocos2d::Rect tilePosition, std::function<void()> onFinish);
+    void onMoveFinish();
+
     ~Player();
 private:
+    cocos2d::Rect targetRect;
+    std::function<void()> callback;
+
     int coins;
     int lives;
 
