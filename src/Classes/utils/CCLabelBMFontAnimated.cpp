@@ -346,14 +346,14 @@ void CCLabelBMFontAnimated::flyPastAndRemove(){
 
 }
 
-void CCLabelBMFontAnimated::animateInTypewriter(float duration){
+void CCLabelBMFontAnimated::animateInTypewriter(float duration, cocos2d::CallFunc* callback){
 
     //set all the characters scale to zero
     setAllCharsScale(0);
 
     cocos2d::ScaleTo *appear = cocos2d::ScaleTo::create(0, 1);
-
-    runActionOnAllSpritesSequentially(appear, duration);
+    runActionOnAllSpritesSequentially(appear, duration, false, callback);
+    // runActionOnAllSpritesSequentially(appear, duration);
 
 }
 

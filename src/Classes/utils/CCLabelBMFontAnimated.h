@@ -57,7 +57,7 @@ public:
     void animateInFlyInFromBottom(float duration);
 
     //misc animate ins
-    void animateInTypewriter(float duration);
+    void animateInTypewriter(float duration, cocos2d::CallFunc*);
     void animateInDropFromTop(float duration);
     void animateInSwell(float duration);
     void animateInRevealFromLeft(float duration);
