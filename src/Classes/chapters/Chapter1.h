@@ -8,6 +8,7 @@ public:
     static cocos2d::Scene* createScene();
     static Chapter1* create();
     virtual bool initVariables();
+    void onGameOver();
 };
 
 #endif

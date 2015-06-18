@@ -10,9 +10,9 @@ Scene* Chapter1::createScene()
     return scene;
 }
 
-Chapter1* Chapter1::create(){
+Chapter1* Chapter1::create() {
     Chapter1* chapter = new Chapter1();
-    if(chapter && chapter->initVariables() && chapter->init()){
+    if (chapter && chapter->initVariables() && chapter->init()) {
         chapter->autorelease();
         return chapter;
     }
@@ -20,9 +20,13 @@ Chapter1* Chapter1::create(){
     return nullptr;
 }
 
-bool Chapter1::initVariables(){
+bool Chapter1::initVariables() {
     this->mapName = "chapter1.tmx";
     this->mainName = "zoe-nocape";
     this->bgLocation = "backgrounds/chapter1-bg.png";
     return true;
+}
+
+void Chapter1::onGameOver() {
+    Director::getInstance()->replaceScene(Chapter1::createScene());
 }
