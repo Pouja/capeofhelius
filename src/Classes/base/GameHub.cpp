@@ -26,15 +26,15 @@ bool GameHub::init() {
     this->textbox->setScaleX(contentSize.width / this->textbox->getContentSize().width);
     this->textbox->setPosition(contentSize.width / 2, 45);
 
-    this->label = CCLabelBMFontAnimated::createWithTTF("","fonts/Gasalt-Regular.ttf", 30,
-        Size(contentSize.width, 40), TextHAlignment::LEFT, TextVAlignment::TOP);
+    this->label = CCLabelBMFontAnimated::createWithTTF("", "fonts/Gasalt-Regular.ttf", 30,
+                  Size(contentSize.width, 40), TextHAlignment::LEFT, TextVAlignment::TOP);
     this->label->setTextColor(Color4B::BLACK);
     this->label->setPosition(contentSize.width * 0.55, 30);
 
     this->pulser = Sprite::create("hud/arrowSilver_right.png");
     this->pulser->setRotation(90.0f);
     this->pulser->setPosition(contentSize.width * 0.035, 40);
-    this->pulser->runAction(RepeatForever::create(Sequence::create(FadeOut::create(1), FadeIn::create(1), nullptr)));
+    this->pulser->setVisible(false);
 
     this->addChild(this->lives, 1);
     this->addChild(this->n1GoldCoin, 1);
@@ -45,7 +45,20 @@ bool GameHub::init() {
     this->addChild(this->label, 2);
     this->addChild(this->pulser, 2);
 
+    // Creating a keyboard event listener
+    auto listener = EventListenerKeyboard::create();
+    listener->onKeyReleased = CC_CALLBACK_2(GameHub::onKeyReleased, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
     return true;
+}
+
+void GameHub::toggleHud() {
+    this->lives->setVisible(!this->lives->isVisible());
+    this->n1GoldCoin->setVisible(!this->n1GoldCoin->isVisible());
+    this->n2GoldCoin->setVisible(!this->n2GoldCoin->isVisible());
+    this->xGoldCoin->setVisible(!this->xGoldCoin->isVisible());
+    this->goldCoin->setVisible(!this->goldCoin->isVisible());
 }
 
 void GameHub::setCoins(int number) {
@@ -79,11 +92,26 @@ void GameHub::setLives(int nLives) {
 void GameHub::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_SPACE) {
+        this->pulser->stopAllActions();
+        this->pulser->setVisible(false);
+
         if (!this->textQueue.empty()) {
-            this->textQueue.pop();
-            std::string nextText = (this->textQueue.empty()) ? "" : this->textQueue.front();
+            std::string nextText = this->textQueue.front();
             this->label->setString(nextText);
-            this->label->animateInTypewriter(1);
+
+            this->textQueue.pop();
+
+            this->label->animateInTypewriter(1, CallFunc::create([this] {
+                this->pulser->setVisible(true);
+                this->pulser->runAction(
+                    RepeatForever::create(
+                        Sequence::create(FadeOut::create(0.5), FadeIn::create(0.5), nullptr)));
+            }));
+        } else if (!this->label->getString().empty()) {
+            if (this->callback != nullptr) {
+                this->callback();
+            }
+            this->label->setString("");
         }
     }
 }
@@ -94,8 +122,12 @@ void GameHub::clearText() {
 }
 
 void GameHub::setText(std::queue<std::string> textQueue) {
+    this->setText(textQueue, nullptr);
+}
+
+void GameHub::setText(std::queue<std::string> textQueue, std::function<void()> onFinish) {
+    this->callback = onFinish;
     this->clearText();
     this->textQueue = textQueue;
-    std::string nextText = this->textQueue.front();
-    this->label->setString(nextText);
+    this->onKeyReleased(EventKeyboard::KeyCode::KEY_SPACE, nullptr);
 }

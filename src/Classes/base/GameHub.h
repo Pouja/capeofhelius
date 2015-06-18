@@ -15,10 +15,13 @@ private:
     cocos2d::Sprite* pulser;
     CCLabelBMFontAnimated* label;
     std::queue<std::string> textQueue;
+    std::function<void()> callback;
     GameHub(){};
 
 public:
     virtual bool init();
+
+    void toggleHud();
 
     void clearText();
     void setCoins(int number);
@@ -26,10 +29,9 @@ public:
     void setLives(int lives);
 
     // Sets the queue for text to be displayed.
+    void setText(std::queue<std::string> text, std::function<void()> onFinish);
     void setText(std::queue<std::string> text);
 
-    // Empty onKeyPressed, we are not interested in keypresses
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event){};
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
     CREATE_FUNC(GameHub);
