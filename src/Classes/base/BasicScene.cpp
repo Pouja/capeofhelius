@@ -3,25 +3,17 @@
 
 USING_NS_CC;
 
-Scene* BasicScene::createScene()
-{
-    auto scene = Scene::create();
-    auto layer = BasicScene::create();
-    scene->addChild(layer);
-    return scene;
-}
-
 bool BasicScene::init()
 {
     this->paused = false;
-    this->map = GameMap::create("chapter1.tmx", 1);
+    this->map = GameMap::create(this->mapName, 1);
     this->hub = GameHub::create();
     this->respawnPoint = this->map->objectPoint("objects", "spawnpoint");
-    this->mainPlayer = Player::create(respawnPoint, "zoe-nocape");
+    this->mainPlayer = Player::create(respawnPoint, this->mainName);
 
     Size mapSize(this->map->getMapSize().width * this->map->getTileSize().width,
                  this->map->getMapSize().height * this->map->getTileSize().height);
-    this->bg = Background::create("backgrounds/chapter1-bg.png", mapSize);
+    this->bg = Background::create(this->bgLocation, mapSize);
 
     addChild(this->bg);
     addChild(this->map);
@@ -234,7 +226,7 @@ void BasicScene::onDeath() {
 
     CallFunc* cbDie = CallFunc::create([this] {
         if (this->mainPlayer->getLives() == 0) {
-            Director::getInstance()->replaceScene(BasicScene::createScene());
+            // Director::getInstance()->replaceScene(BasicScene::createScene());
         } else {
             this->mainPlayer->respawn(this->respawnPoint);
             this->removeChildByTag(1);

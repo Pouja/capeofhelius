@@ -5,6 +5,9 @@
 
 class Chapter1 : public BasicScene {
 public:
+    static cocos2d::Scene* createScene();
+    static Chapter1* create();
+    virtual bool initVariables();
 };
 
 #endif
