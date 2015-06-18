@@ -114,6 +114,8 @@ public:
 	 */
 	void update(float delta);
 
+    void updateVPC(cocos2d::Vec2 vpc);
+
 	CREATE_FUNC(BasicScene);
 };
 

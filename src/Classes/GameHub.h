@@ -18,12 +18,7 @@ private:
     GameHub(){};
 
 public:
-
-    void update(float delta);
     virtual bool init();
-
-    // Returns true iff there are no more text to be displayed
-    bool isDone();
 
     void clearText();
     void setCoins(int number);

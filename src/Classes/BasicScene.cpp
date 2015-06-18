@@ -267,13 +267,18 @@ void BasicScene::checkEnemyCollision() {
     }
 }
 
+void BasicScene::updateVPC(cocos2d::Vec2 vpc) {
+    this->setPosition(vpc);
+    this->bg->move(vpc * -1);
+    this->hub->setPosition(vpc * -1);
+}
+
 void BasicScene::update(float delta) {
     if (!this->paused) {
         this->mainPlayer->updatePhysics();
         this->resolveCollision(this->mainPlayer);
     }
     Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
-    this->setPosition(vpc);
     this->map->update(delta);
     this->resolvePlatforms(this->mainPlayer, delta);
 
@@ -281,9 +286,8 @@ void BasicScene::update(float delta) {
         this->mainPlayer->updateAnimation();
         this->checkEnemyCollision();
     }
-    this->bg->move(vpc * -1);
-    this->hub->setPosition(vpc * -1);
-    this->hub->update(delta);
+
+    this->updateVPC(vpc);
 }
 
 Vec2 BasicScene::getViewPointCenter(Vec2 position) {

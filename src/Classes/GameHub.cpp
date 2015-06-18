@@ -13,43 +13,38 @@ bool GameHub::init() {
     this->n2GoldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_0.png");
     this->n2GoldCoin->setPosition(topRightOffset.x + 40, topRightOffset.y);
 
-    xGoldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_x.png");
-    xGoldCoin->setPosition(topRightOffset.x + 80, topRightOffset.y);
+    this->xGoldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_x.png");
+    this->xGoldCoin->setPosition(topRightOffset.x + 80, topRightOffset.y);
 
-    goldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_coins.png");
-    goldCoin->setPosition(topRightOffset.x + 120, topRightOffset.y);
+    this->goldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_coins.png");
+    this->goldCoin->setPosition(topRightOffset.x + 120, topRightOffset.y);
 
-    lives = Sprite::createWithSpriteFrameName("hud_heartFull.png");
-    lives->setPosition(contentSize.width * 0.1, topRightOffset.y);
+    this->lives = Sprite::createWithSpriteFrameName("hud_heartFull.png");
+    this->lives->setPosition(contentSize.width * 0.1, topRightOffset.y);
 
-    this->textbox = cocos2d::Sprite::create("tiles/textbox.png");
+    this->textbox = cocos2d::Sprite::create("hud/textbox.png");
     this->textbox->setScaleX(contentSize.width / this->textbox->getContentSize().width);
+    this->textbox->setPosition(contentSize.width / 2, 45);
 
     this->label = CCLabelBMFontAnimated::createWithTTF("","fonts/Gasalt-Regular.ttf", 30,
         Size(contentSize.width, 40), TextHAlignment::LEFT, TextVAlignment::TOP);
     this->label->setTextColor(Color4B::BLACK);
-
-    this->pulser = Sprite::create("arrowSilver_right.png");
-    this->pulser->setRotation(90.0f);
     this->label->setPosition(contentSize.width * 0.55, 30);
-    this->textbox->setPosition(contentSize.width / 2, 45);
-    pulser->setPosition(contentSize.width * 0.035, 40);
 
-    pulser->runAction(RepeatForever::create(Sequence::create(FadeOut::create(1), FadeIn::create(1), nullptr)));
-    this->addChild(lives, 1);
+    this->pulser = Sprite::create("hud/arrowSilver_right.png");
+    this->pulser->setRotation(90.0f);
+    this->pulser->setPosition(contentSize.width * 0.035, 40);
+    this->pulser->runAction(RepeatForever::create(Sequence::create(FadeOut::create(1), FadeIn::create(1), nullptr)));
+
+    this->addChild(this->lives, 1);
     this->addChild(this->n1GoldCoin, 1);
     this->addChild(this->n2GoldCoin, 1);
-    this->addChild(goldCoin, 1);
-    this->addChild(xGoldCoin, 1);
+    this->addChild(this->goldCoin, 1);
+    this->addChild(this->xGoldCoin, 1);
     this->addChild(this->textbox, 1);
     this->addChild(this->label, 2);
-    this->addChild(pulser, 3);
+    this->addChild(this->pulser, 2);
 
-    std::queue<std::string> v({"Mom: \"Are you already up? Wake up!\"",
-            "Unknown: \"Mh... just 5 more minutes...\" *Falls asleep*",
-            "Mom: \"Zoe! It's gettting late! Wake up now!\"",
-            "Zoe: \"Allright, allright, I'm comming\""});
-    this->setText(v);
     return true;
 }
 
@@ -70,12 +65,6 @@ void GameHub::setCoins(int number) {
     goldCoin->runAction(seq);
 }
 
-void GameHub::update(float delta) {
-    Director* director = Director::getInstance();
-    Size contentSize = director->getVisibleSize();
-
-}
-
 void GameHub::setLives(int nLives) {
     assert(nLives <= 2 && nLives >= 0);
     if (nLives == 2) {
@@ -85,10 +74,6 @@ void GameHub::setLives(int nLives) {
     } else {
         lives->setSpriteFrame("hud_heartEmpty.png");
     }
-}
-
-bool GameHub::isDone() {
-    return this->textQueue.empty();
 }
 
 void GameHub::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
