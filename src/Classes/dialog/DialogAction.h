@@ -10,6 +10,8 @@ private:
     bool isText = false;
     bool isMove = false;
     bool isAction = false;
+    bool isStatus = false;
+    std::string status;
     cocos2d::FiniteTimeAction* action;
     std::queue<std::string> text;
     GameHub* hub;
@@ -21,24 +23,32 @@ public:
     void run(std::function<void()>);
     DialogAction* setNext(DialogAction* action);
     DialogAction(std::queue<std::string> _text, GameHub* _hub):
-        isText(true), isMove(false), isAction(false), text(_text) {
+        isText(true), text(_text) {
             this->hub = _hub;
             this->hub->retain();
         };
 
     DialogAction(cocos2d::Rect _target, Player* _player):
-        isText(false), isMove(true), isAction(false) , targetRect(_target) {
+        isMove(true) , targetRect(_target) {
             this->player = _player;
             this->player->retain();
         };
 
     DialogAction(cocos2d::FiniteTimeAction* _action, Player* _target):
-        isText(false), isMove(false), isAction(true) {
+        isAction(true) {
             this->action = _action;
             this->action->retain();
             this->player = _target;
             this->player->retain();
         };
+
+    DialogAction(const std::string& _status, Player* _mainPlayer, GameHub* _hub):
+        isStatus(true), status(_status) {
+            this->hub = _hub;
+            this->hub->retain();
+            this->player = _mainPlayer;
+            this->player->retain();
+        }
 };
 
 #endif

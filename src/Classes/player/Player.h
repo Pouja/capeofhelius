@@ -5,6 +5,7 @@
 
 class Player: public cocos2d::Sprite {
 public:
+    bool finished = false;
     /**
     * Creates and initializes a new player, sets the pointer to auto release.
     * @param position The position it should be placed.
@@ -47,7 +48,7 @@ public:
      * @brief Adds a score point to the player
      */
     void addCoin();
-
+    void clearCoins();
     /**
      * @return The score of the player
      */

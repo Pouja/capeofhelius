@@ -22,13 +22,13 @@ protected:
 
     std::map<std::string, DialogAction*> dialogs;
     DialogAction* activeDialog;
+    std::vector<std::pair<std::string, cocos2d::Rect>> dialogRects;
 
     // The main player
     Player* mainPlayer;
 private:
     // If this is set to true it will not update the player or the enemies or check for collisions
     bool paused;
-    std::vector<std::pair<std::string, cocos2d::Rect>> dialogRects;
 
     Background* bg;
 
@@ -88,6 +88,8 @@ private:
     void checkEnemyCollision();
     void onCollectable(cocos2d::Vec2 position);
     void onDeath();
+    virtual void onFinish() = 0;
+    virtual bool dialogCondition(const std::string& id) = 0;
 public:
     /**
      * @brief Initializes all the sprites, the map, sets the viewpoint etc.

@@ -43,7 +43,6 @@ bool BasicScene::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     this->scheduleUpdate();
-
     return true;
 }
 
@@ -230,7 +229,7 @@ void BasicScene::onSpawnpoint(Vec2 position) {
                               "New spawnpoint, sweet!",
                               "I can continue my journey from here, if something happens."
                              };
-        hub->setText(std::queue<std::string>({text[1]}));
+        hub->setText(std::queue<std::string>({text[RandomHelper::random_int(0, 2)]}));
         this->respawnPoint = newSpawn;
     }
 }
@@ -278,18 +277,27 @@ void BasicScene::checkEnemyCollision() {
     }
 }
 
-void BasicScene::checkDialog(){
-    auto result = std::find_if(std::begin(this->dialogRects), std::end(this->dialogRects), [this](std::pair<std::string, Rect> dialogRect){
+void BasicScene::checkDialog() {
+    if (activeDialog != nullptr) {
+        return;
+    }
+    auto result = std::find_if(std::begin(this->dialogRects), std::end(this->dialogRects), [this](std::pair<std::string, Rect> dialogRect) {
         return std::get<1>(dialogRect).containsPoint(this->mainPlayer->getPosition());
     });
-    if(result != std::end(this->dialogRects)){
+    if (result != std::end(this->dialogRects)) {
         std::string id = std::get<0>(*result);
+        if (id.back() == 'c') {
+            if (this->dialogCondition(id)) {
+                id += "-1";
+            }
+        } else {
+            this->dialogRects.erase(result);
+        }
 
         activeDialog = dialogs[id];
-        this->dialogRects.erase(result);
         this->mainPlayer->stop();
 
-        activeDialog->run([this]{
+        activeDialog->run([this] {
             this->activeDialog = nullptr;
         });
     }
@@ -302,6 +310,11 @@ void BasicScene::updateVPC(cocos2d::Vec2 vpc) {
 }
 
 void BasicScene::update(float delta) {
+    if (this->mainPlayer->finished) {
+        this->onFinish();
+        this->unscheduleAllCallbacks();
+        return;
+    }
     if (!this->paused) {
         std::for_each(players.begin(), players.end(), [this](Player * p) {
             p->updatePhysics();

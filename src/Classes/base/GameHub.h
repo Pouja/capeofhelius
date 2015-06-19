@@ -11,6 +11,7 @@ private:
     cocos2d::Sprite* n1GoldCoin;
     cocos2d::Sprite* n2GoldCoin;
     cocos2d::Sprite* lives;
+    cocos2d::Sprite* lives2;
     cocos2d::Sprite* textbox;
     cocos2d::Sprite* pulser;
     CCLabelBMFontAnimated* label;

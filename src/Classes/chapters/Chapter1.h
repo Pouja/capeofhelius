@@ -10,6 +10,8 @@ public:
     virtual bool initVariables();
     virtual bool initPlayers();
     void onGameOver();
+    virtual void onFinish();
+    virtual bool dialogCondition(const std::string& id);
 };
 
 #endif

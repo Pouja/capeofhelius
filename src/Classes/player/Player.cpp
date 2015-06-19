@@ -32,7 +32,7 @@ Player::Player(cocos2d::Vec2 position, const std::string& name) {
     this->setPosition(position);
     this->desiredPosition = position;
     this->isOnGround = false;
-    this->lives = 2;
+    this->lives = 4;
     this->coins = 0;
     this->name = name;
 }
@@ -138,6 +138,10 @@ void Player::updateAnimation() {
             this->animationState = JUMP_LEFT;
         }
     }
+}
+
+void Player::clearCoins(){
+    this->coins = 0;
 }
 
 std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
