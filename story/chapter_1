@@ -5,21 +5,26 @@ Mom: "Zoe! It's gettting late! Wake up now!"
 Zoe: "Allright, allright, I'm comming"
 
 -- Show map, spawn infront of the house with mother and father --
+1>Mom walks a bit to zoe
 Mom: "Are you really sure you want to go?"
+2>Zoe face mom and dad
 Zoe: "Yes, it is time to explore the world, I have to leave and try to live on my own."
 Father: "Ah you will be allright."
+3>mom face dad
 Mom: "How can you just say that so simple, she is our daughter!"
 Zoe: "Mom I will be fine, I'll write once in a while."
+4>mom face zoe
 Mom: "You better write everyday!"
 Father: "Don't be so strict, she will be fine."
 Mom: "You are always so lose. I'll miss you Zoe."
 Zoe: "I'm going, I will miss you both and ofcourse Skittle, take good care of him."
 Father: "Oh do not worry about that!"
 Zoe: "Specially you father, do not be mean to him, like always. Good bye."
-
--- Walk away, at next bord before the jump --
+5>Zoe walks to border
 Father and mom: "We love you!"
+>Zoe faces mom and dad
 Zoe: "I love you too."
+6>Zoe jumps off
 
 -- After a while a sign which says: Helius this way --
 
@@ -35,9 +40,9 @@ Martine: "Oh you ....... ..... ..... .... ...."
 Zoe: "Sorry what did you say?"
 Martine: "Oh nothing, never mind. If you are going to Helius, you need to be able to defend yourself."
 Zoe: "Defend myself, why? What is happening in Helius then?"
-Martine: "Just trust me, try to collect enough coin and find the diamond and meet Anouk" 
+Martine: "Just trust me, try to collect enough coin and find the diamond and meet Anouk"
 Zoe: "Huh.. oke"
-Martine: "Oh yeah, in case your forgot watch out for the insects and the water on the way. The water is still ful of piranha this time of the year."
+Martine: "Oh yeah, in case your forgot watch out for the insects and the water on the way."
 Zoe: "Oh yeah, thanks!"
 
 -- Meeting Anouk --

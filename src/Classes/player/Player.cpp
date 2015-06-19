@@ -36,7 +36,10 @@ Player::Player(cocos2d::Vec2 position, const std::string& name) {
     this->coins = 0;
     this->name = name;
 }
-
+void Player::stop(){
+    this->movingState = Vec2::ZERO;
+    this->updateAnimation();
+}
 void Player::addCoin() {
     this->coins++;
 }
@@ -276,6 +279,7 @@ void Player::moveTo(Rect target, std::function<void()> onFinish) {
     } else {
         this->movingState.x = -1;
     }
+    this->updateAnimation();
 }
 
 void Player::onMoveFinish() {

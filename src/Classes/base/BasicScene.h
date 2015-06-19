@@ -7,6 +7,7 @@
 #include "player/Player.h"
 #include "GameHub.h"
 #include "utils/Background.h"
+#include "dialog/DialogAction.h"
 
 class BasicScene : public cocos2d::Layer
 {
@@ -17,15 +18,19 @@ protected:
     std::vector<Player*> players;
     cocos2d::Vec2 respawnPoint;
     GameMap* map;
+    GameHub* hub;
+
+    std::map<std::string, DialogAction*> dialogs;
+    DialogAction* activeDialog;
 
     // The main player
     Player* mainPlayer;
 private:
     // If this is set to true it will not update the player or the enemies or check for collisions
     bool paused;
+    std::vector<std::pair<std::string, cocos2d::Rect>> dialogRects;
 
     Background* bg;
-    GameHub* hub;
 
     /**
      * @brief Resolves the collision of the given player.
@@ -78,7 +83,7 @@ private:
      * @param desiredPosition
      */
     void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
-
+    void checkDialog();
     void onSpawnpoint(cocos2d::Vec2 position);
     void checkEnemyCollision();
     void onCollectable(cocos2d::Vec2 position);

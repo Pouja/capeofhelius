@@ -77,7 +77,7 @@ public:
      * @param position The position to be respawned to.
      */
     void respawn(cocos2d::Vec2 position);
-
+    void stop();
     void moveTo(cocos2d::Rect tilePosition, std::function<void()> onFinish);
     void onMoveFinish();
 

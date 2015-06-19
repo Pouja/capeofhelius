@@ -13,6 +13,19 @@ bool BasicScene::init()
                  this->map->getMapSize().height * this->map->getTileSize().height);
     this->bg = Background::create(this->bgLocation, mapSize);
 
+    std::vector<Value> dialogObjects = map->getObjectGroup("dialogs")->getObjects();
+    std::for_each(dialogObjects.begin(), dialogObjects.end(), [this](Value v) {
+        ValueMap object = v.asValueMap();
+
+        std::string name = object.at("name").asString();
+        float width = object.at("width").asFloat();
+        float height = object.at("height").asFloat();
+        float x = object.at("x").asFloat();
+        float y = object.at("y").asFloat();
+
+        this->dialogRects.push_back(std::pair<std::string, Rect>(name, Rect(x, y, width, height)));
+    });
+
     addChild(this->bg);
     addChild(this->map);
     addChild(this->hub);
@@ -36,12 +49,16 @@ bool BasicScene::init()
 
 void BasicScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    this->mainPlayer->onKeyPressed(keyCode, event);
+    if (!this->paused && this->activeDialog == nullptr) {
+        this->mainPlayer->onKeyPressed(keyCode, event);
+    }
 }
 
 void BasicScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    this->mainPlayer->onKeyReleased(keyCode, event);
+    if (!this->paused && this->activeDialog == nullptr) {
+        this->mainPlayer->onKeyReleased(keyCode, event);
+    }
 }
 
 void BasicScene::resolveVertCollision(float tileHeight, float playerHeight, Vec2 tilePos, Vec2* velocity, Vec2* desiredPosition) {
@@ -261,6 +278,23 @@ void BasicScene::checkEnemyCollision() {
     }
 }
 
+void BasicScene::checkDialog(){
+    auto result = std::find_if(std::begin(this->dialogRects), std::end(this->dialogRects), [this](std::pair<std::string, Rect> dialogRect){
+        return std::get<1>(dialogRect).containsPoint(this->mainPlayer->getPosition());
+    });
+    if(result != std::end(this->dialogRects)){
+        std::string id = std::get<0>(*result);
+
+        activeDialog = dialogs[id];
+        this->dialogRects.erase(result);
+        this->mainPlayer->stop();
+
+        activeDialog->run([this]{
+            this->activeDialog = nullptr;
+        });
+    }
+}
+
 void BasicScene::updateVPC(cocos2d::Vec2 vpc) {
     this->setPosition(vpc);
     this->bg->move(vpc * -1);
@@ -280,6 +314,7 @@ void BasicScene::update(float delta) {
     this->resolvePlatforms(this->mainPlayer, delta);
 
     if (!this->paused) {
+        this->checkDialog();
         std::for_each(players.begin(), players.end(), [this](Player * p) {
             p->updateAnimation();
         });
