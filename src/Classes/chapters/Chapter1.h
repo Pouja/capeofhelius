@@ -3,6 +3,7 @@
 
 #include "base/BasicScene.h"
 
+//TODO rework this class completely.
 class Chapter1 : public BasicScene {
 public:
     static cocos2d::Scene* createScene();

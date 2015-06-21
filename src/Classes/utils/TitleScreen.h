@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 
+//TODO add documentation
 class TitleScreen : public cocos2d::Layer {
 private:
 	cocos2d::Label* title;

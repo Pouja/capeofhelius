@@ -13,6 +13,7 @@ bool BasicScene::init()
                  this->map->getMapSize().height * this->map->getTileSize().height);
     this->bg = Background::create(this->bgLocation, mapSize);
 
+    //TODO this should stay in gamemap
     std::vector<Value> dialogObjects = map->getObjectGroup("dialogs")->getObjects();
     std::for_each(dialogObjects.begin(), dialogObjects.end(), [this](Value v) {
         ValueMap object = v.asValueMap();

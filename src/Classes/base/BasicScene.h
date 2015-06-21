@@ -11,6 +11,8 @@
 
 class BasicScene : public cocos2d::Layer
 {
+//TODO: think about which attributes should go in protected, which should go to public (with only getters)
+// And which should stay private.
 protected:
     std::string mapName;
     std::string mainName;
@@ -20,8 +22,11 @@ protected:
     GameMap* map;
     GameHub* hub;
 
+    // TODO: create addDialog which merges attribute dialogs with dialogRects
     std::map<std::string, DialogAction*> dialogs;
     DialogAction* activeDialog;
+
+    // TODO: make this a map as well
     std::vector<std::pair<std::string, cocos2d::Rect>> dialogRects;
 
     // The main player
@@ -83,6 +88,8 @@ private:
      * @param desiredPosition
      */
     void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
+
+    //TODO: add documentation for these functions
     void checkDialog();
     void onSpawnpoint(cocos2d::Vec2 position);
     void checkEnemyCollision();
@@ -106,6 +113,7 @@ public:
      */
     cocos2d::Vec2 getViewPointCenter(cocos2d::Vec2 position);
 
+    //TODO think about whether the basicscene should hold the full control of input or not
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
@@ -119,6 +127,7 @@ public:
      */
     void update(float delta);
 
+    //TODO: add documentation
     void updateVPC(cocos2d::Vec2 vpc);
     virtual void onGameOver() = 0;
     virtual bool initVariables() = 0;

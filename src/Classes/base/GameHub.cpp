@@ -58,6 +58,7 @@ bool GameHub::init() {
 
 void GameHub::toggleHud() {
     this->lives->setVisible(!this->lives->isVisible());
+    this->lives2->setVisible(!this->lives2->isVisible());
     this->n1GoldCoin->setVisible(!this->n1GoldCoin->isVisible());
     this->n2GoldCoin->setVisible(!this->n2GoldCoin->isVisible());
     this->xGoldCoin->setVisible(!this->xGoldCoin->isVisible());
@@ -82,6 +83,7 @@ void GameHub::setCoins(int number) {
 }
 
 void GameHub::setLives(int nLives) {
+    //TODO make numbers of hearths more variable instead of hardcoded like this.
     if (nLives == 4) {
         lives2->setSpriteFrame("hud_heartFull.png");
     }
@@ -104,6 +106,7 @@ void GameHub::setLives(int nLives) {
 
 void GameHub::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
+    CC_UNUSED_PARAM(event);
     if (keyCode == EventKeyboard::KeyCode::KEY_SPACE && !block) {
         this->pulser->stopAllActions();
         this->pulser->setVisible(false);

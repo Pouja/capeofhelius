@@ -21,6 +21,7 @@ private:
     GameHub() : block(false){};
 
 public:
+    //TODO: add documentation.
     virtual bool init();
 
     void toggleHud();

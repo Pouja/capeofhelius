@@ -5,8 +5,10 @@
 #include "dynamic-scene/Platform.h"
 #include "enemies/Enemy.h"
 
+//TODO: add documentation
 class GameMap : public cocos2d::TMXTiledMap {
 public:
+    //TODO: rename to TileType
 	enum TileTyp {
 		DEATH, //0
 		WALL, //1

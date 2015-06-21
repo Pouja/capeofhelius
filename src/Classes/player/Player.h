@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 
+//TODO remove all left/righty thingies. And make it flippedX (this should reduce the complexity of a lot of functions).
 class Player: public cocos2d::Sprite {
 public:
     bool finished = false;
