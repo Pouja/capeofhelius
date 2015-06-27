@@ -25,7 +25,7 @@ Player* Player::create(Vec2 position, const std::string& name) {
 }
 
 Player::Player(cocos2d::Vec2 position, const std::string& name) {
-    this->animationState = AnimationState::IDLE_RIGHT;
+    this->animationState = AnimationState::IDLE;
     this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
     this->setScale(SCALE);
@@ -36,7 +36,7 @@ Player::Player(cocos2d::Vec2 position, const std::string& name) {
     this->coins = 0;
     this->name = name;
 }
-void Player::stop(){
+void Player::stop() {
     this->movingState = Vec2::ZERO;
     this->updateAnimation();
 }
@@ -59,23 +59,7 @@ void Player::initAnimations() {
 
     SpriteFrameCache* cache = SpriteFrameCache::getInstance();
 
-    Vector<SpriteFrame*> walkLeftFrames(9);
-
     char str[100] = {0};
-    for (int i = 0; i < 9; i++)
-    {
-        sprintf(str, (this->name + "-walk-left/%d.png").c_str(), i);
-        SpriteFrame* frame = cache->getSpriteFrameByName( str );
-        walkLeftFrames.pushBack(frame);
-    }
-    Animation* walkLeftAnimation = Animation::createWithSpriteFrames(walkLeftFrames, 0.05);
-    this->walkLeft = Animate::create(walkLeftAnimation);
-    this->walkLeft->retain();
-
-    Animation* runningLeftAnimation = Animation::createWithSpriteFrames(walkLeftFrames, 0.025);
-    this->runningLeft = Animate::create(runningLeftAnimation);
-    this->runningLeft->retain();
-
     Vector<SpriteFrame*> walkRightFrames(9);
     for (int i = 1; i < 9; i++)
     {
@@ -84,64 +68,46 @@ void Player::initAnimations() {
         walkRightFrames.pushBack(frame);
     }
     Animation* walkRightAnimation = Animation::createWithSpriteFrames(walkRightFrames, 0.05);
-    this->walkRight = Animate::create(walkRightAnimation);
-    this->walkRight->retain();
+    this->walking = Animate::create(walkRightAnimation);
+    this->walking->retain();
 
     Animation* runningRightAnimation = Animation::createWithSpriteFrames(walkRightFrames, 0.025);
-    this->runningRight = Animate::create(runningRightAnimation);
-    this->runningRight->retain();
+    this->running = Animate::create(runningRightAnimation);
+    this->running->retain();
 }
 
 void Player::updateAnimation() {
+    if(movingState.x > 0 && isFlippedX()){
+        this->setFlippedX(false);
+    }
+    if(movingState.x < 0 && !isFlippedX()){
+        this->setFlippedX(true);
+    }
+
     if (this->movingState.isZero()) {
-        if (this->isOnGround && !(this->animationState == AnimationState::IDLE_LEFT
-                                  || this->animationState == AnimationState::IDLE_RIGHT)) {
+        if (this->isOnGround && this->animationState != AnimationState::IDLE) {
             this->stopAllActions();
-            if (this->animationState == JUMP_LEFT || this->animationState == WALKING_LEFT
-                    || this->animationState == RUNNING_LEFT) {
-                this->setSpriteFrame(this->name + "-walk-left/0.png");
-                this->animationState = IDLE_LEFT;
-            } else {
-                this->setSpriteFrame(this->name + "-walk-right/0.png");
-                this->animationState = IDLE_RIGHT;
-            }
+            this->setSpriteFrame(this->name + "-walk-right/0.png");
+            this->animationState = AnimationState::IDLE;
         }
     } else if (this->movingState.y == 0 && this->isOnGround) {
-        if (this->movingState.x >= 0 ) {
-            if (this->animationState == WALKING_RIGHT && this->velocity.x > 7) {
-                this->stopAllActions();
-                this->runAction(RepeatForever::create(this->runningRight));
-                this->animationState = RUNNING_RIGHT;
-            } else if (this->animationState != WALKING_RIGHT && this->animationState != RUNNING_RIGHT) {
-                this->stopAllActions();
-                this->runAction(RepeatForever::create(this->walkRight));
-                this->animationState = WALKING_RIGHT;
-            }
-        } else {
-            if (this->animationState == WALKING_LEFT && this->velocity.x < -7) {
-                this->stopAllActions();
-                this->runAction(RepeatForever::create(this->runningLeft));
-                this->animationState = RUNNING_LEFT;
-            } else if (this->animationState != WALKING_LEFT && this->animationState != RUNNING_LEFT) {
-                this->stopAllActions();
-                this->runAction(RepeatForever::create(this->walkLeft));
-                this->animationState = WALKING_LEFT;
-            }
+        if (this->animationState == AnimationState::WALKING && fabsf(this->velocity.x) > 7) {
+            this->stopAllActions();
+            this->runAction(RepeatForever::create(this->running));
+            this->animationState = AnimationState::RUNNING;
+        } else if (this->animationState != AnimationState::WALKING && this->animationState != AnimationState::RUNNING) {
+            this->stopAllActions();
+            this->runAction(RepeatForever::create(this->walking));
+            this->animationState = AnimationState::WALKING;
         }
     } else {
         this->stopAllActions();
-        if (this->movingState.x >= 0 &&
-                (animationState == RUNNING_RIGHT || animationState == WALKING_RIGHT || animationState == IDLE_RIGHT) ) {
-            this->setSpriteFrame(this->name + "-walk-right/7.png");
-            this->animationState = JUMP_RIGHT;
-        } else if (animationState != JUMP_RIGHT) {
-            this->setSpriteFrame(this->name + "-walk-left/7.png");
-            this->animationState = JUMP_LEFT;
-        }
+        this->setSpriteFrame(this->name + "-walk-right/7.png");
+        this->animationState = AnimationState::JUMPING;
     }
 }
 
-void Player::clearCoins(){
+void Player::clearCoins() {
     this->coins = 0;
 }
 
@@ -244,7 +210,7 @@ void Player::updatePhysics() {
 
 void Player::die(CallFunc* callback) {
     this->lives--;
-    this->animationState = AnimationState::IDLE_RIGHT;
+    this->animationState = AnimationState::IDLE;
     this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
 
@@ -295,8 +261,6 @@ void Player::onMoveFinish() {
 }
 
 Player::~Player() {
-    CC_SAFE_RELEASE(walkLeft);
-    CC_SAFE_RELEASE(runningLeft);
-    CC_SAFE_RELEASE(runningRight);
-    CC_SAFE_RELEASE(walkRight);
+    CC_SAFE_RELEASE(running);
+    CC_SAFE_RELEASE(walking);
 }

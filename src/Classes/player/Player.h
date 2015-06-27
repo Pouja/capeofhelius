@@ -104,24 +104,18 @@ private:
 
     // The different animation state in which the player can be.
     enum AnimationState{
-        WALKING_LEFT,
-        WALKING_RIGHT,
-        IDLE_LEFT,
-        IDLE_RIGHT,
-        JUMP_LEFT,
-        JUMP_RIGHT,
-        RUNNING_LEFT,
-        RUNNING_RIGHT
+        WALKING,
+        IDLE,
+        JUMPING,
+        RUNNING
     };
 
     // The current animation it is running
     AnimationState animationState;
 
     // The different animation with the sprite animation initialized
-    cocos2d::Animate* walkLeft;
-    cocos2d::Animate* runningLeft;
-    cocos2d::Animate* runningRight;
-    cocos2d::Animate* walkRight;
+    cocos2d::Animate* running;
+    cocos2d::Animate* walking;
 
     // The desired position after resolving the gravity, velocity etc.
     cocos2d::Vec2 desiredPosition;
