@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-//TODO update this class to prechapter class. This class will then have a createScene method which an array of messages with delays.
+//TODO: update this class to prechapter class. This class will then have a createScene method which an array of messages with delays.
 class ChapterPre1 : public cocos2d::Layer {
 private:
     int index;

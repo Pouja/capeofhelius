@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-//TODO add documentation
+//TODO: add documentation
 class Background : public cocos2d::Sprite
 {
 private:

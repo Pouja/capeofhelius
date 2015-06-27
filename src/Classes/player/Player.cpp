@@ -53,6 +53,7 @@ int Player::getLives() {
 }
 
 void Player::initAnimations() {
+
     float initHeigh = this->getContentSize().height;
     this->setAnchorPoint(Vec2(0.5, ((initHeigh / 2) + BOTTOM_OFFSET) / initHeigh));
 

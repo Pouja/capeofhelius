@@ -13,7 +13,7 @@ bool BasicScene::init()
                  this->map->getMapSize().height * this->map->getTileSize().height);
     this->bg = Background::create(this->bgLocation, mapSize);
 
-    //TODO this should stay in gamemap
+    //TODO: this should stay in gamemap
     std::vector<Value> dialogObjects = map->getObjectGroup("dialogs")->getObjects();
     std::for_each(dialogObjects.begin(), dialogObjects.end(), [this](Value v) {
         ValueMap object = v.asValueMap();
@@ -103,13 +103,13 @@ void BasicScene::resolveCollision(Player* player) {
         desiredPosition.x = mapWidth - playerWidth / 2;
     }
 
-    std::vector<GameMap::TileTyp> collisions = this->map->groundCollision(boundingPoints);
-    if (collisions[8] == GameMap::TileTyp::DEATH) {
+    std::vector<GameMap::TileType> collisions = this->map->groundCollision(boundingPoints);
+    if (collisions[8] == GameMap::TileType::DEATH) {
         onDeath();
         return;
-    } else if (collisions[8] == GameMap::TileTyp::COLLECTABLE) {
+    } else if (collisions[8] == GameMap::TileType::COLLECTABLE) {
         onCollectable(boundingPoints[8]);
-    } else if (collisions[8] == GameMap::TileTyp::SPAWNPOINT) {
+    } else if (collisions[8] == GameMap::TileType::SPAWNPOINT) {
         onSpawnpoint(boundingPoints[8]);
     }
 
@@ -122,23 +122,23 @@ void BasicScene::resolveCollision(Player* player) {
     int collisionCount = 0;
 
     // Bottom collision, so the player is on the ground
-    if (collisions[0] == GameMap::TileTyp::SLOPE_LEFT
-            || collisions[0] == GameMap::TileTyp::SLOPE_LEFT
-            || collisions[0] == GameMap::TileTyp::SLOPE_RIGHT
-            || collisions[0] == GameMap::TileTyp::STUMP
-            || collisions[0] == GameMap::TileTyp::WALL) {
+    if (collisions[0] == GameMap::TileType::SLOPE_LEFT
+            || collisions[0] == GameMap::TileType::SLOPE_LEFT
+            || collisions[0] == GameMap::TileType::SLOPE_RIGHT
+            || collisions[0] == GameMap::TileType::STUMP
+            || collisions[0] == GameMap::TileType::WALL) {
         player->isOnGround = true;
     }
 
     // Slope collision
-    if (collisions[0] == GameMap::TileTyp::SLOPE_LEFT || collisions[0] == GameMap::TileTyp::SLOPE_RIGHT) {
-        bool isLeft = collisions[0] == GameMap::TileTyp::SLOPE_LEFT;
+    if (collisions[0] == GameMap::TileType::SLOPE_LEFT || collisions[0] == GameMap::TileType::SLOPE_RIGHT) {
+        bool isLeft = collisions[0] == GameMap::TileType::SLOPE_LEFT;
         Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
         Vec2 pos = this->map->mapToWorld(mapCoord);
 
         resolveSlopeCollision(pos, playerHeight, &desiredPosition, isLeft);
         collisionCount++;
-    } else if (collisions[0] == GameMap::TileTyp::STUMP) {
+    } else if (collisions[0] == GameMap::TileType::STUMP) {
         Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
         Vec2 pos = this->map->mapToWorld(mapCoord);
 
@@ -149,16 +149,16 @@ void BasicScene::resolveCollision(Player* player) {
         collisionCount++;
     } else {
         // Bottom (no slope) or top collision
-        if (collisions[0] == GameMap::TileTyp::WALL || collisions[1] == GameMap::TileTyp::WALL) {
-            int index = (collisions[0] == GameMap::TileTyp::WALL) ? 0 : 1;
+        if (collisions[0] == GameMap::TileType::WALL || collisions[1] == GameMap::TileType::WALL) {
+            int index = (collisions[0] == GameMap::TileType::WALL) ? 0 : 1;
             Vec2 mapCoord = this->map->worldToMap(boundingPoints[index]);
             Vec2 pos = this->map->mapToWorld(mapCoord);
             this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
             collisionCount++;
         }
         // Left or Right collision
-        if (collisions[2] == GameMap::TileTyp::WALL || collisions[3] == GameMap::TileTyp::WALL) {
-            int index = (collisions[2] == GameMap::TileTyp::WALL) ? 2 : 3;
+        if (collisions[2] == GameMap::TileType::WALL || collisions[3] == GameMap::TileType::WALL) {
+            int index = (collisions[2] == GameMap::TileType::WALL) ? 2 : 3;
             Vec2 pos = this->map->mapToWorld(this->map->worldToMap(boundingPoints[index]));
             this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
             collisionCount++;
@@ -166,7 +166,7 @@ void BasicScene::resolveCollision(Player* player) {
     }
     // Left/right top/bottom collision
     for (int index = 4; index < 8 && collisionCount == 0; index++) {
-        if (collisions[index] == GameMap::TileTyp::WALL) {
+        if (collisions[index] == GameMap::TileType::WALL) {
             Vec2 pos = this->map->mapToWorld(this->map->worldToMap(boundingPoints[index]));
             if (fabsf(pos.x - desiredPosition.x) > fabsf(pos.y - desiredPosition.y)) {
                 this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);

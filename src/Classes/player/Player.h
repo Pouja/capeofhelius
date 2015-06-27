@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-//TODO remove all left/righty thingies. And make it flippedX (this should reduce the complexity of a lot of functions).
+//TODO: remove all left/righty thingies. And make it flippedX (this should reduce the complexity of a lot of functions).
 class Player: public cocos2d::Sprite {
 public:
     bool finished = false;
@@ -41,7 +41,7 @@ public:
     cocos2d::Vec2 getState();
 
     // velocity and isOnGround are public and are allowed to be freely changed.
-    // TODO make methods like: hitGround, isInAir, isOnSlope, isOnGround, instead of letting using public members
+    // TODO: make methods like: hitGround, isInAir, isOnSlope, isOnGround, instead of letting using public members
     cocos2d::Vec2 velocity;
     bool isOnGround;
 

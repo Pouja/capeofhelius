@@ -113,7 +113,7 @@ public:
      */
     cocos2d::Vec2 getViewPointCenter(cocos2d::Vec2 position);
 
-    //TODO think about whether the basicscene should hold the full control of input or not
+    //TODO: think about whether the basicscene should hold the full control of input or not
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 

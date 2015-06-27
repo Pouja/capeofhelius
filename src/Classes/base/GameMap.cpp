@@ -81,37 +81,37 @@ void GameMap::loadPlatforms() {
     }
 }
 
-void GameMap::loadEnemies(){
+void GameMap::loadEnemies() {
     Size tileSize = this->getTileSize();
     TMXObjectGroup* objectGroup = this->getObjectGroup("enemies");
-    for(Value object : objectGroup->getObjects()){
+    for (Value object : objectGroup->getObjects()) {
         Enemy* enemy = Enemy::parse(object.asValueMap(), tileSize);
         addChild(enemy, 5);
         this->enemies.push_back(enemy);
     }
 }
 
-GameMap::TileTyp parseTileProperties(ValueMap properties) {
+GameMap::TileType parseTileProperties(ValueMap properties) {
     if (!properties.empty()) {
         std::string type = properties["type"].asString();
         if (type.compare("death") == 0) {
-            return GameMap::TileTyp::DEATH;
+            return GameMap::TileType::DEATH;
         } else if (type.compare("slope") == 0) {
             if (properties["angle"].asString().compare("left") == 0) {
-                return GameMap::TileTyp::SLOPE_LEFT;
+                return GameMap::TileType::SLOPE_LEFT;
             }
-            return GameMap::TileTyp::SLOPE_RIGHT;
+            return GameMap::TileType::SLOPE_RIGHT;
         } else if (type.compare("stump") == 0) {
-            return GameMap::TileTyp::STUMP;
+            return GameMap::TileType::STUMP;
         } else if (type.compare("wall") == 0) {
-            return GameMap::TileTyp::WALL;
+            return GameMap::TileType::WALL;
         } else if (type.compare("collectable") == 0) {
-            return GameMap::TileTyp::COLLECTABLE;
+            return GameMap::TileType::COLLECTABLE;
         } else if (type.compare("spawnpoint") == 0) {
-            return GameMap::TileTyp::SPAWNPOINT;
+            return GameMap::TileType::SPAWNPOINT;
         }
     }
-    return GameMap::TileTyp::NONE;
+    return GameMap::TileType::NONE;
 }
 
 void GameMap::initTiles() {
@@ -144,24 +144,24 @@ void GameMap::removeCollectable(cocos2d::Vec2 worldCoord) {
     // Update the tile map collisions
     Size mapSize = this->getMapSize();
     int index = (int) mapCoord.x + mapSize.width * mapCoord.y;
-    tiles[index] = TileTyp::NONE;
+    tiles[index] = TileType::NONE;
 }
 
 std::vector<Platform*> GameMap::getPlatforms() {
     return this->platforms;
 }
 
-std::vector<Enemy*> GameMap::getEnemies(){
+std::vector<Enemy*> GameMap::getEnemies() {
     return this->enemies;
 }
 
-std::vector<GameMap::TileTyp> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
-    std::vector<GameMap::TileTyp> collisions;
+std::vector<GameMap::TileType> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
+    std::vector<GameMap::TileType> collisions;
     for (Vec2 point : points) {
         Vec2 mapCoord = this->worldToMap(point);
         Size mapSize = this->getMapSize();
         if (mapCoord.x < 0 || mapCoord.y < 0 || mapCoord.x >= mapSize.width || mapCoord.y >= mapSize.height) {
-            collisions.push_back(GameMap::TileTyp::NONE);
+            collisions.push_back(GameMap::TileType::NONE);
         } else {
             int index = (int) mapCoord.x + mapSize.width * mapCoord.y;
             collisions.push_back(tiles[index]);

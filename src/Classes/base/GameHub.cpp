@@ -83,7 +83,7 @@ void GameHub::setCoins(int number) {
 }
 
 void GameHub::setLives(int nLives) {
-    //TODO make numbers of hearths more variable instead of hardcoded like this.
+    //TODO: make numbers of hearths more variable instead of hardcoded like this.
     if (nLives == 4) {
         lives2->setSpriteFrame("hud_heartFull.png");
     }
