@@ -124,10 +124,10 @@ void GameMap::initTiles() {
             uint32_t tileGID = layer->getTileGIDAt(Vec2(x, y));
             if (tileGID != 0) {
                 ValueMap properties = this->getPropertiesForGID(tileGID).asValueMap();
-                TileTyp tileType = parseTileProperties(properties);
-                this->tiles.push_back(tileType);
+                TileType TileType = parseTileProperties(properties);
+                this->tiles.push_back(TileType);
             } else {
-                this->tiles.push_back(TileTyp::NONE);
+                this->tiles.push_back(TileType::NONE);
             }
         }
     }
