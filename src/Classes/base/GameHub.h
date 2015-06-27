@@ -17,21 +17,45 @@ private:
     CCLabelBMFontAnimated* label;
     std::queue<std::string> textQueue;
     std::function<void()> callback;
+
+    // Used for blocking the user input to show the full text before it finished animating.
     bool block;
     GameHub() : block(false){};
 
 public:
-    //TODO: add documentation.
+    /**
+     * Initializes the game hub, sets all the labels and their positions and default values.
+     * @return true (always)
+     */
     virtual bool init();
 
+    /**
+     * Toggles between viewing the lives and the score of the player.
+     */
     void toggleHud();
 
+    /**
+     * Clears the text in the textbox.
+     */
     void clearText();
+
+    /**
+     * Sets the score
+     * @param number The new score.
+     */
     void setCoins(int number);
 
+    /**
+     * Sets the number of lives.
+     * @param lives The new number of lives.
+     */
     void setLives(int lives);
 
-    // Sets the queue for text to be displayed.
+    /**
+     * Sets the new queue of text to be shown and calls onFinish when all messages were view by the user.
+     * @param text     The list of text to be shown
+     * @param onFinish (Optional) Callback to be called after the queue is empty.
+     */
     void setText(std::queue<std::string> text, std::function<void()> onFinish);
     void setText(std::queue<std::string> text);
 

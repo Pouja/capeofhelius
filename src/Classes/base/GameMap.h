@@ -5,10 +5,8 @@
 #include "dynamic-scene/Platform.h"
 #include "enemies/Enemy.h"
 
-//TODO: add documentation
 class GameMap : public cocos2d::TMXTiledMap {
 public:
-    //TODO: rename to TileTypee
     enum TileType {
         DEATH, //0
         WALL, //1
@@ -19,6 +17,12 @@ public:
         SPAWNPOINT, //5
         NONE //6
     };
+    /**
+     * Creates a new game map with the given map name and scale.
+     * @param  mapName The name of the map, should match to [name].tmx
+     * @param  scale   The scale to be set.
+     * @return         The game map.
+     */
     static GameMap* create(const std::string& mapName, float scale);
 
     /** Converts a map coordinate to the world coordinate */
@@ -35,8 +39,21 @@ public:
 
     /** Called when the map is allowed to update **/
     void update(float delta);
+
+    /**
+     * Returns all the enemies which are spawned in the map.
+     */
     std::vector<Enemy*> getEnemies();
+
+    /**
+     * Removes a collectable at the given world coordinates.
+     * @param worldCoord The coordinates of the collectable.
+     */
     void removeCollectable(cocos2d::Vec2 worldCoord);
+
+    /**
+     * Returns all the platforms
+     */
     std::vector<Platform*> getPlatforms();
 private:
     /**
@@ -51,8 +68,14 @@ private:
      */
     void loadDynamicScene();
 
+    /**
+     * Initializes all the platforms and starts their movement.
+     */
     void loadPlatforms();
 
+    /**
+     * Initializes all the enemies.
+     */
     void loadEnemies();
 
     std::vector<Enemy*> enemies;

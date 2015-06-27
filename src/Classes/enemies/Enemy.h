@@ -16,11 +16,10 @@ public:
     static Enemy* create(Enemy* enemy);
     static Enemy* parse(cocos2d::ValueMap valueMap, cocos2d::Size size);
 
-    //TODO: make these protected
+protected:
     cocos2d::Vec2 getStartPoint();
     cocos2d::Vec2 getSteps();
     cocos2d::Size getStepSize();
-protected:
     Enemy(cocos2d::Vec2 _startPoint, cocos2d::Vec2 _steps, const std::string& _name, cocos2d::Size _size) :
         startPoint(_startPoint), steps(_steps), stepSize(_size) {
             this->setName(_name);
