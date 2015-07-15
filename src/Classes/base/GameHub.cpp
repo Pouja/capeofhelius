@@ -1,5 +1,7 @@
 #include "GameHub.h"
 
+#define LIVE_TAG 0
+
 USING_NS_CC;
 
 bool GameHub::init() {
@@ -19,10 +21,7 @@ bool GameHub::init() {
     this->goldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_coins.png");
     this->goldCoin->setPosition(topRightOffset.x + 120, topRightOffset.y);
 
-    this->lives = Sprite::createWithSpriteFrameName("hud_heartFull.png");
-    this->lives->setPosition(contentSize.width * 0.1, topRightOffset.y);
-    this->lives2 = Sprite::createWithSpriteFrameName("hud_heartFull.png");
-    this->lives2->setPosition(contentSize.width * 0.1 + lives->getContentSize().width + 1, topRightOffset.y);
+    this->livesPosition = Vec2(contentSize.width * 0.1, topRightOffset.y);
 
     this->textbox = cocos2d::Sprite::create("hud/textbox.png");
     this->textbox->setScaleX(contentSize.width / this->textbox->getContentSize().width);
@@ -38,8 +37,6 @@ bool GameHub::init() {
     this->pulser->setPosition(contentSize.width * 0.035, 40);
     this->pulser->setVisible(false);
 
-    this->addChild(this->lives, 1);
-    this->addChild(this->lives2, 1);
     this->addChild(this->n1GoldCoin, 1);
     this->addChild(this->n2GoldCoin, 1);
     this->addChild(this->goldCoin, 1);
@@ -57,8 +54,6 @@ bool GameHub::init() {
 }
 
 void GameHub::toggleHud() {
-    this->lives->setVisible(!this->lives->isVisible());
-    this->lives2->setVisible(!this->lives2->isVisible());
     this->n1GoldCoin->setVisible(!this->n1GoldCoin->isVisible());
     this->n2GoldCoin->setVisible(!this->n2GoldCoin->isVisible());
     this->xGoldCoin->setVisible(!this->xGoldCoin->isVisible());
@@ -83,24 +78,19 @@ void GameHub::setCoins(int number) {
 }
 
 void GameHub::setLives(int nLives) {
-    //TODO: make numbers of hearths more variable instead of hardcoded like this.
-    if (nLives == 4) {
-        lives2->setSpriteFrame("hud_heartFull.png");
+    Director* director = Director::getInstance();
+    Size contentSize = director->getVisibleSize();
+
+    for(Node* child : this->getChildren()){
+        if(child->getTag() == LIVE_TAG){
+            removeChild(child);
+        }
     }
-    if(nLives == 3) {
-        lives2->setSpriteFrame("hud_heartHalf.png");
-    }
-    if(nLives < 3){
-        lives2->setSpriteFrame("hud_heartEmpty.png");
-    }
-    if (nLives > 2) {
-        lives->setSpriteFrame("hud_heartFull.png");
-    }
-    if (nLives == 1) {
-        lives->setSpriteFrame("hud_heartHalf.png");
-    }
-    if (nLives == 0) {
-        lives->setSpriteFrame("hud_heartEmpty.png");
+
+    for(int i = 0; i < nLives; i++){
+        Sprite* live = Sprite::createWithSpriteFrameName("hud_heartFull.png");
+        live->setPosition(contentSize.width * 0.1 + i * live->getContentSize().width + 1, contentSize.height * 0.9);
+        addChild(live, 1, LIVE_TAG);
     }
 }
 

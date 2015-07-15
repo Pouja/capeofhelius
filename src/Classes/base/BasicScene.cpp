@@ -333,6 +333,7 @@ void BasicScene::update(float delta) {
             p->updateAnimation();
         });
         this->checkEnemyCollision();
+        this->hub->setLives(mainPlayer->getLives());
     }
 
     this->updateVPC(vpc);
