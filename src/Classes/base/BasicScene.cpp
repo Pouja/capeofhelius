@@ -56,7 +56,9 @@ void BasicScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 
 void BasicScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    if (!this->paused && this->activeDialog == nullptr) {
+    if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
+        Director::getInstance()->end();
+    } else if (!this->paused && this->activeDialog == nullptr) {
         this->mainPlayer->onKeyReleased(keyCode, event);
     }
 }
