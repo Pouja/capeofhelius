@@ -40,7 +40,7 @@ set(BUILD_LUA_TESTS OFF CACHE BOOL "disable lua tests")
 set(BUILD_JS_LIBS OFF CACHE BOOL "disable js binding")
 set(BUILD_JS_TESTS OFF CACHE BOOL "disable js tests")
 set(BUILD_EDITOR_SPINE OFF CACHE BOOL "disable editor support for spine")
-set(BUILD_EDITOR_COCOSTUDIO ON CACHE BOOL "disable editor support for cocostudio")
+set(BUILD_EDITOR_COCOSTUDIO OFF CACHE BOOL "disable editor support for cocostudio")
 set(BUILD_EDITOR_COCOSBUILDER OFF CACHE BOOL "disable editor support for cocosbuilder")
 add_subdirectory(${COCOS2D_ROOT})
 
@@ -68,7 +68,7 @@ else()
   set(CMAKE_C_FLAGS_DEBUG "-g -Wall -DCOCOS2D_DEBUG=1")
   set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_C_FLAGS_DEBUG})
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-exceptions -std=c99")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -std=c++11 -Wno-deprecated-declarations -Wno-reorder")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -std=c++11 -Wno-reorder")
   if(CLANG)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
   endif()
@@ -96,6 +96,8 @@ include_directories(
   /usr/local/include/GLFW
   /usr/include/GLFW
   ${COCOS2D_ROOT}/cocos
+  ${COCOS2D_ROOT}/cocos/platform
+  ${COCOS2D_ROOT}/cocos/audio/include/
   Classes
 )
 
