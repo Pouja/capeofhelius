@@ -33,3 +33,6 @@ After you build the project you can find the binary (aka the game) in `src/build
 All the tiles are from [kenny](http://kenney.nl/assets) and [the player animations](http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator) are from Guarav0.
 
 Furthermore [cocos2d-x](http://www.cocos2d-x.org) is used as the game engine.
+
+# Doxygen
+There is a doxygen config file which, `doxygen config.doxy` to get the documentation.
