@@ -1,7 +1,7 @@
 #include "ChapterPre1.h"
 #include "base/GameHub.h"
 #include "utils/TitleScreen.h"
-#include "Chapter1.h"
+#include "../base/ChapterManager.h"
 
 USING_NS_CC;
 
@@ -30,7 +30,7 @@ bool ChapterPre1::init() {
     this->index = 0;
 
     CallFunc* onFinish = CallFunc::create([] {
-        Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Chapter1::createScene()));
+        ChapterManager::getInstance()->next();
     });
 
     CallFunc* onTick = CallFunc::create([text, this, titleScreen] {

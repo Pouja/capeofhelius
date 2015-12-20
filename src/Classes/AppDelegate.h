@@ -13,7 +13,9 @@ class  AppDelegate : private cocos2d::Application
 public:
     AppDelegate();
     virtual ~AppDelegate();
-    
+    /**
+     * [initGLContextAttrs description]
+     */
     virtual void initGLContextAttrs();
 
     /**
@@ -25,13 +27,11 @@ public:
 
     /**
     @brief  The function be called when the application enter background
-    @param  the pointer of the application
     */
     virtual void applicationDidEnterBackground();
 
     /**
     @brief  The function be called when the application enter foreground
-    @param  the pointer of the application
     */
     virtual void applicationWillEnterForeground();
 };

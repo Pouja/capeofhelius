@@ -1,7 +1,6 @@
 #include "Chapter2.h"
 #include "base/GameHub.h"
 #include "utils/TitleScreen.h"
-#include "Chapter1.h"
 
 USING_NS_CC;
 

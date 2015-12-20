@@ -1,6 +1,6 @@
 #include "Chapter0.h"
 #include "base/GameHub.h"
-#include "ChapterPre1.h"
+#include "../base/ChapterManager.h"
 
 USING_NS_CC;
 
@@ -17,7 +17,7 @@ bool Chapter0::init() {
     addChild(hub);
 
     std::function<void()> onFinish = ([] {
-        Director::getInstance()->replaceScene(TransitionFade::create(2.0f, ChapterPre1::createScene()));
+        ChapterManager::getInstance()->next();
     });
 
     hub->setText(std::queue<std::string>({

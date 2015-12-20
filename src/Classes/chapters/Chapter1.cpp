@@ -1,5 +1,5 @@
 #include "Chapter1.h"
-#include "Chapter2.h"
+#include "../base/ChapterManager.h"
 USING_NS_CC;
 
 Scene* Chapter1::createScene()
@@ -16,6 +16,7 @@ Chapter1* Chapter1::create() {
         chapter->autorelease();
         return chapter;
     }
+    log("failed to create chapter1");
     CC_SAFE_DELETE(chapter);
     return nullptr;
 }
@@ -217,7 +218,7 @@ bool Chapter1::dialogCondition(const std::string& id) {
 }
 
 void Chapter1::onFinish() {
-        Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Chapter2::createScene()));
+    ChapterManager::getInstance()->next();
 }
 
 void Chapter1::onGameOver() {
