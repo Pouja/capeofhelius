@@ -89,13 +89,49 @@ private:
      */
     void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
 
-    //TODO: add documentation for these functions
+    /**
+     * Checks if the position of the player matches the start of a dialog and if the condition
+     * of the dialog are set.
+     * If so, it sets the currentDialog to the matching dialog and runs it.
+     */
     void checkDialog();
+
+    /**
+     * Called when the player is at a spawnpoint.
+     * Should contain logic of setting new spawnpoint, creating new save entry etc.
+     * @param position The position of the spawnpoint reaced.
+     */
     void onSpawnpoint(cocos2d::Vec2 position);
+
+    /**
+     * Checks if the player is colliding with an enemy by doing rectangle collision.
+     * Also contains logic when the collision is true.
+     */
     void checkEnemyCollision();
+
+    /**
+     * Called when the player collides with a collectable.
+     * Removes the collectable from the map and sets the coins.
+     * @param position The position of the collectable
+     */
     void onCollectable(cocos2d::Vec2 position);
+
+    /**
+     * Called when the player has met the death criteria.
+     * Resets the player position the last spawnpoint or ends the game, depending on the criteria.
+     */
     void onDeath();
+
+    /**
+     * Called when the win condition is met.
+     */
     virtual void onFinish() = 0;
+
+    /**
+     * Called when the condition of a specific dialog should be checked.
+     * @param  id The id of the dialog
+     * @return    true iff the conditions of the dialog are met, false otherwise.
+     */
     virtual bool dialogCondition(const std::string& id) = 0;
 public:
     /**
@@ -127,9 +163,23 @@ public:
      */
     void update(float delta);
 
-    //TODO: add documentation
+    /**
+     * Called at each game tick update the VPC for the map, gamehub and background.
+     * @param vpc The new view point center.
+     */
     void updateVPC(cocos2d::Vec2 vpc);
+
+    /**
+     * Called when the game over conditions are met.
+     */
     virtual void onGameOver() = 0;
+
+    /**
+     * Contains the logic for setting all the necessary variables.
+     * Should be called before ::init()
+     * @return true iff it succeeded in setting the variables.
+     * When false is returned the game will crash.
+     */
     virtual bool initVariables() = 0;
 };
 
