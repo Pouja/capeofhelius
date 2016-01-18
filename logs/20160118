@@ -1,0 +1,48 @@
+20160118
+Oke new year new log. I will continue with this project again.
+I did not had the time and energy to work on this a lot the last 6 months due other interests.
+
+I just re-read the story I wrote, holy shit what an awesome story I made up. Thank you weed.
+
+Oke. I did a lot of todos I wrote. Still need to do a bit more. But I will first start with the xml based dialogs. Currently you have to write all the dialogs in c++ code which is just horrible and not time efficient.
+
+There are 2 things I want to put in the xml filem, one is the dialog which I just stated and the other is the "save file". The save file will be done first. This will contain information like which level and which spawnpoint it should start the game. Which makes debugging the game a little bit easier.
+It will also contain how much items the player has.
+
+So a full list will be:
+    save file
+        - level
+        - spawnpoint (optional) (it is possible that the level the player is at is a between chapter)
+        - coins (will be implemented later)
+
+    Dialog file - per chapter
+        - id
+        - prerequisites
+            - dialog id
+            - collectables
+        - actions
+            - type (movement, action, text, status)
+            - text (if text)
+            - target (if action, movement, status)
+                - x
+                - y
+            - player
+                - id/name
+            - action
+                - type
+                - value
+            - status
+                - name
+                - value
+
+So the save file will be done first and then the dialog file.
+This will make non-coding work a lot faster. No need to compile everything to test the dialogs.
+
+The step after that will be decreasing the size of all the non player relatable sprites. So everything that goes in tiled basically. Reason for this is that the size of the tiles compared to the player is odd. The player should be the size of one tile.
+
+So current steps:
+    - save file
+    - dialog file
+    - resize map
+    - redo chapter 1
+    - start on chapter 2
