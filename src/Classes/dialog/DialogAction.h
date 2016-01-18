@@ -5,7 +5,6 @@
 #include "player/Player.h"
 #include "cocos2d.h"
 
-//TODO: Completely rewrite this class
 class DialogAction : public cocos2d::Ref {
 private:
     bool isText = false;

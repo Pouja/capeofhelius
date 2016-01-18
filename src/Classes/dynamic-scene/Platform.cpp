@@ -22,6 +22,25 @@ Platform* Platform::create(Vec2 start, Vec2 end, Vec2 velocity, const std::strin
 	return nullptr;
 }
 
+Platform* Platform::parse(cocos2d::ValueMap dict, float scale, float tileWidth, float tileHeight) {
+        std::string name = dict.at("sprite").asString();
+
+        float x = dict.at("x").asFloat() * scale;
+        float y = dict.at("y").asFloat() * scale;
+        Vec2 start = Vec2(x, y);
+
+        float xStep = dict.at("move_x").asFloat();
+        float yStep = dict.at("move_y").asFloat();
+        Vec2 end = Vec2(x + xStep * tileWidth, y + yStep * tileWidth);
+
+        Vec2 velocity = Vec2(tileWidth * 2, tileHeight * 2);
+        if (xStep == 0) velocity.x = 0;
+        if (yStep == 0) velocity.y = 0;
+
+        bool alternate = dict.find("alternate") != dict.end();
+        return Platform::create(start, end, velocity, name, scale, alternate);
+}
+
 void Platform::initPosition(bool alternate) {
 	Size size = this->getContentSize();
 	Vec2 center(size.width * getScale() / 2, size.height * getScale() / 2);

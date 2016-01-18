@@ -57,25 +57,8 @@ void GameMap::loadPlatforms() {
     float tileWidth = this->getTileSize().width * this->getScale();
     float tileHeight = this->getTileSize().height * this->getScale();
     for (Value object : objectGroup->getObjects()) {
-        //TODO: move this to Platform::parse
         ValueMap dict = object.asValueMap();
-        std::string name = dict.at("sprite").asString();
-
-        float x = dict.at("x").asFloat() * this->getScale();
-        float y = dict.at("y").asFloat() * this->getScale();
-        Vec2 start = Vec2(x, y);
-
-        float xStep = dict.at("move_x").asFloat();
-        float yStep = dict.at("move_y").asFloat();
-        Vec2 end = Vec2(x + xStep * tileWidth, y + yStep * tileWidth);
-
-        Vec2 velocity = Vec2(tileWidth * 2, tileHeight * 2);
-        if (xStep == 0) velocity.x = 0;
-        if (yStep == 0) velocity.y = 0;
-
-        bool alternate = dict.find("alternate") != dict.end();
-        Platform* platform = Platform::create(start, end, velocity, name, this->getScale(), alternate);
-
+        Platform* platform = Platform::parse(dict, this->getScale(), tileWidth, tileHeight);
         addChild(platform);
         platforms.push_back(platform);
     }
