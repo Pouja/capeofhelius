@@ -25,7 +25,8 @@ bool GameHub::init() {
 
     this->textbox = cocos2d::Sprite::create("hud/textbox.png");
     this->textbox->setScaleX(contentSize.width / this->textbox->getContentSize().width);
-    this->textbox->setPosition(contentSize.width / 2, 45);
+    this->textbox->setPosition(contentSize.width / 2, 40);
+    this->textbox->setVisible(false);
 
     this->label = CCLabelBMFontAnimated::createWithTTF("", "fonts/Gasalt-Regular.ttf", 30,
                   Size(contentSize.width, 40), TextHAlignment::LEFT, TextVAlignment::TOP);
@@ -81,13 +82,13 @@ void GameHub::setLives(int nLives) {
     Director* director = Director::getInstance();
     Size contentSize = director->getVisibleSize();
 
-    for(Node* child : this->getChildren()){
-        if(child->getTag() == LIVE_TAG){
+    for (Node* child : this->getChildren()) {
+        if (child->getTag() == LIVE_TAG) {
             removeChild(child);
         }
     }
 
-    for(int i = 0; i < nLives; i++){
+    for (int i = 0; i < nLives; i++) {
         Sprite* live = Sprite::createWithSpriteFrameName("hud_heartFull.png");
         live->setPosition(contentSize.width * 0.1 + i * live->getContentSize().width + 1, contentSize.height * 0.9);
         addChild(live, 1, LIVE_TAG);
@@ -97,44 +98,62 @@ void GameHub::setLives(int nLives) {
 void GameHub::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
     CC_UNUSED_PARAM(event);
-    if (keyCode == EventKeyboard::KeyCode::KEY_SPACE && !block) {
-        this->pulser->stopAllActions();
-        this->pulser->setVisible(false);
+    if (keyCode == EventKeyboard::KeyCode::KEY_SPACE) {
+        if (!this->isAnimatingText) {
+            this->stopPulse();
+            if (!this->textQueue.empty()) {
+                std::string nextText = this->textQueue.front();
+                this->label->setString(nextText);
 
-        if (!this->textQueue.empty()) {
-            std::string nextText = this->textQueue.front();
-            this->label->setString(nextText);
-
-            this->textQueue.pop();
-            this->block = true;
-            this->label->animateInTypewriter(1, CallFunc::create([this] {
-                this->block = false;
-                this->pulser->setVisible(true);
-                this->pulser->runAction(
-                    RepeatForever::create(
-                        Sequence::create(FadeOut::create(0.5), FadeIn::create(0.5), nullptr)));
-            }));
-        } else if (!this->label->getString().empty()) {
-            if (this->callback != nullptr) {
-                this->callback();
+                this->textQueue.pop();
+                this->isAnimatingText = true;
+                this->label->animateInTypewriter(1, CallFunc::create([this] {
+                    this->isAnimatingText = false;
+                }));
+                this->runPulse();
+            } else if (!this->label->getString().empty()) {
+                if (this->callback != nullptr) {
+                    this->callback();
+                }
+                this->clearText();
             }
-            this->label->setString("");
+        } else {
+            this->label->stopActionsOnAllSprites();
+            this->label->setString(this->label->getString());
+            this->label->setAllCharsScale(1);
+            this->isAnimatingText = false;
+            this->runPulse();
         }
     }
+}
+
+void GameHub::runPulse() {
+    this->pulser->setVisible(true);
+    this->pulser->runAction(
+        RepeatForever::create(
+            Sequence::create(FadeTo::create(0.8, 255), FadeTo::create(0.8, 50), nullptr)));
+}
+
+void GameHub::stopPulse() {
+    this->pulser->stopAllActions();
+    this->pulser->setVisible(false);
 }
 
 void GameHub::clearText() {
     std::queue<std::string>().swap(this->textQueue);
     this->label->setString("");
+    this->textbox->setVisible(false);
 }
 
 void GameHub::setText(std::queue<std::string> textQueue) {
     this->setText(textQueue, nullptr);
+    this->textbox->setVisible(true);
 }
 
 void GameHub::setText(std::queue<std::string> textQueue, std::function<void()> onFinish) {
     this->callback = onFinish;
     this->clearText();
+    this->textbox->setVisible(true);
     this->textQueue = textQueue;
     this->onKeyReleased(EventKeyboard::KeyCode::KEY_SPACE, nullptr);
 }

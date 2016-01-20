@@ -18,9 +18,11 @@ private:
     std::function<void()> callback;
 
     // Used for blocking the user input to show the full text before it finished animating.
-    bool block;
-    GameHub() : block(false){};
+    bool isAnimatingText;
+    GameHub() : isAnimatingText(false){};
 
+    void runPulse();
+    void stopPulse();
 public:
     /**
      * Initializes the game hub, sets all the labels and their positions and default values.
