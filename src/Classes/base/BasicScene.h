@@ -22,6 +22,9 @@ protected:
     GameMap* map;
     GameHub* hub;
 
+    // For debugging
+    cocos2d::Label* mouseLabel;
+
     // TODO: create addDialog which merges attribute dialogs with dialogRects
     std::map<std::string, DialogAction*> dialogs;
     DialogAction* activeDialog;

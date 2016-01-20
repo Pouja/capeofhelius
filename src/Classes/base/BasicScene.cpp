@@ -2,6 +2,8 @@
 #include "utils/TitleScreen.h"
 #include "base/ChapterManager.h"
 
+#define SHOW_MOUSE true
+
 USING_NS_CC;
 
 bool BasicScene::init()
@@ -9,6 +11,11 @@ bool BasicScene::init()
     this->paused = false;
     this->map = GameMap::create(this->mapName, 1);
     this->hub = GameHub::create();
+
+    if (SHOW_MOUSE) {
+        this->mouseLabel = Label::createWithTTF("", "fonts/Gasalt-Regular.ttf", 30);
+        this->mouseLabel->setTextColor(Color4B::BLACK);
+    }
 
     Size mapSize(this->map->getMapSize().width * this->map->getTileSize().width,
                  this->map->getMapSize().height * this->map->getTileSize().height);
@@ -28,6 +35,7 @@ bool BasicScene::init()
         this->dialogRects.push_back(std::pair<std::string, Rect>(name, Rect(x, y, width, height)));
     });
 
+    if (SHOW_MOUSE) addChild(this->mouseLabel,1);
     addChild(this->bg);
     addChild(this->map);
     addChild(this->hub);
@@ -38,11 +46,24 @@ bool BasicScene::init()
         });
     }
     // Creating a keyboard event listener
-    auto listener = EventListenerKeyboard::create();
+    EventListenerKeyboard* listener = EventListenerKeyboard::create();
     listener->onKeyPressed = CC_CALLBACK_2(BasicScene::onKeyPressed, this);
     listener->onKeyReleased = CC_CALLBACK_2(BasicScene::onKeyReleased, this);
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+    if (SHOW_MOUSE) {
+        auto touchListener = EventListenerTouchOneByOne::create();
+        touchListener->onTouchBegan = [this](Touch* touch, Event* event) {
+            Vec2 pos = event->getCurrentTarget()->convertToNodeSpace(touch->getLocation());
+            char strPos[100];
+            sprintf(strPos, "mouse at (%d,%d)", (int) pos.x, (int) pos.y);
+            this->mouseLabel->setString(strPos);
+            return true;
+        };
+
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+    }
 
     this->scheduleUpdate();
     return true;
@@ -151,7 +172,7 @@ void BasicScene::resolveCollision(Player* player) {
         Vec2 mapCoord = this->map->worldToMap(boundingPoints[0]);
         Vec2 pos = this->map->mapToWorld(mapCoord);
 
-        // Magic numbers which makes the slopes a bit better, I honestly do not know why this works
+        //TODO: Magic numbers which makes the slopes a bit better, I honestly do not know why this works
         pos.add(Vec2(3, 3));
 
         this->resolveVertCollision(tileHeight, playerHeight, pos, &velocity, &desiredPosition);
@@ -317,6 +338,7 @@ void BasicScene::updateVPC(cocos2d::Vec2 vpc) {
     this->setPosition(vpc);
     this->bg->move(vpc * -1);
     this->hub->setPosition(vpc * -1);
+    if (SHOW_MOUSE) this->mouseLabel->setPosition((vpc + Vec2(-120, -720)) * -1);
 }
 
 void BasicScene::update(float delta) {
