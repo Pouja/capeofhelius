@@ -40,7 +40,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     cache->addSpriteFramesWithFile("tiles/items.plist");
     cache->addSpriteFramesWithFile("enemies/enemies.plist");
 
-    // turn on display FPS
+    // turn off display FPS
     director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
