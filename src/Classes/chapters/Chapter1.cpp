@@ -29,6 +29,7 @@ bool Chapter1::initVariables() {
 }
 
 bool Chapter1::initPlayers() {
+    ChapterManager* chapterManager = ChapterManager::getInstance();
     for (Value value : this->map->getObjectGroup("players")->getObjects()) {
         ValueMap object = value.asValueMap();
 
@@ -36,14 +37,27 @@ bool Chapter1::initPlayers() {
         float x = object.at("x").asFloat();
         float y = object.at("y").asFloat();
 
-        Player* p = Player::create(Vec2(x, y), name);
-        this->players.push_back(p);
+        Player* p;
 
         if (name.compare("zoe-nocape") == 0) {
+            ChapterManager::Progress progress = chapterManager->getProgress();
+
+            if (!progress.spawnPoint.equals(Vec2::ZERO)) {
+                Vec2 worldCoord = map->mapToWorld(progress.spawnPoint);
+                p = Player::create(worldCoord, name);
+                this->respawnPoint = worldCoord;
+            } else {
+                p = Player::create(Vec2(x, y), name);
+                this->respawnPoint = Vec2(x, y);
+            }
             this->mainPlayer = p;
-            this->respawnPoint = Vec2(x, y);
+        } else {
+            p = Player::create(Vec2(x, y), name);
         }
+
+        this->players.push_back(p);
     }
+
     std::function<void()> cb = [this] {
         this->activeDialog = nullptr;
     };

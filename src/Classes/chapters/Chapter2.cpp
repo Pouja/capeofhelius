@@ -1,6 +1,7 @@
 #include "Chapter2.h"
 #include "base/GameHub.h"
 #include "utils/TitleScreen.h"
+#include "base/ChapterManager.h"
 
 USING_NS_CC;
 
@@ -34,6 +35,15 @@ bool Chapter2::init() {
             Repeat::create(
                 Sequence::create(DelayTime::create(7.0f), onTick, nullptr), text.size()
             ), DelayTime::create(5.0f), onFinish, nullptr));
+
+    auto listener = EventListenerKeyboard::create();
+    listener->onKeyReleased = [](EventKeyboard::KeyCode keyCode, Event * event) {
+        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
+            ChapterManager::getInstance()->save();
+            Director::getInstance()->end();
+        }
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
 }

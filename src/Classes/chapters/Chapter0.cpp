@@ -28,5 +28,14 @@ bool Chapter0::init() {
         "Zoe: \"Allright, allright, I'm comming\"",
     }), onFinish);
 
+    auto listener = EventListenerKeyboard::create();
+    listener->onKeyReleased = [](EventKeyboard::KeyCode keyCode, Event * event) {
+        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
+            ChapterManager::getInstance()->save();
+            Director::getInstance()->end();
+        }
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
     return true;
 }

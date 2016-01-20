@@ -1,5 +1,6 @@
 #include "BasicScene.h"
 #include "utils/TitleScreen.h"
+#include "base/ChapterManager.h"
 
 USING_NS_CC;
 
@@ -57,6 +58,7 @@ void BasicScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 void BasicScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
+        ChapterManager::getInstance()->save();
         Director::getInstance()->end();
     } else if (!this->paused && this->activeDialog == nullptr) {
         this->mainPlayer->onKeyReleased(keyCode, event);
