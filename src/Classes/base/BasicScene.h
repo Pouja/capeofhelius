@@ -76,7 +76,8 @@ private:
      * @param velocity The pointer to the velocity to be altered.
      * @param desiredPosition The pointer to the position to be altered.
      */
-    void resolveVertCollision(float tileHeight, float playerHeight, cocos2d::Vec2 tilePos, cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
+    void resolveVertCollision(float tileHeight, float playerHeight, cocos2d::Vec2 tilePos,
+        cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
 
     /**
      * @brief Resolves a horizontal collision
@@ -87,7 +88,8 @@ private:
      * @param tilePos
      * @param desiredPosition
      */
-    void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos, cocos2d::Vec2* desiredPosition);
+    void resolveHorCollision(float tileWidth, float playerWidth, cocos2d::Vec2 tilePos,
+        cocos2d::Vec2* velocity, cocos2d::Vec2* desiredPosition);
 
     /**
      * Checks if the position of the player matches the start of a dialog and if the condition

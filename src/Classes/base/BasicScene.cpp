@@ -65,21 +65,26 @@ void BasicScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
     }
 }
 
-void BasicScene::resolveVertCollision(float tileHeight, float playerHeight, Vec2 tilePos, Vec2* velocity, Vec2* desiredPosition) {
+void BasicScene::resolveVertCollision(float tileHeight, float playerHeight, Vec2 tilePos,
+                                      Vec2* velocity, Vec2* desiredPosition) {
     if (desiredPosition->y > tilePos.y) {
         desiredPosition->y = tilePos.y  + playerHeight / 2  + tileHeight / 2;
+        velocity->y = fmaxf(velocity->y, 0);
     } else {
         desiredPosition->y = tilePos.y - playerHeight / 2  - tileHeight / 2;
+        velocity->y = fminf(velocity->y, 0);
     }
-    velocity->y = 0;
 }
 
-void BasicScene::resolveHorCollision(float tileWidth, float playerWidth, Vec2 tilePos, Vec2* desiredPosition) {
+void BasicScene::resolveHorCollision(float tileWidth, float playerWidth, Vec2 tilePos,
+                                     Vec2* velocity, Vec2* desiredPosition) {
     if (desiredPosition->x > tilePos.x) {
         desiredPosition->x = tilePos.x + playerWidth / 2 + tileWidth / 2;
     } else {
         desiredPosition->x = tilePos.x - playerWidth / 2 - tileWidth / 2;
     }
+    velocity->x = 0;
+    velocity->y = fminf(velocity->y, 0);
 }
 
 void BasicScene::resolveSlopeCollision(Vec2 tilePos, float playerHeight, Vec2* desiredPosition, bool isLeftSlope) {
@@ -164,7 +169,7 @@ void BasicScene::resolveCollision(Player* player) {
         if (collisions[2] == GameMap::TileType::WALL || collisions[3] == GameMap::TileType::WALL) {
             int index = (collisions[2] == GameMap::TileType::WALL) ? 2 : 3;
             Vec2 pos = this->map->mapToWorld(this->map->worldToMap(boundingPoints[index]));
-            this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
+            this->resolveHorCollision(tileWidth, playerWidth,  pos, &velocity, &desiredPosition);
             collisionCount++;
         }
     }
@@ -173,7 +178,7 @@ void BasicScene::resolveCollision(Player* player) {
         if (collisions[index] == GameMap::TileType::WALL) {
             Vec2 pos = this->map->mapToWorld(this->map->worldToMap(boundingPoints[index]));
             if (fabsf(pos.x - desiredPosition.x) > fabsf(pos.y - desiredPosition.y)) {
-                this->resolveHorCollision(tileWidth, playerWidth,  pos, &desiredPosition);
+                this->resolveHorCollision(tileWidth, playerWidth,  pos, &velocity, &desiredPosition);
             } else {
                 this->resolveVertCollision(tileWidth, playerHeight, pos, &velocity, &desiredPosition);
                 // left/right bottom collision, so the player is on the ground
