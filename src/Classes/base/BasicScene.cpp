@@ -41,8 +41,8 @@ bool BasicScene::init()
     addChild(this->hub);
 
     if (initPlayers()) {
-        std::for_each(players.begin(), players.end(), [this](Player * p) {
-            this->addChild(p);
+        std::for_each(players.begin(), players.end(), [this](std::pair<std::string, Player*> pair) {
+            this->addChild(pair.second);
         });
     }
     // Creating a keyboard event listener
@@ -348,9 +348,9 @@ void BasicScene::update(float delta) {
         return;
     }
     if (!this->paused) {
-        std::for_each(players.begin(), players.end(), [this](Player * p) {
-            p->updatePhysics();
-            this->resolveCollision(p);
+        std::for_each(players.begin(), players.end(), [this](std::pair<std::string, Player*> pair) {
+            pair.second->updatePhysics();
+            this->resolveCollision(pair.second);
         });
     }
 
@@ -360,8 +360,8 @@ void BasicScene::update(float delta) {
 
     if (!this->paused) {
         this->checkDialog();
-        std::for_each(players.begin(), players.end(), [this](Player * p) {
-            p->updateAnimation();
+        std::for_each(players.begin(), players.end(), [this](std::pair<std::string, Player*> pair) {
+            pair.second->updateAnimation();
         });
         this->checkEnemyCollision();
         this->hub->setLives(mainPlayer->getLives());

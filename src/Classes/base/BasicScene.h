@@ -17,7 +17,7 @@ protected:
     std::string mapName;
     std::string mainName;
     std::string bgLocation;
-    std::vector<Player*> players;
+    std::map<std::string, Player*> players;
     cocos2d::Vec2 respawnPoint;
     GameMap* map;
     GameHub* hub;
