@@ -54,11 +54,11 @@ bool GameHub::init() {
     return true;
 }
 
-void GameHub::toggleHud() {
-    this->n1GoldCoin->setVisible(!this->n1GoldCoin->isVisible());
-    this->n2GoldCoin->setVisible(!this->n2GoldCoin->isVisible());
-    this->xGoldCoin->setVisible(!this->xGoldCoin->isVisible());
-    this->goldCoin->setVisible(!this->goldCoin->isVisible());
+void GameHub::toggle(bool visibility) {
+    this->n1GoldCoin->setVisible(visibility);
+    this->n2GoldCoin->setVisible(visibility);
+    this->xGoldCoin->setVisible(visibility);
+    this->goldCoin->setVisible(visibility);
 }
 
 void GameHub::setCoins(int number) {

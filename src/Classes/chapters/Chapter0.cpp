@@ -13,7 +13,7 @@ Scene* Chapter0::createScene() {
 
 bool Chapter0::init() {
     GameHub* hub = GameHub::create();
-    hub->toggleHud();
+    hub->toggle(false);
     addChild(hub);
 
     std::function<void()> onFinish = ([] {

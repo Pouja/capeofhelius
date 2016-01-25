@@ -17,7 +17,6 @@ private:
     std::queue<std::string> textQueue;
     std::function<void()> callback;
 
-    // Used for blocking the user input to show the full text before it finished animating.
     bool isAnimatingText;
     GameHub() : isAnimatingText(false){};
 
@@ -33,7 +32,7 @@ public:
     /**
      * Toggles between viewing the lives and the score of the player.
      */
-    void toggleHud();
+    void toggle(bool visibility);
 
     /**
      * Clears the text in the textbox.

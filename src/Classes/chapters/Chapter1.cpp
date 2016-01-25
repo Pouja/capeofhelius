@@ -72,12 +72,15 @@ DialogAction* Chapter1::parseText(tinyxml2::XMLElement* xmlText) {
 
 DialogAction* Chapter1::parseDialogAction(tinyxml2::XMLElement* xmlDialog) {
     std::string type = xmlDialog->Name();
+
     if (type.compare("move") == 0) {
         return parseMove(xmlDialog);
     } else if (type.compare("text") == 0) {
         return parseText(xmlDialog);
     }
-    CCASSERT(false, "unsupported type encountered");
+
+    log("Unsupported type '%s' encountered in a dialog file.", type.c_str());
+    assert(false);
     return NULL;
 }
 
