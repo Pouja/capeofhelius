@@ -128,6 +128,11 @@ private:
     void onDeath();
 
     /**
+     * Initializes all the players
+     */
+    void initPlayers();
+
+    /**
      * Called when the win condition is met.
      */
     virtual void onFinish() = 0;
@@ -144,7 +149,6 @@ public:
      * @return true if it succeeded in setting everything, false otherwise.
      */
     virtual bool init();
-    virtual bool initPlayers() = 0;
     /**
      * @brief Sets the view point of the scene.
      * @details [long description]

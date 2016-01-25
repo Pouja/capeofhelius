@@ -11,6 +11,7 @@ bool BasicScene::init()
     this->paused = false;
     this->map = GameMap::create(this->mapName, 1);
     this->hub = GameHub::create();
+    initPlayers();
 
     if (SHOW_MOUSE) {
         this->mouseLabel = Label::createWithTTF("", "fonts/Gasalt-Regular.ttf", 30);
@@ -40,11 +41,10 @@ bool BasicScene::init()
     addChild(this->map);
     addChild(this->hub);
 
-    if (initPlayers()) {
-        std::for_each(players.begin(), players.end(), [this](std::pair<std::string, Player*> pair) {
-            this->addChild(pair.second);
-        });
-    }
+    std::for_each(players.begin(), players.end(), [this](std::pair<std::string, Player*> pair) {
+        this->addChild(pair.second);
+    });
+
     // Creating a keyboard event listener
     EventListenerKeyboard* listener = EventListenerKeyboard::create();
     listener->onKeyPressed = CC_CALLBACK_2(BasicScene::onKeyPressed, this);
@@ -69,6 +69,38 @@ bool BasicScene::init()
     return true;
 }
 
+void BasicScene::initPlayers(){
+    ChapterManager* chapterManager = ChapterManager::getInstance();
+    for (Value value : this->map->getObjectGroup("players")->getObjects()) {
+        ValueMap object = value.asValueMap();
+
+        std::string name = object.at("name").asString();
+        float x = object.at("x").asFloat();
+        float y = object.at("y").asFloat();
+
+        Player* p;
+
+        if (name.compare("zoe-nocape") == 0) {
+            ChapterManager::Progress progress = chapterManager->getProgress();
+
+            if (!progress.spawnPoint.equals(Vec2::ZERO)) {
+                Vec2 worldCoord = map->mapToWorld(progress.spawnPoint);
+                p = Player::create(worldCoord, name);
+                this->respawnPoint = worldCoord;
+            } else {
+                p = Player::create(Vec2(x, y), name);
+                this->respawnPoint = Vec2(x, y);
+            }
+            this->mainPlayer = p;
+            name = "main";
+        } else {
+            p = Player::create(Vec2(x, y), name);
+        }
+
+        this->players[name] = p;
+    }
+}
+
 void BasicScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     if (!this->paused && this->activeDialog == nullptr) {
@@ -86,6 +118,8 @@ void BasicScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
     }
 }
 
+//TODO These three functions can go to another file.
+//Think about how to separate the collision from the BasicScene.
 void BasicScene::resolveVertCollision(float tileHeight, float playerHeight, Vec2 tilePos,
                                       Vec2* velocity, Vec2* desiredPosition) {
     if (desiredPosition->y > tilePos.y) {
