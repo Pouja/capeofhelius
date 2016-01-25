@@ -4,7 +4,7 @@ USING_NS_CC;
 
 TitleScreen* TitleScreen::create(const std::string& title, const std::string& message, bool withDim) {
 	TitleScreen* titleScreen = new TitleScreen();
-	if (titleScreen && titleScreen->init(title, message, withDim)) {
+	if (titleScreen && titleScreen->load(title, message, withDim)) {
 		titleScreen->autorelease();
 		return titleScreen;
 	}
@@ -13,7 +13,7 @@ TitleScreen* TitleScreen::create(const std::string& title, const std::string& me
 	return nullptr;
 }
 
-bool TitleScreen::init(const std::string& title, const std::string& message, bool withDim) {
+bool TitleScreen::load(const std::string& title, const std::string& message, bool withDim) {
 	Director* director = Director::getInstance();
 	Size contentSize = director->getVisibleSize();
 

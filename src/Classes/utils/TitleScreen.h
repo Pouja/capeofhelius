@@ -15,7 +15,7 @@ private:
      * @param  withDim Indicate to reduce the opacity from 1 when it is true.
      * @return         true (always)
      */
-    bool init(const std::string& title, const std::string& message, bool withDim);
+    bool load(const std::string& title, const std::string& message, bool withDim);
 
 public:
     /**
