@@ -77,10 +77,10 @@ void Player::initAnimations() {
 }
 
 void Player::updateAnimation() {
-    if(movingState.x > 0 && isFlippedX()){
+    if (movingState.x > 0 && isFlippedX()) {
         this->setFlippedX(false);
     }
-    if(movingState.x < 0 && !isFlippedX()){
+    if (movingState.x < 0 && !isFlippedX()) {
         this->setFlippedX(true);
     }
 
@@ -193,7 +193,9 @@ void Player::updatePhysics() {
         this->velocity.add(verticalForce);
         horizontalForce.scale(1 / FRICTION);
         this->velocity.add(horizontalForce);
-    } else if (this->movingState.x == 0 || (this->movingState.x == -1 && this->velocity.x >= 0) || (this->movingState.x == 1 && this->velocity.x <= 0)) {
+    } else if (this->movingState.x == 0 ||
+               (this->movingState.x == -1 && this->velocity.x >= 0) ||
+               (this->movingState.x == 1 && this->velocity.x <= 0)) {
         this->velocity.add(horizontalForce);
     }
     if (this->movingState.x == 0 && this->isOnGround) {
