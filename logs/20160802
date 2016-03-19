@@ -1,0 +1,17 @@
+20160802
+
+Redesigning the physic engine.
+Currently the physics is tightly coupled to player, platfor, etc.
+The idea is the split the physic from the other logic.
+
+So how will it work.
+There will be a physic engine and physic component.
+Where player will have a player physic component, and platform a platform physic component etc.
+
+In the main loop, it will call update on the physic engine.
+Where the physic engine, first lets the movable physic calculate their desired position for the next tick.
+Now that I am saying this, there are two types of physic components. One is the non movable when colliding(the map, the enemies (currently), platform, etc) and the players.
+Not sure if I should separate them....
+
+When all the desired positions are calculated, it will check for each movable component with each other component if there is a collision.
+If there is one, it will call onCollision(component).

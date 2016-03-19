@@ -1,0 +1,34 @@
+20160213
+
+So I am still in the process of redesigning everything. Kinda boring, so there is not much progress.
+
+But I was thinking about gameplay. I have seen some talks about gameplay and what a game makes a great game.
+There were a lot of good points.
+
+So a game is like art, a book or an movie. You take the expectations and knowledge of the consumer and let him/her experience the product. So the key points are expectations and knowledge.
+
+Lets take the current physics of the game. What is to be expected when you start the game.
+Well, when you see an 2d character, a house and a ground you expect gravity. Well check! So far so good.
+You expect the full control as it if a human:
+jump - check
+walk - check
+turn - check
+jump and walk - check
+
+But now it gets interesting: jump and then move. If the physics were real, that would not be possible. The expectations of a game does not only come from reality but from previous games as well.
+That sounds reasonable and duh of course. But then I watched a video about good game design, where the game does not give you a tutorial. And that makes a lot of sense. When you were young they did not teach you how to ride a bike.
+They gave you options and a clear goal: giving a bike, go to that destination. And that is how you learned to read a bike, by having a need for it.
+
+When you start to play game, someone could say: press A then B to perform X. But it would be more interesting is, get to Y by doing X knowing that you have options A, B and C.
+
+That is getting abstract, so lets take the example of the current game (which I accidentally did right). After talking to Martine, you will get to a point that you have to go up, because the only other way is back, which is not progress. But then you will notice that there are moving platforms. So the logical chose would be to get on the platform to progress further.
+The bad thing I did, was that I let Martine say that the bugs are bad. But why are the bad? Well I programmed them to be bad. Do they look bad? Well... no... shit.
+I though about this a lot, and due time constraints, I just chose to let Martine say that they are bad.
+But lets take a step back. What is the purpose of the insects/bugs: to add extra difficulty. I could let the player get hit once and then they will learn. Remember the two words: expectation and knowledge. What is the expectation when seeing an insect/bug: that they are not stationary and the knowledge is that the human far superior against a bug. So there is not inherit danger. There are no signals that a bug is bad. I have to create that danger.
+A bug or an insect is dangerous when it attacks the player. So if I want to create an experience of difficulty and the expectation that an insect is dangerous, I have to let it attack the player when it comes close to it.
+I think that I dont have to let the bug/insect attack when it is in vision, but when the player gets dangerously close (which is again the expectation and knowledge (try to get very close to a bee and it will attack you)).
+
+Next thing what I want to talk about is experience. The story is that Zoe goes on a journey to learn to be on her own. But in return she learns that she lost the love of her life. I have to trigger those emotions.
+I have to let her challenge herself and feel accomplished when she finishes a chapter. The feeling of a journey.
+What is a journey? It is learning something new, something new about your self and or the surrounding. Something that the game Journey did very well. So how do I let her feel that journey as well.
+This is something interesting to think about.

@@ -1,0 +1,15 @@
+20160123
+
+Im not sure who should control what.
+Currently the BasisScene controls the player pool, the map, the hub and dialogs.
+But if I want to rewrite the whole dialog initialisation then I have to create a new class Dialogs which creates all the DialogAction sequences from a xml file. But when creating such DialogAction it should be able to access the player pool, map and hub.
+So either the ChapterManager will keep all the resources or when creating Dialogs it passes the pointer to it.
+It is easier if ChapterManager has it all, but the life duration of each one of them is the duration of a chapter.
+
+I think I am going to design it this way.
+The ChapterManager is the container, it initialises the players, the map and the hub bases on what the chapter needs.
+The chapter then itself is responsible for drawing them, moving them and commanding them.
+This makes sense, because the chapter has not full control over the players etc. Anyone, is allowed to move them, spawn them etc.
+
+Aagh, another solution is that BasicScene controls the live of map, players etc but provides an interface to retrieve them. In turn ChapterManager could save the pointer to the Scene and provide access to the interface.
+But the problem is, that it introduces a high coupling and low coherence.
