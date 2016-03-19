@@ -1,15 +1,7 @@
 #include "Player.h"
 
 #define SCALE 1.0
-#define GRAVITY -1.0
-#define FRICTION 5.0
-#define HORIZONTAL_FORCE 2.0
-#define VERTICAL_FORCE 20.0
-#define MAX_HORIZONTAL_VELOCITY 10.0
-#define MAX_VERTICAL_VELOCITY 20.0
-#define MIN_HORIZONTAL_VELOCITY -10.0
-#define MIN_VERTICAL_VELOCITY -15.0
-#define BOTTOM_OFFSET 3
+#define BOTTOM_OFFSET 8.0f
 
 USING_NS_CC;
 Player* Player::create(Vec2 position, const std::string& name) {
@@ -26,16 +18,20 @@ Player* Player::create(Vec2 position, const std::string& name) {
 
 Player::Player(cocos2d::Vec2 position, const std::string& name) {
     this->animationState = AnimationState::IDLE;
-    this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
     this->setScale(SCALE);
     this->setPosition(position);
-    this->desiredPosition = position;
-    this->isOnGround = false;
     this->lives = 4;
     this->coins = 0;
     this->name = name;
+    this->physicBody = PhysicComponent::create(this, PhysicComponent::Type::PLAYER);
+    this->physicBody->setOffsets(BOTTOM_OFFSET, 0.0f, 0.0f, 0.0f);
 }
+
+PhysicComponent* Player::getPhysicBody(){
+    return this->physicBody;
+}
+
 void Player::stop() {
     this->movingState = Vec2::ZERO;
     this->updateAnimation();
@@ -53,7 +49,6 @@ int Player::getLives() {
 }
 
 void Player::initAnimations() {
-
     float initHeigh = this->getContentSize().height;
     this->setAnchorPoint(Vec2(0.5, ((initHeigh / 2) + BOTTOM_OFFSET) / initHeigh));
 
@@ -83,15 +78,15 @@ void Player::updateAnimation() {
     if (movingState.x < 0 && !isFlippedX()) {
         this->setFlippedX(true);
     }
-
+    // log("%s movingState(%f,%f) onground: %d", name.c_str(), movingState.x, movingState.y, physicBody->isOnGround());
     if (this->movingState.isZero()) {
-        if (this->isOnGround && this->animationState != AnimationState::IDLE) {
+        if (this->physicBody->isOnGround() && this->animationState != AnimationState::IDLE) {
             this->stopAllActions();
             this->setSpriteFrame(this->name + "-walk-right/0.png");
             this->animationState = AnimationState::IDLE;
         }
-    } else if (this->movingState.y == 0 && this->isOnGround) {
-        if (this->animationState == AnimationState::WALKING && fabsf(this->velocity.x) > 7) {
+    } else if (this->movingState.y == 0 && this->physicBody->isOnGround()) {
+        if (this->animationState == AnimationState::WALKING && fabsf(this->physicBody->getSpeed().x) > 7) {
             this->stopAllActions();
             this->runAction(RepeatForever::create(this->running));
             this->animationState = AnimationState::RUNNING;
@@ -111,28 +106,6 @@ void Player::clearCoins() {
     this->coins = 0;
 }
 
-std::vector<cocos2d::Vec2> Player::getBoundingPoints(Vec2 pov) {
-    std::vector<Vec2> points;
-    Rect boundingBox = this->getBoundingBox();
-
-    float left = pov.x - boundingBox.size.width / 2;
-    float right = pov.x + (boundingBox.size.width / 2);
-    float top = pov.y + (boundingBox.size.height / 2);
-    float bottom = pov.y - (boundingBox.size.height / 2) - BOTTOM_OFFSET;
-
-    points.push_back(Vec2(pov.x, bottom));
-    points.push_back(Vec2(pov.x, top));
-    points.push_back(Vec2(left, pov.y));
-    points.push_back(Vec2(right, pov.y));
-    points.push_back(Vec2(left, top));
-    points.push_back(Vec2(left, bottom));
-    points.push_back(Vec2(right, bottom));
-    points.push_back(Vec2(right, top));
-    points.push_back(Vec2((left + right) / 2 , (top + bottom) / 2));
-    return points;
-}
-
-
 void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
     if (!this->targetRect.equals(Rect::ZERO)) return;
@@ -150,6 +123,7 @@ void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
     default:
         break;
     }
+    this->physicBody->setAngle(this->movingState);
 }
 
 void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
@@ -169,51 +143,13 @@ void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
     default:
         break;
     }
-}
-
-void Player::setExternalForce(cocos2d::Vec2 force) {
-    this->externalForce = force;
-}
-
-void Player::updatePhysics() {
-    if (!targetRect.equals(Rect::ZERO) && targetRect.containsPoint(this->getPosition())) {
-        onMoveFinish();
-    }
-
-    Vec2 gravity(0.0, GRAVITY);
-    this->velocity.add(gravity);
-
-    Vec2 horizontalForce(HORIZONTAL_FORCE, 0.0);
-    horizontalForce.scale(this->movingState.x);
-
-    Vec2 verticalForce(0.0, VERTICAL_FORCE);
-    verticalForce.scale(this->movingState.y);
-
-    if (this->isOnGround) {
-        this->velocity.add(verticalForce);
-        horizontalForce.scale(1 / FRICTION);
-        this->velocity.add(horizontalForce);
-    } else if (this->movingState.x == 0 ||
-               (this->movingState.x == -1 && this->velocity.x >= 0) ||
-               (this->movingState.x == 1 && this->velocity.x <= 0)) {
-        this->velocity.add(horizontalForce);
-    }
-    if (this->movingState.x == 0 && this->isOnGround) {
-        this->velocity = Vec2(this->velocity.x * 0.1, this->velocity.y);
-    }
-
-    Vec2 minMovement(MIN_HORIZONTAL_VELOCITY, MIN_VERTICAL_VELOCITY);
-    Vec2 maxMovement(MAX_HORIZONTAL_VELOCITY, MAX_VERTICAL_VELOCITY);
-
-    this->velocity.clamp(minMovement, maxMovement);
-    this->desiredPosition = this->getPosition() + this->velocity + this->externalForce;
-    this->externalForce = Vec2::ZERO;
+    this->physicBody->setAngle(this->movingState);
 }
 
 void Player::die(CallFunc* callback) {
+    log("die");
     this->lives--;
     this->animationState = AnimationState::IDLE;
-    this->velocity = cocos2d::Vec2::ZERO;
     this->movingState = cocos2d::Vec2::ZERO;
 
     this->stopAllActions();
@@ -223,12 +159,11 @@ void Player::die(CallFunc* callback) {
 }
 
 void Player::respawn(Vec2 position) {
+    log("respawn");
     this->stopAllActions();
 
     this->movingState = Vec2::ZERO;
     this->setPosition(position);
-    this->desiredPosition = position;
-    this->isOnGround = false;
     this->setOpacity(255.0f);
 }
 
@@ -236,12 +171,9 @@ Vec2 Player::getState() {
     return this->movingState;
 }
 
-Vec2 Player::getDesiredPosition() {
-    return this->desiredPosition;
-}
-
 void Player::moveTo(Rect target, std::function<void()> onFinish) {
     assert(!target.equals(Rect::ZERO));
+    log("moveTo");
 
     this->movingState = Vec2::ZERO;
     this->targetRect = target;

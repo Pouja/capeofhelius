@@ -20,9 +20,6 @@ public:
         cocos2d::Vec2 spawnPoint = cocos2d::Vec2::ZERO;
     } Progress;
 private:
-    // Holds all the key value configurations
-    cocos2d::ValueMap config;
-
     // The progress of the main player
     Progress progress;
 

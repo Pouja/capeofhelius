@@ -138,19 +138,15 @@ std::vector<Enemy*> GameMap::getEnemies() {
     return this->enemies;
 }
 
-std::vector<GameMap::TileType> GameMap::groundCollision(std::vector<cocos2d::Vec2> points) {
-    std::vector<GameMap::TileType> collisions;
-    for (Vec2 point : points) {
-        Vec2 mapCoord = this->worldToMap(point);
-        Size mapSize = this->getMapSize();
-        if (mapCoord.x < 0 || mapCoord.y < 0 || mapCoord.x >= mapSize.width || mapCoord.y >= mapSize.height) {
-            collisions.push_back(GameMap::TileType::NONE);
-        } else {
-            int index = (int) mapCoord.x + mapSize.width * mapCoord.y;
-            collisions.push_back(tiles[index]);
-        }
+GameMap::TileType GameMap::groundCollision(cocos2d::Vec2 point) {
+    Vec2 mapCoord = this->worldToMap(point);
+    Size mapSize = this->getMapSize();
+    if (mapCoord.x < 0 || mapCoord.y < 0 || mapCoord.x >= mapSize.width || mapCoord.y >= mapSize.height) {
+        return GameMap::TileType::NONE;
+    } else {
+        int index = (int) mapCoord.x + mapSize.width * mapCoord.y;
+        return tiles[index];
     }
-    return collisions;
 }
 
 Vec2 GameMap::worldToMap(Vec2 worldCoord) {

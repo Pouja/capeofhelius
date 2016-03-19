@@ -34,8 +34,7 @@ public:
     /** Retrieves the vector for the given object name in a specific group. */
     cocos2d::Vec2 objectPoint(std::string group, std::string objectName);
 
-    /** Retrieves the sprites for each point in the layer "ground" */
-    std::vector<TileType> groundCollision(std::vector<cocos2d::Vec2> points);
+    TileType groundCollision(cocos2d::Vec2 point);
 
     /** Called when the map is allowed to update **/
     void update(float delta);
