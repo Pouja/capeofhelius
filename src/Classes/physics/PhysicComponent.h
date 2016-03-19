@@ -47,8 +47,10 @@ public:
     virtual std::vector<cocos2d::Vec2> getBoundingPoints(cocos2d::Vec2 pov);
     virtual cocos2d::Rect getFrame();
     virtual bool onCollision(PhysicComponent* other, BoundingPoint point);
-    virtual void onStaticCollisions(std::vector<GameMap::TileType> tiles, std::vector<cocos2d::Vec2> tilePositions);
-    virtual bool onCollision(GameMap::TileType tile, BoundingPoint point, cocos2d::Vec2 tilePos);
+    virtual void onStaticCollisions(std::vector<GameMap::TileType> tiles, std::vector<cocos2d::Vec2> tilePositions,
+        cocos2d::Size tileSize);
+    virtual bool onCollision(GameMap::TileType tile, BoundingPoint point, cocos2d::Vec2 tilePos,
+        cocos2d::Size tileSize);
     static PhysicComponent* create(cocos2d::Sprite* body, Type type);
 
     /* getters and setters */

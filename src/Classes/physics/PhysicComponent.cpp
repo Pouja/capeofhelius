@@ -49,6 +49,8 @@ PhysicComponent* PhysicComponent::create(cocos2d::Sprite *body, PhysicComponent:
 void PhysicComponent::init() {}
 
 void PhysicComponent::update(float delta) {
+    // TODO: smoothe out the physics. When the player is moving left and the it wants to right,
+    // it should go in to death stop and then turn.
     Vec2 gravity(0.0, GRAVITY);
     this->speed.add(gravity);
 
@@ -136,31 +138,25 @@ void resolveSlopeCollision(Vec2 tilePos, float playerHeight, Vec2* desiredPositi
 }
 
 void PhysicComponent::onStaticCollisions(std::vector<GameMap::TileType> tiles,
-        std::vector<cocos2d::Vec2> tilePositions) {
+        std::vector<cocos2d::Vec2> tilePositions, Size tileSize) {
     this->onGround = (tiles[BoundingPoint::BOTTOM] == GameMap::TileType::SLOPE_LEFT
                       || tiles[BoundingPoint::BOTTOM] == GameMap::TileType::SLOPE_LEFT
                       || tiles[BoundingPoint::BOTTOM] == GameMap::TileType::SLOPE_RIGHT
                       || tiles[BoundingPoint::BOTTOM] == GameMap::TileType::STUMP
                       || tiles[BoundingPoint::BOTTOM] == GameMap::TileType::WALL);
-    int collisionCount = 0;
     for (const int point : collisionOrder) {
-        collisionCount += (onCollision(tiles[point], (BoundingPoint)point, tilePositions[point])) ? 1 : 0;
-        // if (collisionCount > 0 && (point == BOTTOM_RIGHT || point == BOTTOM_LEFT || point == TOP_RIGHT ||
-        //                            point == TOP_LEFT )) {
-        //     break;
-        // }
+        onCollision(tiles[point], (BoundingPoint)point, tilePositions[point], tileSize);
     }
 }
 
-bool PhysicComponent::onCollision(GameMap::TileType tile, BoundingPoint point, Vec2 tilePos) {
+bool PhysicComponent::onCollision(GameMap::TileType tile, BoundingPoint point, Vec2 tilePos, Size tileSize) {
     if (!isSolid) {
         return true;
     }
+    //TODO fix not able to jump from slope
     std::vector<cocos2d::Vec2> frame = this->getBoundingPoints(desiredPosition);
     float playerWidth = frame[RIGHT].x - frame[LEFT].x;
     float playerHeight = frame[TOP].y - frame[BOTTOM].y;
-    float tileWidth = 70;
-    float tileHeight = 70;
 
     if ((tile == GameMap::TileType::SLOPE_LEFT || tile == GameMap::TileType::SLOPE_RIGHT)) {
         bool isLeft = tile == GameMap::TileType::SLOPE_LEFT;
@@ -170,15 +166,15 @@ bool PhysicComponent::onCollision(GameMap::TileType tile, BoundingPoint point, V
         // This is kinda of hack situation. What happening is that when you hit a stump, you are actually on a slope
         // So we take the tile above (which is the -= tileHeight) and
         // resolve as if we are colliding with the slop tile.
-        tilePos.y -= tileHeight;
-        resolveVertCollision(tileHeight, playerHeight, tilePos, &this->speed,
-                              &this->desiredPosition);
+        tilePos.y -= tileSize.height;
+        resolveVertCollision(tileSize.height, playerHeight, tilePos, &this->speed,
+                             &this->desiredPosition);
     } else if (tile == GameMap::TileType::WALL) {
         if (fabsf(tilePos.x - desiredPosition.x) > fabsf(tilePos.y - desiredPosition.y)) {
-            resolveHorCollision(tileWidth, playerWidth,  tilePos, &this->speed,
+            resolveHorCollision(tileSize.width, playerWidth,  tilePos, &this->speed,
                                 &this->desiredPosition);
         } else {
-            resolveVertCollision(tileWidth, playerHeight, tilePos, &this->speed,
+            resolveVertCollision(tileSize.height, playerHeight, tilePos, &this->speed,
                                  &this->desiredPosition);
         }
         return true;

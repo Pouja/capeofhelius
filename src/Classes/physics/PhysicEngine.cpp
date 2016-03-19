@@ -79,7 +79,7 @@ void PhysicEngine::checkCollisions() {
             tilePositions[boundingPoint] = this->map->mapToWorld(
                 this->map->worldToMap(boundingPoints[boundingPoint]));
         }
-        movable->onStaticCollisions(tiles, tilePositions);
+        movable->onStaticCollisions(tiles, tilePositions, this->map->getTileSize());
     }
 }
 
