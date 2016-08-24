@@ -16,6 +16,7 @@ bool BasicScene::init()
     this->physicEngine->setMap(map);
 
     initPlayers();
+    loadPlatforms();
 
     if (SHOW_MOUSE) {
         this->mouseLabel = Label::createWithTTF("", "fonts/Gasalt-Regular.ttf", 30);
@@ -48,6 +49,9 @@ bool BasicScene::init()
     std::for_each(players.begin(), players.end(), [this](std::pair<std::string, Player*> pair) {
         this->addChild(pair.second);
     });
+    std::for_each(platforms.begin(), platforms.end(), [this](Platform* platform) {
+        this->addChild(platform);
+    });
 
     // Creating a keyboard event listener
     EventListenerKeyboard* listener = EventListenerKeyboard::create();
@@ -72,7 +76,16 @@ bool BasicScene::init()
     this->scheduleUpdate();
     return true;
 }
-
+void BasicScene::loadPlatforms() {
+    TMXObjectGroup* objectGroup = map->getObjectGroup("platforms");
+    float tileWidth = map->getTileSize().width * map->getScale();
+    float tileHeight = map->getTileSize().height * map->getScale();
+    for (Value object : objectGroup->getObjects()) {
+        ValueMap dict = object.asValueMap();
+        Platform* platform = Platform::parse(dict, map->getScale(), tileWidth, tileHeight);
+        platforms.push_back(platform);
+    }
+}
 void BasicScene::initPlayers() {
     ChapterManager* chapterManager = ChapterManager::getInstance();
     for (Value value : this->map->getObjectGroup("players")->getObjects()) {

@@ -78,7 +78,6 @@ void Player::updateAnimation() {
     if (movingState.x < 0 && !isFlippedX()) {
         this->setFlippedX(true);
     }
-    // log("%s movingState(%f,%f) onground: %d", name.c_str(), movingState.x, movingState.y, physicBody->isOnGround());
     if (this->movingState.isZero()) {
         if (this->physicBody->isOnGround() && this->animationState != AnimationState::IDLE) {
             this->stopAllActions();

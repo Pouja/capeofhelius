@@ -11,7 +11,6 @@ GameMap* GameMap::create(const std::string& mapName, float scale) {
     if (gameMap && gameMap->initWithXML(str->getCString(), "")) {
         gameMap->initTiles();
         gameMap->loadDynamicScene();
-        gameMap->loadPlatforms();
         gameMap->loadEnemies();
         gameMap->autorelease();
         return gameMap;
@@ -27,9 +26,6 @@ GameMap::GameMap(const std::string& mapName, float scale) {
 }
 
 void GameMap::update(float delta) {
-    for (Platform* platform : platforms) {
-        platform->update(delta);
-    }
 }
 
 void GameMap::loadDynamicScene() {
@@ -49,18 +45,6 @@ void GameMap::loadDynamicScene() {
         } else if (name.compare("cloud") == 0) {
             addChild(Cloud::create(coord), -1);
         }
-    }
-}
-
-void GameMap::loadPlatforms() {
-    TMXObjectGroup* objectGroup = this->getObjectGroup("platforms");
-    float tileWidth = this->getTileSize().width * this->getScale();
-    float tileHeight = this->getTileSize().height * this->getScale();
-    for (Value object : objectGroup->getObjects()) {
-        ValueMap dict = object.asValueMap();
-        Platform* platform = Platform::parse(dict, this->getScale(), tileWidth, tileHeight);
-        addChild(platform);
-        platforms.push_back(platform);
     }
 }
 
@@ -102,8 +86,7 @@ void GameMap::initTiles() {
     int height = this->getMapSize().height;
     TMXLayer* layer = this->getLayer("static scene");
     for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++)
-        {
+        for (int x = 0; x < width; x++) {
             uint32_t tileGID = layer->getTileGIDAt(Vec2(x, y));
             if (tileGID != 0) {
                 ValueMap properties = this->getPropertiesForGID(tileGID).asValueMap();
@@ -128,10 +111,6 @@ void GameMap::removeCollectable(cocos2d::Vec2 worldCoord) {
     Size mapSize = this->getMapSize();
     int index = (int) mapCoord.x + mapSize.width * mapCoord.y;
     tiles[index] = TileType::NONE;
-}
-
-std::vector<Platform*> GameMap::getPlatforms() {
-    return this->platforms;
 }
 
 std::vector<Enemy*> GameMap::getEnemies() {

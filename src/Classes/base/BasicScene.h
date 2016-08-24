@@ -34,6 +34,8 @@ protected:
     // TODO: make this a map as well
     std::vector<std::pair<std::string, cocos2d::Rect>> dialogRects;
 
+    std::vector<Platform*> platforms;
+
     // The main player
     Player* mainPlayer;
 private:
@@ -73,6 +75,11 @@ private:
      * Initializes all the players
      */
     void initPlayers();
+
+    /**
+     * Initializes all the platforms and starts their movement.
+     */
+    void loadPlatforms();
 
     /**
      * Called when the win condition is met.

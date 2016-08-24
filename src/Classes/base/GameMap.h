@@ -49,11 +49,6 @@ public:
      * @param worldCoord The coordinates of the collectable.
      */
     void removeCollectable(cocos2d::Vec2 worldCoord);
-
-    /**
-     * Returns all the platforms
-     */
-    std::vector<Platform*> getPlatforms();
 private:
     /**
      * @brief Initializes the collision tiles.
@@ -68,17 +63,11 @@ private:
     void loadDynamicScene();
 
     /**
-     * Initializes all the platforms and starts their movement.
-     */
-    void loadPlatforms();
-
-    /**
      * Initializes all the enemies.
      */
     void loadEnemies();
 
     std::vector<Enemy*> enemies;
-    std::vector<Platform*> platforms;
     GameMap(const std::string& mapName, float scale);
     std::vector<TileType> tiles;
     std::string name;

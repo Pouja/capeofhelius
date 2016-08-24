@@ -1,7 +1,7 @@
 #include "physics/PhysicComponent.h"
 
 #define GRAVITY -1.0
-#define FRICTION 5.0
+#define FRICTION 10.0
 #define HORIZONTAL_FORCE 2.0
 #define VERTICAL_FORCE 20.0
 #define MAX_HORIZONTAL_speed 10.0
