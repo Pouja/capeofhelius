@@ -1,6 +1,6 @@
 [submodule "src/Resources"]
 	path = src/Resources
-	url = https://pnikray@bitbucket.org/pnikray/capeofhelius-resources
+	url = https://github.com/Pouja/capeofhelius-resources.git
 	branch = master
 [submodule "src/cocos2d"]
 	path = src/cocos2d
