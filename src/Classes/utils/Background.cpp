@@ -20,7 +20,6 @@ void Background::move(Vec2 vpc) {
 
 	float maxBgTravel = size.width - screenWidth;
 	float maxVpcTravel = mapSize.width - screenWidth;
-	float minVpc = screenWidth / 2;
 
 	float newX = vpc.x - (vpc.x * maxBgTravel / maxVpcTravel) + size.width / 2;
 

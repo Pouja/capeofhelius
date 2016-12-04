@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "utils/CCLabelBMFontAnimated.h"
 
-class GameHub : public cocos2d::Layer {
+class GameHub : public cocos2d::Node {
 private:
     cocos2d::Sprite* goldCoin;
     cocos2d::Sprite* xGoldCoin;

@@ -29,8 +29,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
         glview = GLViewImpl::createWithFullScreen("Cape of Helius");
         director->setOpenGLView(glview);
     }
-
     SpriteFrameCache* cache = SpriteFrameCache::getInstance();
+
     cache->addSpriteFramesWithFile("characters/zoe-nocape.plist");
     cache->addSpriteFramesWithFile("characters/father.plist");
     cache->addSpriteFramesWithFile("characters/mother.plist");
@@ -44,7 +44,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
-    director->setAnimationInterval(1.0 / 60);
+    director->setAnimationInterval(1.0f / 60.0f);
 
     // create a scene. it's an autorelease object && run
     ChapterManager::getInstance()->init();

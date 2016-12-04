@@ -1,7 +1,7 @@
 #include "BasicScene.h"
 #include "utils/TitleScreen.h"
 #include "base/ChapterManager.h"
-
+#include "Game.h"
 #define SHOW_MOUSE true
 
 USING_NS_CC;
@@ -9,8 +9,14 @@ USING_NS_CC;
 bool BasicScene::init()
 {
     this->paused = false;
-    this->map = GameMap::create(this->mapName, 1);
-    this->hub = GameHub::create();
+
+    GameObjects::getInstance()->setCamera(new GameCamera());
+    GameObjects::getInstance()->setMap(GameMap::create(this->mapName, 1));
+    GameObjects::getInstance()->setHub(GameHub::create());
+
+    this->map = GameObjects::getInstance()->getMap();
+    this->hub = GameObjects::getInstance()->getHub();
+
     this->physicEngine = PhysicEngine::create();
     this->physicEngine->retain();
     this->physicEngine->setMap(map);
@@ -121,7 +127,28 @@ void BasicScene::initPlayers() {
 void BasicScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     if (!this->paused && this->activeDialog == nullptr) {
-        this->mainPlayer->onKeyPressed(keyCode, event);
+       this->mainPlayer->onKeyPressed(keyCode, event);
+    }
+    Camera* cam = Camera::getDefaultCamera();
+    Vec3 current = cam->getPosition3D();
+    Vec2 hubCurrent = hub->getPosition();
+    Vec3 up(0.0f, 1.0f, 0.0f);
+    if (keyCode == EventKeyboard::KeyCode::KEY_W) {
+        this->hub->setPosition(Vec2(hubCurrent.x , hubCurrent.y + 50));
+
+    } else if (keyCode == EventKeyboard::KeyCode::KEY_S) {
+        this->hub->setPosition(Vec2(hubCurrent.x - 50, hubCurrent.y));
+        cam->setPosition3D(Vec3(current.x, current.y - 10.0f, current.z));
+    } else if (keyCode == EventKeyboard::KeyCode::KEY_A) {
+        this->hub->setPosition(Vec2(hubCurrent.x, hubCurrent.y - 50));
+        cam->setPosition3D(Vec3(current.x + 10.0f, current.y, current.z));
+    } else if (keyCode == EventKeyboard::KeyCode::KEY_D) {
+        this->hub->setPosition(Vec2(hubCurrent.x + 50, hubCurrent.y));
+        cam->setPosition3D(Vec3(current.x - 10.0f, current.y, current.z));
+    } else if (keyCode == EventKeyboard::KeyCode::KEY_Q) {
+        cam->setPosition3D(Vec3(current.x, current.y, current.z + 10.0f));
+    } else if (keyCode == EventKeyboard::KeyCode::KEY_E) {
+        cam->setPosition3D(Vec3(current.x, current.y, current.z - 10.0f));
     }
 }
 
@@ -207,21 +234,27 @@ void BasicScene::checkDialog() {
 }
 
 void BasicScene::updateVPC(cocos2d::Vec2 vpc) {
-    this->setPosition(vpc);
-    this->bg->move(vpc * -1);
-    this->hub->setPosition(vpc * -1);
+    Size size = Director::getInstance()->getWinSize();
+
+    // Due how the initial positions were just in background and hub we have to subtract the window size / 2
+    // TODO obv fix this
+    vpc = vpc - (size/2);
+    this->bg->move(vpc);
+    this->hub->setPosition(vpc);
+
     if (SHOW_MOUSE) this->mouseLabel->setPosition((vpc + Vec2(-120, -720)) * -1);
 }
 
 void BasicScene::update(float delta) {
     this->physicEngine->update(delta);
+    getGOCamera()->followPlayer(this->mainPlayer);
+    getGOCamera()->update();
     if (this->mainPlayer->finished) {
         this->onFinish();
         this->unscheduleAllCallbacks();
         return;
     }
 
-    Vec2 vpc = this->getViewPointCenter(this->mainPlayer->getPosition());
     this->map->update(delta);
 
     if (!this->paused) {
@@ -231,30 +264,6 @@ void BasicScene::update(float delta) {
         });
         this->hub->setLives(mainPlayer->getLives());
     }
-
-    this->updateVPC(vpc);
+    this->updateVPC(getGOCamera()->getVPC());
 }
 
-Vec2 BasicScene::getViewPointCenter(Vec2 position) {
-    Size winSize = Director::getInstance()->getWinSize();
-
-    Size mapSize = this->map->getMapSize();
-    mapSize.width = mapSize.width * this->map->getTileSize().width * this->map->getScale();
-    mapSize.height = mapSize.height * this->map->getTileSize().height * this->map->getScale();
-
-    float xView = position.x - winSize.width / 2;
-    if (position.x <= winSize.width / 2 || winSize.width >= mapSize.width) {
-        xView = 0;
-    } else if (mapSize.width - winSize.width / 2 <= position.x ) {
-        xView = mapSize.width - winSize.width;
-    }
-
-    float yView = position.y - winSize.height / 2;;
-    if (position.y <= winSize.height / 2 || winSize.height >= mapSize.height) {
-        yView = 0;
-    } else if (mapSize.height - winSize.height / 2 <= position.y) {
-        yView = mapSize.height - winSize.height;
-    }
-
-    return Vec2(-1 * xView, -1 * yView);
-}
