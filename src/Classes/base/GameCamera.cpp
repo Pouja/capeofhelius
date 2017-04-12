@@ -24,7 +24,6 @@ void GameCamera::moveTo(cocos2d::Vec2 pos) {
     if(pos.distance(Vec2(current.x, current.y)) < 50.0f) {
         camera->setPosition3D(Vec3(pos.x, pos.y, current.z));
     } else if(!runningAction){
-        log("%f %f", pos.x, pos.y);
         MoveTo* moveTo = MoveTo::create(2.0f, Vec3(pos.x, pos.y, current.z));
         CallFunc* onFinished = CallFunc::create([this](){
             this->runningAction = false;

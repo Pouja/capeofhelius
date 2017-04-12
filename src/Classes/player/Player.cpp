@@ -24,12 +24,6 @@ Player::Player(cocos2d::Vec2 position, const std::string& name) {
     this->lives = 4;
     this->coins = 0;
     this->name = name;
-    this->physicBody = PhysicComponent::create(this, PhysicComponent::Type::PLAYER);
-    this->physicBody->setOffsets(BOTTOM_OFFSET, 0.0f, 0.0f, 0.0f);
-}
-
-PhysicComponent* Player::getPhysicBody(){
-    return this->physicBody;
 }
 
 void Player::stop() {
@@ -72,6 +66,7 @@ void Player::initAnimations() {
 }
 
 void Player::updateAnimation() {
+    return;
     if (movingState.x > 0 && isFlippedX()) {
         this->setFlippedX(false);
     }
@@ -79,13 +74,16 @@ void Player::updateAnimation() {
         this->setFlippedX(true);
     }
     if (this->movingState.isZero()) {
-        if (this->physicBody->isOnGround() && this->animationState != AnimationState::IDLE) {
+        // Add check if on ground
+        if (this->animationState != AnimationState::IDLE) {
             this->stopAllActions();
             this->setSpriteFrame(this->name + "-walk-right/0.png");
             this->animationState = AnimationState::IDLE;
         }
-    } else if (this->movingState.y == 0 && this->physicBody->isOnGround()) {
-        if (this->animationState == AnimationState::WALKING && fabsf(this->physicBody->getSpeed().x) > 7) {
+        //&& this->physicBody->isOnGround()
+    } else if (this->movingState.y == 0 ) {
+        //&& fabsf(this->physicBody->getSpeed().x) > 7
+        if (this->animationState == AnimationState::WALKING) {
             this->stopAllActions();
             this->runAction(RepeatForever::create(this->running));
             this->animationState = AnimationState::RUNNING;
@@ -122,7 +120,6 @@ void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
     default:
         break;
     }
-    this->physicBody->setAngle(this->movingState);
 }
 
 void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
@@ -142,7 +139,6 @@ void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
     default:
         break;
     }
-    this->physicBody->setAngle(this->movingState);
 }
 
 void Player::die(CallFunc* callback) {
@@ -158,7 +154,6 @@ void Player::die(CallFunc* callback) {
 }
 
 void Player::respawn(Vec2 position) {
-    log("respawn");
     this->stopAllActions();
 
     this->movingState = Vec2::ZERO;
@@ -172,7 +167,6 @@ Vec2 Player::getState() {
 
 void Player::moveTo(Rect target, std::function<void()> onFinish) {
     assert(!target.equals(Rect::ZERO));
-    log("moveTo");
 
     this->movingState = Vec2::ZERO;
     this->targetRect = target;

@@ -85,6 +85,12 @@ void GameMap::initTiles() {
     int width = this->getMapSize().width;
     int height = this->getMapSize().height;
     TMXLayer* layer = this->getLayer("static scene");
+
+    if (!layer) {
+        CCLOGERROR("static scene is missing in the tmx file");
+        return;
+    }
+
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             uint32_t tileGID = layer->getTileGIDAt(Vec2(x, y));

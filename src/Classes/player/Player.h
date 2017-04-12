@@ -2,7 +2,6 @@
 #define _PLAYER_H_
 
 #include "cocos2d.h"
-#include "physics/PhysicComponent.h"
 
 class Player: public cocos2d::Sprite {
 public:
@@ -37,8 +36,6 @@ public:
      */
     int getScore();
 
-    PhysicComponent* getPhysicBody();
-
     /**
      * @return The number of lives the player has.
      */
@@ -61,7 +58,6 @@ public:
 
     ~Player();
 private:
-    PhysicComponent* physicBody;
     cocos2d::Rect targetRect;
     std::function<void()> callback;
 

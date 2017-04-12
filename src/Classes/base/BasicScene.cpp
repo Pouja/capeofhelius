@@ -17,10 +17,6 @@ bool BasicScene::init()
     this->map = GameObjects::getInstance()->getMap();
     this->hub = GameObjects::getInstance()->getHub();
 
-    this->physicEngine = PhysicEngine::create();
-    this->physicEngine->retain();
-    this->physicEngine->setMap(map);
-
     initPlayers();
     loadPlatforms();
 
@@ -82,6 +78,7 @@ bool BasicScene::init()
     this->scheduleUpdate();
     return true;
 }
+
 void BasicScene::loadPlatforms() {
     TMXObjectGroup* objectGroup = map->getObjectGroup("platforms");
     float tileWidth = map->getTileSize().width * map->getScale();
@@ -92,6 +89,7 @@ void BasicScene::loadPlatforms() {
         platforms.push_back(platform);
     }
 }
+
 void BasicScene::initPlayers() {
     ChapterManager* chapterManager = ChapterManager::getInstance();
     for (Value value : this->map->getObjectGroup("players")->getObjects()) {
@@ -115,11 +113,11 @@ void BasicScene::initPlayers() {
                 this->respawnPoint = Vec2(x, y);
             }
             this->mainPlayer = p;
+
             name = "main";
         } else {
             p = Player::create(Vec2(x, y), name);
         }
-        this->physicEngine->addMovableComponent(p->getPhysicBody());
         this->players[name] = p;
     }
 }
@@ -246,9 +244,9 @@ void BasicScene::updateVPC(cocos2d::Vec2 vpc) {
 }
 
 void BasicScene::update(float delta) {
-    this->physicEngine->update(delta);
     getGOCamera()->followPlayer(this->mainPlayer);
     getGOCamera()->update();
+
     if (this->mainPlayer->finished) {
         this->onFinish();
         this->unscheduleAllCallbacks();

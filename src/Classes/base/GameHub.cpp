@@ -21,8 +21,6 @@ bool GameHub::init() {
     this->goldCoin = cocos2d::Sprite::createWithSpriteFrameName("hud_coins.png");
     this->goldCoin->setPosition(topRightOffset.x + 120, topRightOffset.y);
 
-    this->livesPosition = Vec2(contentSize.width * 0.1, topRightOffset.y);
-
     this->textbox = cocos2d::Sprite::create("hud/textbox.png");
     this->textbox->setScaleX(contentSize.width / this->textbox->getContentSize().width);
     this->textbox->setPosition(contentSize.width / 2, 40);

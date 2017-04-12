@@ -34,16 +34,17 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${COCOS2D_ROOT}/cmake/Modules/")
 include(CocosBuildHelpers)
 
 # libcocos2d
-set(BUILD_CPP_EMPTY_TEST OFF CACHE BOOL "turn off build cpp-empty-test")
-set(BUILD_CPP_TESTS OFF CACHE BOOL "turn off build cpp-tests")
-set(BUILD_LUA_LIBS OFF CACHE BOOL "turn off build lua related targets")
-set(BUILD_JS_LIBS OFF CACHE BOOL "turn off build js related targets")
 set(BUILD_EDITOR_COCOSBUILDER OFF CACHE BOOL "turn off editor support")
 set(BUILD_EDITOR_COCOSTUDIO OFF CACHE BOOL "turn off")
 set(BUILD_EDITOR_SPINE OFF CACHE BOOL "turn off")
 set(BUILD_JS_TESTS OFF CACHE BOOL "turn off")
 set(BUILD_LUA_TESTS OFF CACHE BOOL "turn off")
+set(BUILD_CPP_EMPTY_TEST OFF CACHE BOOL "turn off build cpp-empty-test")
+set(BUILD_CPP_TESTS OFF CACHE BOOL "turn off build cpp-tests")
+set(BUILD_LUA_LIBS OFF CACHE BOOL "turn off build lua related targets")
+set(BUILD_JS_LIBS OFF CACHE BOOL "turn off build js related targets")
 set(USE_BULLET OFF CACHE BOOL "turn off")
+set(BUILD_BOX2D ON CACHE BOOL "build cocos2d")
 add_subdirectory(${COCOS2D_ROOT})
 
 # Some macro definitions
@@ -99,7 +100,7 @@ include_directories(
   /usr/local/include/GLFW
   /usr/include/GLFW
   ${COCOS2D_ROOT}/cocos
-  ${COCOS2D_ROOT}/external/tinyxml2
+  ${COCOS2D_ROOT}/external
   )
 include_directories(Classes)
 

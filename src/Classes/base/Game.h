@@ -1,16 +1,16 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include <string>
+#include <map>
+
 #include "GameHub.h"
 #include "cocos2d.h"
 #include "player/Player.h"
 #include "GameCamera.h"
-#include <string>
-#include <map>
+#include "GameMap.h"
 
 #define getGOCamera() GameObjects::getInstance()->getCamera()
-#define getGOHub GameObjects::getInstance()->getHub
-#define getGOMap GameObjects::getInstance()->getMap
 
 class GameObjects {
 private:

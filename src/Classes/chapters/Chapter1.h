@@ -2,7 +2,7 @@
 #define _CHAPTER_1_H_
 
 #include "base/BasicScene.h"
-#include "tinyxml2.h"
+#include "tinyxml2/tinyxml2.h"
 
 //TODO: rework this class completely.
 class Chapter1 : public BasicScene {

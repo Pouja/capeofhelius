@@ -8,7 +8,7 @@
 #include "GameHub.h"
 #include "utils/Background.h"
 #include "dialog/DialogAction.h"
-#include "physics/PhysicEngine.h"
+#include "Box2D/Box2D.h"
 
 class BasicScene : public cocos2d::Layer
 {
@@ -22,7 +22,6 @@ protected:
     cocos2d::Vec2 respawnPoint;
     GameMap* map;
     GameHub* hub;
-    PhysicEngine* physicEngine;
 
     // For debugging
     cocos2d::Label* mouseLabel;
@@ -39,6 +38,8 @@ protected:
     // The main player
     Player* mainPlayer;
 private:
+    b2World* _world;
+    b2Body *_groundBody;
     // If this is set to true it will not update the player or the enemies or check for collisions
     bool paused;
 

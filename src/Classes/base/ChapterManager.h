@@ -2,7 +2,7 @@
 #define _H_Chapter_MANAGER_
 
 #include "cocos2d.h"
-#include "tinyxml2.h"
+#include "tinyxml2/tinyxml2.h"
 
 class ChapterManager
 {
