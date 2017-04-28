@@ -2,7 +2,8 @@
 
 This project is started solely for learning c++, gamedev, cocos2d-x and for creating the most awesome present ever. 
 My initial idea was to create a log each day, telling what my though were and why a chose the particular implementation, but unfortunately I forgot to do that many times.
-So there are some rants under `/logs` and some random tags in the git history.
+So there are some rants under `/logs` and some random tags in the git history.  
+Check the `/gif` directory to see some ingame play.
 
 # Dependencies
 
